@@ -1,0 +1,20 @@
+#backgnd {
+  background-image: url("../../images/gradient-7.jpg");
+  background-size: auto;
+  padding-top: 10px;
+}
+
+.profileIcon {
+  width: 150px;
+  height: 150px;
+  border-radius: 10px 10px 10px 10px !important;
+}
+
+/* .profileDiv {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+} */
+/* .profileDiv {
+  border: 1px solid black;
+} */
