@@ -1,8 +1,8 @@
-import "./App.css";
+// import "./App.css";
 import { Routes, Route } from "react-router-dom";
 import Layout from "./components/layout";
 import Signup from "../src/pages/signup";
-import HomePage from "./pages/homePage";
+import HomePage from "./pages/HomePage";
 import Test from "./pages/test";
 import Login from "./pages/LoginForm";
 import RequireAuth from "./components/requireAuth";
@@ -11,9 +11,8 @@ import Users from "./components/UsersTest";
 import PersistLogin from "./components/PersistLogin";
 
 const ROLES = {
-  SuperAdmin: 1993,
-  Admin: 2000,
-  User: 999,
+  Admin: 1993,
+  User: 2000,
 };
 
 // const ROLES = {
@@ -34,7 +33,7 @@ function App() {
         {/*Protected Routes */}
         <Route element={<PersistLogin />}>
           <Route element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.SuperAdmin]} />}>
-            <Route path="/" element={<Users />} />
+            <Route path="/" element={<HomePage />} />
           </Route>
         </Route>
       </Route>

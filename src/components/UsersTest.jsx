@@ -1,22 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
-import { useNavigate, useLocation } from "react-router-dom";
 import useRefreshToken from "../hooks/useRefreshToken";
-import { useContext } from "react";
-import AuthContext from "../context/AuthProvider";
 import useLogout from "../hooks/useLogout";
 
 const Users = () => {
   const [users, setUsers] = useState();
   const axiosPrivate = useAxiosPrivate();
-  const navigate = useNavigate();
-  const location = useLocation();
   const refresh = useRefreshToken();
   const logOut = useLogout();
-
-  const signOut = async () => {
-    await logOut();
-  };
+  const currentUser = localStorage.getItem("user");
 
   //   useEffect(() => {
   //     let isMounted = true;
@@ -55,11 +47,12 @@ const Users = () => {
 
   return (
     <article>
+      <h1>Hello {currentUser} </h1>
       <h2>Users List</h2>
       {users?.length ? (
         <ul>
           {users.map((user, i) => (
-            <li key={i}>{user?.username}</li>
+            <li key={i}>{user?.email}</li>
           ))}
         </ul>
       ) : (

@@ -22,39 +22,23 @@ import { CountdownCircleTimer } from "react-countdown-circle-timer";
 const signup_url = "/register";
 
 function Signup() {
-  const [username, setUsername] = useState("");
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPwd, setConfirmPwd] = useState("");
-  const [usernameUnique, setUsernameUnique] = useState(true);
   const [emailUnique, setEmailUnique] = useState(true);
   const [formSubmit, setFormSubmit] = useState(false);
   const [samePass, setSamePass] = useState(false);
   const [spinner, setSpinner] = useState(false);
   const [showVerifyAlert, setShowVerifyAlert] = useState(false);
-  const [usernameNull, setUsernameNull] = useState(true);
   const [emailNull, setEmailNull] = useState(true);
   const [errorMsg, setErrormsg] = useState("");
-  const [successModal, setSuccessModal] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    const checkUsernameExists = async () => {
-      try {
-        const checkUser_url = `http://localhost:4000/check/username/${username}`;
-        const response = await axios.get(checkUser_url);
-        const { exists } = response.data;
-        setUsernameUnique(!exists);
-        console.log(!response.data);
-      } catch (error) {
-        console.error(error.message);
-      }
-    };
-
     const checkEmailExists = async () => {
       try {
         const checkEmail_url = `http://localhost:4000/check/email/${email}`;
@@ -66,14 +50,10 @@ function Signup() {
       }
     };
 
-    if (username) {
-      checkUsernameExists();
-    }
-
     if (email) {
       checkEmailExists();
     }
-  }, [username, email]);
+  }, [email]);
 
   useEffect(() => {
     setErrormsg("");
@@ -92,16 +72,6 @@ function Signup() {
   }, [password, confirmPwd]);
 
   //Username and email error Icon trigger controller
-  const checkUserstate = () => {
-    if (!!username) {
-      setUsernameNull(true);
-    } else {
-      setUsernameNull(false);
-    }
-  };
-  useEffect(() => {
-    checkUserstate();
-  }, [username]);
 
   const checkEmailstate = () => {
     if (!!email) {
@@ -120,10 +90,6 @@ function Signup() {
 
   const handleLastnamechange = (e) => {
     setLastname(e.target.value);
-  };
-
-  const handleUsernamechange = (e) => {
-    setUsername(e.target.value);
   };
 
   const handleEmailchange = (e) => {
@@ -165,14 +131,12 @@ function Signup() {
 
     try {
       const userData = {
-        user: username,
         firstname: firstname,
         lastname: lastname,
         email: email,
         pwd: password,
       };
       const jsonData = JSON.stringify(userData);
-      console.log(jsonData);
       const response = await axios.post(signup_url, jsonData, {
         headers: {
           "Content-Type": "application/json",
@@ -181,9 +145,10 @@ function Signup() {
       });
       setFormSubmit(true);
       setSpinner(false);
-      console.log(Response);
+      console.log("Response :", response?.data);
       handleSuccessModal();
     } catch (err) {
+      console.error("Response error :", err?.response?.data);
       if (!err?.response) {
         setErrormsg("Network error.");
       } else if (err.response?.status === 500) {
@@ -228,48 +193,6 @@ function Signup() {
                     onChange={handleLastnamechange}
                   />
                   <br />
-                </Form.Group>
-                <Form.Group controlId="username">
-                  <Form.Label>Username:</Form.Label>
-                  {!usernameUnique && (
-                    <Alert variant="danger">❕ Username already exists. </Alert>
-                  )}
-                  <InputGroup className="mb-3">
-                    <InputGroup.Text id="basic-addon1">@</InputGroup.Text>
-                    <Form.Control
-                      type="text"
-                      placeholder="Enter username"
-                      value={username}
-                      onChange={handleUsernamechange}
-                    />
-                    {!usernameUnique ? (
-                      <span
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          paddingLeft: "10px",
-                        }}
-                      >
-                        <XCircleFill size={20} />
-                      </span>
-                    ) : !usernameNull ? (
-                      <span></span>
-                    ) : (
-                      <span
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          paddingLeft: "10px",
-                        }}
-                      >
-                        <CheckCircleFill size={20} />
-                      </span>
-                    )}
-
-                    <br />
-                  </InputGroup>
                 </Form.Group>
 
                 <Form.Group>
@@ -357,11 +280,7 @@ function Signup() {
                         variant="dark"
                         type="submit"
                         disabled={
-                          !usernameUnique ||
-                          !emailUnique ||
-                          !samePass ||
-                          !firstname ||
-                          !lastname
+                          !emailUnique || !samePass || !firstname || !lastname
                         }
                       >
                         Sign Up!

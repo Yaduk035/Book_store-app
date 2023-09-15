@@ -5,12 +5,14 @@ import Navbar from "react-bootstrap/Navbar";
 import "./css/header.css";
 import useAuth from "../hooks/useAuth";
 import useLogout from "../hooks/useLogout";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const localCurrentUser = localStorage.getItem("user");
   const { auth } = useAuth();
   const authCurrentUser = auth.user;
   const logOut = useLogout();
+  const navigate = useNavigate();
 
   return (
     <>
@@ -27,13 +29,8 @@ const Header = () => {
               Features
             </Nav.Link>
 
-            {localCurrentUser && (
-              <Nav.Link onClick={logOut} id="textColour">
-                Log Out
-              </Nav.Link>
-            )}
-            <Nav.Link onClick={logOut} style={{ color: "grey" }}>
-              altLogout
+            <Nav.Link onClick={() => navigate("/signup")} id="textColour">
+              Sign Up
             </Nav.Link>
           </Nav>
         </Container>

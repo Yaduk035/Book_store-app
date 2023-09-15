@@ -1,7 +1,7 @@
-#backgnd {
-  background-image: url("../../images/gradient-7.jpg");
-  background-size: auto;
+#backgn {
+  background-color: rgb(78, 78, 78);
 }
+
 .border-css {
   width: 400px;
   /* border: 1px brown solid;
@@ -11,7 +11,7 @@
   position: relative;
   overflow: hidden;
   box-shadow: 0 0 15px 5px rgba(0, 0, 0, 0.3); /* Adjust the shadow properties as desired */
-  background-image: url("../../images/gradient4-Low_Q.jpg");
+  background-image: url("../../images/A.I_gen/gradient-white1.jpeg");
   background-size: cover;
 }
 
