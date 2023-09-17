@@ -9,6 +9,7 @@ import RequireAuth from "./components/requireAuth";
 import Unauthroized from "./pages/unauthroized";
 import Users from "./components/UsersTest";
 import PersistLogin from "./components/PersistLogin";
+import BooksPage from "./pages/BooksPage";
 
 const ROLES = {
   Admin: 1993,
@@ -34,6 +35,7 @@ function App() {
         <Route element={<PersistLogin />}>
           <Route element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.SuperAdmin]} />}>
             <Route path="/" element={<HomePage />} />
+            <Route path="/books" element={<BooksPage/>} />
           </Route>
         </Route>
       </Route>

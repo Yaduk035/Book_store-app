@@ -18,6 +18,7 @@ import { CheckCircleFill, XCircleFill } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
+import HeaderLogin from "../components/HeaderLogin";
 
 const signup_url = "/register";
 
@@ -162,7 +163,8 @@ function Signup() {
 
   return (
     <>
-      <main id="backgnd">
+      <HeaderLogin />
+      <main id="backgn">
         <Container>
           <div className="d-flex justify-content-center align-items-center vh-100">
             <div className="border-css">

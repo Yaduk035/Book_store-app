@@ -3,6 +3,7 @@ import useRefresh from "../hooks/useRefreshToken";
 import useAuth from "../hooks/useAuth";
 import { useState, useEffect } from "react";
 import useLocalStorage from "../hooks/useLocalStorage";
+import { RiseLoader } from "react-spinners";
 
 const PersistLogin = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -34,7 +35,20 @@ const PersistLogin = () => {
   }, [isLoading]);
 
   return (
-    <>{!persist ? <Outlet /> : isLoading ? <p>Loading...</p> : <Outlet />}</>
+    <>{!persist ? <Outlet /> : isLoading ? <div  style={{
+      display: 'flex',
+      justifyContent: 'center',  // Center horizontally
+      alignItems: 'center',      // Center vertically
+      minHeight: '20vh',       // Ensure it covers the entire viewport height
+    }}>
+
+     <RiseLoader
+    color="#36d7b7"
+    loading
+    speedMultiplier={2}
+    /> 
+    </div>
+    : <Outlet />}</>
   );
 };
 
