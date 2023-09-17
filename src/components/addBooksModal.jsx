@@ -67,6 +67,7 @@ function AddBooksModal(props) {
           withCredentials: true,
         },
       });
+      handleClose();
     } catch (error) {
       console.error(error);
     }

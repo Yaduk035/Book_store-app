@@ -31,8 +31,9 @@ function Signup() {
   const [emailUnique, setEmailUnique] = useState(true);
   const [formSubmit, setFormSubmit] = useState(false);
   const [samePass, setSamePass] = useState(false);
+  const [pwd8, setPwd8] = useState(false);
   const [spinner, setSpinner] = useState(false);
-  const [showVerifyAlert, setShowVerifyAlert] = useState(false);
+  // const [showVerifyAlert, setShowVerifyAlert] = useState(false);
   const [emailNull, setEmailNull] = useState(true);
   const [errorMsg, setErrormsg] = useState("");
   const [showModal, setShowModal] = useState(false);
@@ -67,9 +68,20 @@ function Signup() {
       setSamePass(false);
     }
   };
+  const PwdRegCheck = () => {
+    const passwordRegex = /^(?=.*[A-Za-z]).{8,}$/;
+    if (!password) {
+      setPwd8(true);
+    } else if (!password.match(passwordRegex)) {
+      setPwd8(false);
+    } else {
+      setPwd8(true);
+    }
+  };
 
   useEffect(() => {
     checkPasswrd();
+    PwdRegCheck();
   }, [password, confirmPwd]);
 
   //Username and email error Icon trigger controller
@@ -85,29 +97,6 @@ function Signup() {
     checkEmailstate();
   }, [email]);
 
-  const handleFirstnameChange = (e) => {
-    setFirstname(e.target.value);
-  };
-
-  const handleLastnamechange = (e) => {
-    setLastname(e.target.value);
-  };
-
-  const handleEmailchange = (e) => {
-    setEmail(e.target.value);
-    // const regexMail = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-    // setEmailRegex(regexMail.test(email));
-  };
-
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
-
-  const handleConfirmPasswordChange = (e) => {
-    setConfirmPwd(e.target.value);
-    checkPasswrd();
-  };
-
   const handleShow = () => setShowModal(true);
   const handleClose = () => setShowModal(false);
 
@@ -116,15 +105,15 @@ function Signup() {
     setTimeout(() => {
       handleClose();
       navigate("/login");
-    }, [2500]);
+    }, [2000]);
   };
 
-  const handleShowverifyAlert = () => {
-    setShowVerifyAlert(true);
-    setTimeout(() => {
-      setShowVerifyAlert(false);
-    }, [6000]);
-  };
+  // const handleShowverifyAlert = () => {
+  //   setShowVerifyAlert(true);
+  //   setTimeout(() => {
+  //     setShowVerifyAlert(false);
+  //   }, [6000]);
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -182,7 +171,7 @@ function Signup() {
                     type="text"
                     placeholder="Enter Firstname"
                     value={firstname}
-                    onChange={handleFirstnameChange}
+                    onChange={(e) => setFirstname(e.target.value)}
                   />
                   <br />
                 </Form.Group>
@@ -192,7 +181,7 @@ function Signup() {
                     type="text"
                     placeholder="Enter Lastname"
                     value={lastname}
-                    onChange={handleLastnamechange}
+                    onChange={(e) => setLastname(e.target.value)}
                   />
                   <br />
                 </Form.Group>
@@ -202,9 +191,9 @@ function Signup() {
                   {!emailUnique && (
                     <Alert variant="danger">Email already exists.</Alert>
                   )}
-                  {showVerifyAlert && (
+                  {/* {showVerifyAlert && (
                     <Alert>Verify this email id in settings.</Alert>
-                  )}
+                  )} */}
                   <InputGroup className="mb-3">
                     {/* <InputGroup.Text id="basic-addon1">@</InputGroup.Text> */}
                     <Form.Control
@@ -212,8 +201,8 @@ function Signup() {
                       placeholder="Enter E-mail"
                       name="unique-email-field"
                       value={email}
-                      onChange={handleEmailchange}
-                      onPointerDown={emailUnique ? handleShowverifyAlert : null}
+                      onChange={(e) => setEmail(e.target.value)}
+                      // onPointerDown={emailUnique ? handleShowverifyAlert : null}
                       // onPointerLeave={handleCloseverifyAlert}
                     />
                     {!emailUnique ? (
@@ -252,12 +241,16 @@ function Signup() {
                     type="password"
                     placeholder="Enter Password"
                     value={password}
-                    onChange={handlePasswordChange}
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                   <br />
                 </Form.Group>
-                {!samePass && (
-                  <Alert variant="warning">Password do not match.</Alert>
+                {(!samePass || !pwd8) && (
+                  <Alert variant="warning">
+                    {!samePass && "Passwords does not match."}
+                    {!samePass && !pwd8 && <br></br>}
+                    {!pwd8 && "Password should atleast contain 8 letters."}
+                  </Alert>
                 )}
 
                 <Form.Group>
@@ -266,7 +259,7 @@ function Signup() {
                     type="password"
                     placeholder="Re-enter password"
                     value={confirmPwd}
-                    onChange={handleConfirmPasswordChange}
+                    onChange={(e) => setConfirmPwd(e.target.value)}
                   />
                   {/* {samePass && <br></br>} */}
                 </Form.Group>
@@ -282,7 +275,11 @@ function Signup() {
                         variant="dark"
                         type="submit"
                         disabled={
-                          !emailUnique || !samePass || !firstname || !lastname
+                          !emailUnique ||
+                          !samePass ||
+                          !firstname ||
+                          !lastname ||
+                          !pwd8
                         }
                       >
                         Sign Up!

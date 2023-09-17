@@ -21,7 +21,7 @@ const Header = () => {
     <>
       <Navbar
         expand="xxl"
-        fixed="top"
+        fixed="sticky"
         bg="dark"
         data-bs-theme="dark"
         style={{ minHeight: "70px" }}
