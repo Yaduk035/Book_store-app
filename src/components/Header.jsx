@@ -13,6 +13,17 @@ const Header = () => {
   const logOut = useLogout();
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
+  const [admin, setAdmin] = useState(localStorage.getItem("role"));
+
+  const allowedRoles = [1993];
+  const localUser = localStorage.getItem("role");
+  // Split the localUser string into an array of roles
+  const userRoles = localUser
+    .split(",")
+    .map((role) => parseInt(role.trim(), 10));
+
+  // Use .some() to check if any of the allowedRoles exists in userRoles
+  const roleExists = userRoles.some((role) => allowedRoles.includes(role));
 
   const addBooksClick = () => {
     setShowModal(true);
@@ -50,20 +61,23 @@ const Header = () => {
             {/* <Nav.Link href="#features" id="textColour">
               Features
             </Nav.Link> */}
-            <Button
-              variant="outline-info"
-              id="buttonPadding"
-              onClick={addBooksClick}
-            >
-              {
-                <PlusLg
-                  size={20}
-                  style={{ marginRight: "5px", marginBottom: "3px" }}
-                />
-              }
-              {"Add books"}
-            </Button>
-
+            {/* {role &&
+            } */}
+            {roleExists && (
+              <Button
+                variant="outline-info"
+                id="buttonPadding"
+                onClick={addBooksClick}
+              >
+                {
+                  <PlusLg
+                    size={20}
+                    style={{ marginRight: "5px", marginBottom: "3px" }}
+                  />
+                }
+                {"Add books"}
+              </Button>
+            )}
             <Button variant="danger" onClick={logOut} id="textColour">
               Log Out
             </Button>

@@ -14,7 +14,7 @@ const useLogout = () => {
       console.error(err);
     }
   };
-
+  localStorage.setItem("loggedOut", true);
   return logout;
 };
 

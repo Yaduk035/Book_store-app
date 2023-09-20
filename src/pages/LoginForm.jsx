@@ -22,9 +22,19 @@ const LOGIN_URL = "/auth";
 const Login = () => {
   const { setAuth } = useAuth();
 
+  const [from, setFrom] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || "/";
+  const loggedInStatus = localStorage.getItem("loggedOut");
+  const fromLocation = location.state?.from?.pathname || "/";
+
+  useEffect(() => {
+    if (loggedInStatus) {
+      setFrom("/");
+    } else {
+      setFrom(fromLocation);
+    }
+  }, []);
 
   const [user, resetUser, userAttribs] = useInput("user", "");
   const [pwd, setPwd] = useState("");
@@ -54,8 +64,10 @@ const Login = () => {
         }
       );
       setSpinner(false);
+      console.log(response.data);
       const accessToken = response?.data?.accessToken;
       const roles = response?.data?.roles;
+      localStorage.setItem("role", roles);
       setAuth({ user, pwd, roles, accessToken });
       resetUser();
       setPwd("");
