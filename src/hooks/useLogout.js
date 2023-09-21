@@ -15,6 +15,7 @@ const useLogout = () => {
     }
   };
   localStorage.setItem("loggedOut", true);
+  // localStorage.setItem("role", "");
   return logout;
 };
 

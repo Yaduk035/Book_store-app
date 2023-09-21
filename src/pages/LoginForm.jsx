@@ -27,6 +27,7 @@ const Login = () => {
   const location = useLocation();
   const loggedInStatus = localStorage.getItem("loggedOut");
   const fromLocation = location.state?.from?.pathname || "/";
+  localStorage.setItem("loggedOut", false);
 
   useEffect(() => {
     if (loggedInStatus) {

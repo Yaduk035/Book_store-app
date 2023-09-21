@@ -56,7 +56,7 @@ function AddBooksModal(props) {
         rentPeriod: rentPeriod,
         rentData: rentData,
         availabilityStatus: availiability,
-        ISBN_no: ISBNnumber,
+        ISBNnumber: ISBNnumber,
         year: year,
         description: description,
       };

@@ -10,6 +10,8 @@ import Unauthroized from "./pages/unauthroized";
 import Users from "./components/UsersTest";
 import PersistLogin from "./components/PersistLogin";
 import BooksPage from "./pages/BooksPage";
+import Book from "./pages/book";
+import ImgUploads from "./components/ImgUploads";
 
 const ROLES = {
   Admin: 1993,
@@ -30,12 +32,14 @@ function App() {
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<Signup />} />
         <Route path="unauthorized" element={<Unauthroized />} />
+        <Route path="image" element={<ImgUploads />} />
 
         {/*Protected Routes */}
         <Route element={<PersistLogin />}>
           <Route element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.User]} />}>
             <Route path="/" element={<HomePage />} />
             <Route path="/books" element={<BooksPage/>} />
+            <Route path="/books/:bookId" element={<Book/>} />
           </Route>
         </Route>
       </Route>

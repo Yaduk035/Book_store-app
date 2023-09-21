@@ -42,6 +42,8 @@ const BooksPage = () => {
     <>
       <Header />
       <Container>
+        <br />
+        <br />
         <Row>
           {Array.isArray(books) && books.length > 0 ? (
             books.map((book) => (
@@ -66,6 +68,7 @@ const BooksPage = () => {
             <p>No books to display.</p>
           )}
         </Row>
+        <br /> <br />
       </Container>
     </>
   );

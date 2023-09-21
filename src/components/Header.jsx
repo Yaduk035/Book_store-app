@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Button } from "react-bootstrap";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
@@ -10,20 +10,33 @@ import AddBooksModal from "./addBooksModal";
 
 const Header = () => {
   // const localCurrentUser = localStorage.getItem("user");
-  const logOut = useLogout();
+  const signOut = useLogout();
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [admin, setAdmin] = useState(localStorage.getItem("role"));
-
+  const [showHeader, setShowHeader] = useState(true);
   const allowedRoles = [1993];
-  const localUser = localStorage.getItem("role");
-  // Split the localUser string into an array of roles
-  const userRoles = localUser
-    .split(",")
-    .map((role) => parseInt(role.trim(), 10));
+  const localUser = localStorage?.getItem("role");
 
-  // Use .some() to check if any of the allowedRoles exists in userRoles
-  const roleExists = userRoles.some((role) => allowedRoles.includes(role));
+  const LogOut = () => {
+    signOut();
+    localStorage.setItem("role", "");
+  };
+
+  useEffect(() => {
+    if (localUser) {
+      // Split the localUser string into an array of roles
+      const userRoles = localUser
+        .split(",")
+        .map((role) => parseInt(role.trim(), 10));
+
+      // Use .some() to check if any of the allowedRoles exists in userRoles
+      const roleExists = userRoles.some((role) => allowedRoles.includes(role));
+      setAdmin(roleExists);
+    } else {
+      setAdmin(false);
+    }
+  });
 
   const addBooksClick = () => {
     setShowModal(true);
@@ -63,7 +76,7 @@ const Header = () => {
             </Nav.Link> */}
             {/* {role &&
             } */}
-            {roleExists && (
+            {admin && (
               <Button
                 variant="outline-info"
                 id="buttonPadding"
@@ -78,7 +91,7 @@ const Header = () => {
                 {"Add books"}
               </Button>
             )}
-            <Button variant="danger" onClick={logOut} id="textColour">
+            <Button variant="danger" onClick={LogOut} id="textColour">
               Log Out
             </Button>
 
