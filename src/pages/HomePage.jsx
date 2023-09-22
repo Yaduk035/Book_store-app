@@ -5,6 +5,7 @@ import Header from "../components/Header";
 import "./css/home.css";
 import CarouselComponent from "../components/CarouselComponent";
 import CardTemplate from "../components/BooksCardTemplate";
+import { SyncLoader } from "react-spinners";
 
 const HomePage = () => {
   // const [userTier, setUserTier] = useState(false);
@@ -19,9 +20,11 @@ const HomePage = () => {
   // const roleExists = userRoles.some((role) => allowedRoles.includes(role));
 
   const [books, setBooks] = useState("");
+  const [spinner, setSpinner] = useState(false);
 
   useEffect(() => {
     const bookData = async () => {
+      setSpinner(true);
       try {
         const response = await axios.get("/books/recentbooks");
         console.log("Data :", response.data);
@@ -41,8 +44,10 @@ const HomePage = () => {
           };
         });
         setBooks(formattedData);
+        setSpinner(false);
       } catch (error) {
         console.error(error);
+        setSpinner(false);
       }
     };
     bookData();
@@ -61,8 +66,22 @@ const HomePage = () => {
           </div>
         </Row>
         <Container>
+          <div className="text-center" style={{ marginTop: "10px" }}>
+            <h3>Recent Books</h3>
+          </div>
           <Row>
-            {Array.isArray(books) && books.length > 0 ? (
+            {spinner ? (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  minHeight: "20vh",
+                }}
+              >
+                <SyncLoader color="#36d7b7" size={20} />
+              </div>
+            ) : Array.isArray(books) && books.length > 0 ? (
               books.map((book) => (
                 <CardTemplate
                   key={book._id}
@@ -79,6 +98,7 @@ const HomePage = () => {
                   description={book.description}
                   updatedAt={book.updatedAt}
                   createdAt={book.createdAt}
+                  image={book.image}
                 />
               ))
             ) : (

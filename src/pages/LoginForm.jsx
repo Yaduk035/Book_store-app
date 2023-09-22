@@ -68,7 +68,11 @@ const Login = () => {
       console.log(response.data);
       const accessToken = response?.data?.accessToken;
       const roles = response?.data?.roles;
+      const firstname = response?.data?.firstname;
+      const lastname = response?.data?.lastname;
       localStorage.setItem("role", roles);
+      localStorage.setItem("name", `${firstname} ${lastname}`);
+
       setAuth({ user, pwd, roles, accessToken });
       resetUser();
       setPwd("");

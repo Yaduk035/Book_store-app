@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Container, Button } from "react-bootstrap";
+import { Container, Button, Dropdown, Row } from "react-bootstrap";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import "./css/header.css";
 import useLogout from "../hooks/useLogout";
 import { useNavigate } from "react-router-dom";
-import { JournalBookmarkFill, PlusLg } from "react-bootstrap-icons";
+import { Dribbble, JournalBookmarkFill, PlusLg } from "react-bootstrap-icons";
 import AddBooksModal from "./addBooksModal";
+import { PeopleFill, PersonCircle } from "react-bootstrap-icons";
 
 const Header = () => {
   // const localCurrentUser = localStorage.getItem("user");
@@ -17,6 +18,12 @@ const Header = () => {
   const [showHeader, setShowHeader] = useState(true);
   const allowedRoles = [1993];
   const localUser = localStorage?.getItem("role");
+  const [showDropdown, setShowDropdown] = useState(false);
+  const name = localStorage.getItem("name");
+
+  const toggleDropdown = () => {
+    setShowDropdown(!showDropdown);
+  };
 
   const LogOut = () => {
     signOut();
@@ -50,7 +57,7 @@ const Header = () => {
     <>
       <Navbar bg="dark" data-bs-theme="dark" style={{ minHeight: "70px" }}>
         <Container>
-          <span onClick={() => navigate("/")}>
+          <span onClick={() => navigate("/")} style={{ cursor: "pointer" }}>
             <JournalBookmarkFill
               color="white"
               size={30}
@@ -91,10 +98,55 @@ const Header = () => {
                 {"Add books"}
               </Button>
             )}
-            <Button variant="danger" onClick={LogOut} id="textColour">
-              Log Out
-            </Button>
+            {/* <PersonCircle
+              color="white"
+              size={30}
+              style={{
+                marginLeft: "10px",
+                marginTop: "4px",
+                cursor: "pointer",
+              }}
+            /> */}
+            <Dropdown
+              align="end"
+              show={showDropdown}
+              onClick={() => setShowDropdown(!showDropdown)}
+            >
+              <Dropdown.Toggle variant="link" id="dropdown-basic">
+                <PersonCircle
+                  color="white"
+                  size={30}
+                  style={{
+                    cursor: "pointer",
+                  }}
+                />
+              </Dropdown.Toggle>
 
+              <Dropdown.Menu>
+                {/* Add your dropdown menu items here */}
+                <Dropdown.Header>
+                  Hello {name || "user"} {admin && <div> Admin account</div>}
+                </Dropdown.Header>
+                <Dropdown.Item>Rented books</Dropdown.Item>
+                <Dropdown.Item>Wish list</Dropdown.Item>
+                <Dropdown.Divider />
+                <Dropdown.Item>Account Settings</Dropdown.Item>
+                <Dropdown.Divider />
+                <Dropdown.Item>
+                  <Row>
+                    <Button
+                      variant="danger"
+                      size="sm"
+                      onClick={LogOut}
+                      id="textColour"
+                    >
+                      Log Out
+                    </Button>
+                  </Row>
+                </Dropdown.Item>
+                {/* Add more options as needed */}
+              </Dropdown.Menu>
+            </Dropdown>
             {/* <Nav.Link onClick={logOut} style={{ color: "grey" }}>
               altLogout
             </Nav.Link> */}

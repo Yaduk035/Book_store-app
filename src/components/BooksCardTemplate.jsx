@@ -1,8 +1,9 @@
-import { Button, Card, Col } from "react-bootstrap";
+import { Button, Card, Col, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "./css/BookCardCss.css";
 import axios from "../api/axios";
+import noImg from "../images/icons/image_not_found-2.jpg";
 
 function CardTemplate(props) {
   const [hovered, setHovered] = useState(false);
@@ -13,9 +14,10 @@ function CardTemplate(props) {
     navigate(`/books/${bookId}`);
   };
   return (
-    <Col xs={12} md={6} lg={6} xl={4} xxl={3}>
+    <Col xs={12} md={6} lg={6} xl={6} xxl={4}>
       <div style={{ padding: "10px" }}>
         <Card
+          onClick={navigateToBook}
           style={
             hovered
               ? {
@@ -35,30 +37,45 @@ function CardTemplate(props) {
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
         >
-          <Card.Img variant="top" src="holder.js/100px180" />
-          <Card.Body style={{ padding: "8%" }}>
-            <Card.Title className="mb-2">{props.title}</Card.Title>
-            <Card.Text className="mb-2">id :{props.id} </Card.Text>
-            <Card.Text className="mb-2">Author :{props.author} </Card.Text>
-            <Card.Text className="mb-2">Genre :{props.genre} </Card.Text>
-            <Card.Text className="mb-2">Language :{props.language} </Card.Text>
-            <Card.Text className="mb-2">
-              Rental period :{props.rentPeriod}
-            </Card.Text>
-            <Card.Text className="mb-2">
-              Availability :{props.availabilityStatus}
-            </Card.Text>
-            <Card.Text className="mb-2">ISBN no :{props.ISBNnumber} </Card.Text>
+          <Row xl={6}>
+            <Col
+              style={{
+                minWidth: "190px",
+                margin: "8px",
+                minHeight: "190px",
+              }}
+              className="d-flex justify-content-center"
+            >
+              <Card.Img variant="top" src={props.image ? props.image : noImg} />
+            </Col>
+            <Col style={{ minWidth: "200px" }}>
+              <Card.Body
+                style={{ padding: "8%", backgroundColor: "aliceblue" }}
+              >
+                <Card.Title className="mb-2">{props.title}</Card.Title>
+                <Card.Text className="mb-2">id :{props.id} </Card.Text>
+                <Card.Text className="mb-2">Author :{props.author} </Card.Text>
+                <Card.Text className="mb-2">Genre :{props.genre} </Card.Text>
+                {/* <Card.Text className="mb-2">Language :{props.language} </Card.Text> */}
+                <Card.Text className="mb-2">
+                  Rental period :{props.rentPeriod}
+                </Card.Text>
+                <Card.Text className="mb-2">
+                  Availability :{props.availabilityStatus}
+                </Card.Text>
+                {/* <Card.Text className="mb-2">ISBN no :{props.ISBNnumber} </Card.Text>
             <Card.Text className="mb-2">PUblished year :{props.year}</Card.Text>
             <Card.Text className="mb-2">
-              Description :<br />
-              {props.description}
+            Description :<br />
+            {props.description}
             </Card.Text>
-            <Card.Text className="mb-2">Posted at :{props.createdAt}</Card.Text>
-            <Button variant="dark" onClick={navigateToBook}>
-              Rent Book
-            </Button>
-          </Card.Body>
+          <Card.Text className="mb-2">Posted at :{props.createdAt}</Card.Text> */}
+                {/* <Button variant="dark" onClick={navigateToBook}>
+                  Rent Book
+                </Button> */}
+              </Card.Body>
+            </Col>
+          </Row>
         </Card>
       </div>
     </Col>
