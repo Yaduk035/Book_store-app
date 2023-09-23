@@ -13,16 +13,16 @@ import {
   InputGroup,
   Modal,
 } from "react-bootstrap";
-import "./css/signup.css";
+import "./css/accSettings.css";
 import { CheckCircleFill, XCircleFill } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
-import HeaderLogin from "../components/HeaderLogin";
+import Header from "../components/Header";
 
 const signup_url = "/register";
 
-function Signup() {
+function AccSettings() {
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
@@ -136,8 +136,7 @@ function Signup() {
       setFormSubmit(true);
       setSpinner(false);
       console.log("Response :", response?.data);
-      // handleSuccessModal();
-      navigate("/login");
+      handleSuccessModal();
     } catch (err) {
       console.error("Response error :", err?.response?.data);
       if (!err?.response) {
@@ -153,12 +152,12 @@ function Signup() {
 
   return (
     <>
-      <HeaderLogin />
-      <main id="backgn">
+      <Header />
+      <main id="">
         <Container>
           <div className="d-flex justify-content-center align-items-center vh-100">
-            <div className="border-css">
-              <h1 style={{ textAlign: "center" }}>Sign up</h1>
+            <div className="border-cs">
+              <h1 style={{ textAlign: "center" }}>Update Account</h1>
               <br />
               {!errorMsg ? (
                 <div></div>
@@ -283,7 +282,7 @@ function Signup() {
                           !pwd8
                         }
                       >
-                        Sign Up!
+                        Update info
                       </Button>
                     </Row>
                   </Container>
@@ -299,19 +298,12 @@ function Signup() {
                           aria-hidden="true"
                         />
                         <span style={{ paddingLeft: "15px" }}>
-                          Creating User...
+                          Updating user info...
                         </span>
                       </Button>
                     </Row>
                   </Container>
                 )}
-                <div style={{ fontSize: "14px" }}>
-                  <br />
-                  <p>
-                    Already a user? Click <Link to={"/login"}>here</Link> to
-                    login
-                  </p>
-                </div>
               </Form>
               {/* Success modal */}
               <Modal
@@ -360,4 +352,4 @@ function Signup() {
   );
 }
 
-export default Signup;
+export default AccSettings;

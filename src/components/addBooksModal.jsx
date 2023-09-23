@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { Form, Row, Col, Container } from "react-bootstrap";
+import { Form, Row, Col, Container, Alert } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { PlusLg } from "react-bootstrap-icons";
 import axios from "../api/axios";
+import { useNavigate } from "react-router-dom";
 
 function AddBooksModal(props) {
   const [show, setShow] = useState(false);
@@ -17,9 +18,11 @@ function AddBooksModal(props) {
   const [rentData, setRentData] = useState();
   const [availiability, setAvailiability] = useState("");
   const [ISBNnumber, setIsbnNumber] = useState("");
-
+  const [showAlert, setShowAlert] = useState(false);
   const [year, setYear] = useState();
   const [description, setDescription] = useState("");
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     setShow(props.showModal);
@@ -67,7 +70,14 @@ function AddBooksModal(props) {
           withCredentials: true,
         },
       });
-      handleClose();
+      const bookId = response?.data._id;
+      console.log(bookId);
+      setShowAlert(true);
+      setTimeout(() => {
+        handleClose();
+        setShowAlert(false);
+        navigate(`/books/${bookId}`);
+      }, [2500]);
     } catch (error) {
       console.error(error);
     }
@@ -125,6 +135,8 @@ function AddBooksModal(props) {
                     </option>
                     <option>Music</option>
                     <option>Science</option>
+                    <option>Dictionary</option>
+                    <option>Story</option>
                     <option>Poetry</option>
                     <option>Vintage</option>
                     <option>Fantasy</option>
@@ -161,9 +173,9 @@ function AddBooksModal(props) {
                     <option>Malayalam</option>
                     <option>Hindi</option>
                     <option>Tamil</option>
-                    <option>Spanish</option>
+                    {/* <option>Spanish</option>
                     <option>French</option>
-                    <option>German</option>
+                    <option>German</option> */}
                     <option>Other</option>
                   </Form.Select>
                 </Form.Group>
@@ -176,7 +188,7 @@ function AddBooksModal(props) {
                   <Row className="justify-content-start">
                     <Col>
                       <Form.Control
-                        type="text"
+                        type="number"
                         value={rentPeriodInt}
                         onChange={(e) => setRentPeriodInt(e.target.value)}
                       ></Form.Control>
@@ -247,7 +259,8 @@ function AddBooksModal(props) {
                 onChange={(e) => setDescription(e.target.value)}
               ></Form.Control>
             </Form.Group>
-            <Row>
+            {showAlert && <Alert>Book added!</Alert>}
+            {/* <Row>
               <Form.Group className="position-relative mb-3">
                 <Form.Label>Image :</Form.Label>
                 <Form.Control
@@ -255,14 +268,9 @@ function AddBooksModal(props) {
                   required
                   name="file"
                   accept="image/*"
-                  // onChange={handleChange}
-                  // isInvalid={!!errors.file}
                 />
-                {/* <Form.Control.Feedback type="invalid" tooltip>
-                  {errors.file}
-                </Form.Control.Feedback> */}
               </Form.Group>
-            </Row>
+            </Row> */}
           </Form>
         </Modal.Body>
         <Modal.Footer>

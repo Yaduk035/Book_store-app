@@ -7,7 +7,7 @@ import useLogout from "../hooks/useLogout";
 import { useNavigate } from "react-router-dom";
 import { Dribbble, JournalBookmarkFill, PlusLg } from "react-bootstrap-icons";
 import AddBooksModal from "./addBooksModal";
-import { PeopleFill, PersonCircle } from "react-bootstrap-icons";
+import { JournalText, PersonCircle } from "react-bootstrap-icons";
 
 const Header = () => {
   // const localCurrentUser = localStorage.getItem("user");
@@ -70,25 +70,19 @@ const Header = () => {
 
           <Nav className="ml-auto">
             <Button
-              variant="outline-info"
-              size="sm"
+              variant="outline-light"
               onClick={() => navigate("/books")}
               // style={{ marginRight: "40px" }}
               id="buttonPadding"
             >
+              <JournalText
+                size={20}
+                style={{ marginRight: "5px", marginBottom: "3px" }}
+              />
               {"Books"}
             </Button>
-            {/* <Nav.Link href="#features" id="textColour">
-              Features
-            </Nav.Link> */}
-            {/* {role &&
-            } */}
             {admin && (
-              <Button
-                variant="outline-info"
-                id="buttonPadding"
-                onClick={addBooksClick}
-              >
+              <Button variant="dark" id="buttonPadding" onClick={addBooksClick}>
                 {
                   <PlusLg
                     size={20}
@@ -112,12 +106,14 @@ const Header = () => {
               show={showDropdown}
               onClick={() => setShowDropdown(!showDropdown)}
             >
-              <Dropdown.Toggle variant="link" id="dropdown-basic">
+              <Dropdown.Toggle variant="dark" id="dropdown-basic">
+                {name}
                 <PersonCircle
                   color="white"
                   size={30}
                   style={{
                     cursor: "pointer",
+                    marginLeft: "5px",
                   }}
                 />
               </Dropdown.Toggle>
@@ -130,7 +126,9 @@ const Header = () => {
                 <Dropdown.Item>Rented books</Dropdown.Item>
                 <Dropdown.Item>Wish list</Dropdown.Item>
                 <Dropdown.Divider />
-                <Dropdown.Item>Account Settings</Dropdown.Item>
+                <Dropdown.Item onClick={() => navigate("/accountsettings")}>
+                  Account Settings
+                </Dropdown.Item>
                 <Dropdown.Divider />
                 <Dropdown.Item>
                   <Row>

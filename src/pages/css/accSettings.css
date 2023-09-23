@@ -1,17 +1,11 @@
-#backgn {
-  background-color: rgb(196, 188, 188);
-}
-
-.border-css {
-  width: 400px;
+.border-cs {
+  width: 800px;
   /* border: 1px brown solid;
-  border-style: solid; */
+    border-style: solid; */
   padding: 30px;
-  border-radius: 20px;
   position: relative;
   overflow: hidden;
   box-shadow: 0 0 15px 5px rgba(0, 0, 0, 0.3); /* Adjust the shadow properties as desired */
-  background-image: url("../../images/gradient4-Low_Q.jpg");
   background-size: cover;
 }
 

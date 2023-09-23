@@ -26,6 +26,25 @@ const Book = () => {
   const [showModal, setShowModal] = useState(false);
   const [imageUpdated, setImageUpdated] = useState(false);
   const [alertMsg, setAlertMsg] = useState(false);
+  const allowedRoles = [1993];
+  const name = localStorage.getItem("name");
+  const localUser = localStorage?.getItem("role");
+  const [admin, setAdmin] = useState(localStorage.getItem("role"));
+
+  useEffect(() => {
+    if (localUser) {
+      // Split the localUser string into an array of roles
+      const userRoles = localUser
+        .split(",")
+        .map((role) => parseInt(role.trim(), 10));
+
+      // Use .some() to check if any of the allowedRoles exists in userRoles
+      const roleExists = userRoles.some((role) => allowedRoles.includes(role));
+      setAdmin(roleExists);
+    } else {
+      setAdmin(false);
+    }
+  });
 
   const getBookbyId = async () => {
     try {
@@ -82,12 +101,19 @@ const Book = () => {
                 alt="Uploaded"
                 style={{ maxWidth: "65%", minWidth: "200px" }}
               />
-              <Button
-                onClick={updateImgModal}
-                style={{ display: "flex", alignContent: "flex-end" }}
-              >
-                Edit Image
-              </Button>
+              {admin && (
+                <span>
+                  <br />
+                  <br />
+                  <Button
+                    variant="danger"
+                    onClick={updateImgModal}
+                    style={{ display: "flex", alignContent: "flex-end" }}
+                  >
+                    Edit Image
+                  </Button>
+                </span>
+              )}
             </Col>
             <Col className="custom-font-col">
               <Row>

@@ -12,6 +12,7 @@ import PersistLogin from "./components/PersistLogin";
 import BooksPage from "./pages/BooksPage";
 import Book from "./pages/book";
 import ImgUploads from "./components/ImgUploads";
+import AccSettings from "./pages/AccSettings";
 
 const ROLES = {
   Admin: 1993,
@@ -39,6 +40,7 @@ function App() {
           <Route element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.User]} />}>
             <Route path="/" element={<HomePage />} />
             <Route path="/books" element={<BooksPage/>} />
+            <Route path="/accountsettings" element={<AccSettings/>} />
             <Route path="/books/:bookId" element={<Book/>} />
           </Route>
         </Route>

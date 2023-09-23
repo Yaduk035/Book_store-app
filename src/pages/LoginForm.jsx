@@ -40,7 +40,7 @@ const Login = () => {
   const [user, resetUser, userAttribs] = useInput("user", "");
   const [pwd, setPwd] = useState("");
   const [errMsg, setErrMsg] = useState("");
-  const [check, toggleCheck] = useToggle("persist", false);
+  const [check, toggleCheck] = useToggle("persist", true);
   const [spinner, setSpinner] = useState(false);
 
   //   useEffect(() => {

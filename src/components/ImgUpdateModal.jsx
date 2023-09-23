@@ -54,7 +54,7 @@ function ImgUpdateModal(props) {
         handleClose();
         setShowAlert(false);
         imageUploaded();
-      }, [2500]);
+      }, [2000]);
     } catch (error) {
       console.error(error);
       setLoading(false);

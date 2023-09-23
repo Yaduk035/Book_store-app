@@ -59,12 +59,11 @@ const HomePage = () => {
   return (
     <>
       <Header />
+      <Row>
+        <CarouselComponent />
+        <div></div>
+      </Row>
       <div id="backGnd">
-        <Row>
-          <div>
-            <CarouselComponent />
-          </div>
-        </Row>
         <Container>
           <div className="text-center" style={{ marginTop: "10px" }}>
             <h3>Recent Books</h3>
