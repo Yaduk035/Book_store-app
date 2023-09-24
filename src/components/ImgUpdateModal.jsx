@@ -1,13 +1,29 @@
 import { useEffect, useState, useRef } from "react";
-import { Button, Modal, Spinner, Alert } from "react-bootstrap";
+import { Button, Modal, Spinner, Alert, Row, Col } from "react-bootstrap";
 import axios from "../api/axios";
+import { FileUploader } from "react-drag-drop-files";
+import { Trash3Fill, Upload } from "react-bootstrap-icons";
+import Cropper from "react-easy-crop";
+import getCroppedImg from "./cropImage";
 
 function ImgUpdateModal(props) {
   const [show, setShow] = useState(false);
   const [updateImg, setUpdateImg] = useState("");
   const [loading, setLoading] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
-  const ref = useRef();
+  const [file, setFile] = useState(null);
+
+  const [cropping, setCropping] = useState(false); // State to track whether cropping is active
+  const [crop, setCrop] = useState({ x: 0, y: 0 }); // Crop position
+  const [zoom, setZoom] = useState(1); // Zoom level
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  const [croppedImage, setCroppedImage] = useState(null);
+
+  const onCropComplete = (croppedArea, croppedAreaPixels) => {
+    setCroppedAreaPixels(croppedAreaPixels);
+  };
+
+  const fileTypes = ["JPG", "PNG", "GIF", "JPEG", "WEBP"];
 
   const handleShow = () => setShow(true);
 
@@ -23,19 +39,6 @@ function ImgUpdateModal(props) {
   const imageUploaded = () => {
     props.updatedImage();
   };
-
-  function conBase64(e) {
-    console.log(e);
-    var reader = new FileReader();
-    reader.readAsDataURL(e.target.files[0]);
-    reader.onload = () => {
-      console.log(reader.result);
-      setUpdateImg(reader.result);
-    };
-    reader.onerror = (error) => {
-      console.error("Error :", error);
-    };
-  }
 
   const imageSubmit = async () => {
     setLoading(true);
@@ -60,8 +63,48 @@ function ImgUpdateModal(props) {
       setLoading(false);
     }
   };
-  const handleClick = (e) => {
-    ref.current.click();
+  const handleChange = (file) => {
+    console.log(file);
+    var reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      console.log(reader.result);
+      setUpdateImg(reader.result);
+    };
+    reader.onerror = (error) => {
+      console.error("Error :", error);
+    };
+
+    setFile(file);
+  };
+
+  const handleCropImage = () => {
+    setCropping(true); // Activate cropping
+  };
+
+  const applyCrop = () => {
+    // Apply the crop and save the cropped image
+    // You can use the `crop` and `zoom` values to manipulate the image data
+    setCropping(false); // Deactivate cropping
+  };
+
+  const cancelCrop = () => {
+    setCropping(false); // Deactivate cropping without applying the crop
+  };
+
+  const showCroppedImage = async () => {
+    try {
+      const croppedImage = await getCroppedImg(updateImg, croppedAreaPixels);
+      console.log("donee", { croppedImage });
+      setCroppedImage(croppedImage);
+      setUpdateImg(croppedImage);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const onClose = () => {
+    setCroppedImage(null);
   };
 
   return (
@@ -85,37 +128,76 @@ function ImgUpdateModal(props) {
             }}
           >
             {updateImg ? (
-              <img
-                src={updateImg}
-                alt=""
-                style={{
-                  maxWidth: "450px",
-                  maxHeight: "500px",
-                  borderRadius: "10px",
-                }}
-              />
+              cropping ? (
+                // Display the Cropper component when cropping is active
+                <div style={{ minHeight: "500px" }}>
+                  <Cropper
+                    image={updateImg}
+                    crop={crop}
+                    zoom={zoom}
+                    aspect={3 / 4} // Adjust the aspect ratio as needed
+                    onCropChange={setCrop}
+                    onZoomChange={setZoom}
+                    onCropComplete={onCropComplete}
+                  />
+                </div>
+              ) : (
+                // Display the image when not cropping
+                <img
+                  src={updateImg}
+                  alt=""
+                  style={{
+                    maxWidth: "450px",
+                    maxHeight: "500px",
+                    borderRadius: "10px",
+                  }}
+                />
+              )
             ) : (
-              <p>No image selected</p>
+              // Display the file uploader if updateImg is empty
+              <FileUploader
+                handleChange={handleChange}
+                name="file"
+                types={fileTypes}
+              />
             )}
           </div>
           {showAlert && <Alert>Image updated!!</Alert>}
-          <input
-            ref={ref}
-            type="file"
-            accept=".jpg,.jpeg,.png"
-            style={{ display: "none" }}
-            onChange={conBase64}
-          />
         </Modal.Body>
         <Modal.Footer style={{ justifyContent: "space-between" }}>
-          <Button variant="dark" onClick={handleClick}>
-            Browse Image
+          <Button
+            variant="outline-dark"
+            onClick={() => setUpdateImg("")}
+            className="ms-auto"
+            disabled={!updateImg}
+          >
+            <Trash3Fill size={20} />
           </Button>
-
-          {/* <Button variant="secondary" onClick={handleClose} className="ms-auto">
-            Close
-          </Button> */}
-
+          {updateImg && !cropping && (
+            // Display the "Crop" button when an image is selected and not cropping
+            <Button
+              variant="primary"
+              onClick={handleCropImage}
+              disabled={loading}
+            >
+              Crop
+            </Button>
+          )}
+          {cropping && (
+            // Display "Apply Crop" and "Cancel Crop" buttons when cropping
+            <>
+              <Button
+                variant="success"
+                onClick={showCroppedImage}
+                disabled={loading}
+              >
+                Apply Crop
+              </Button>
+              <Button variant="danger" onClick={cancelCrop} disabled={loading}>
+                Cancel Crop
+              </Button>
+            </>
+          )}
           <Button variant="danger" onClick={imageSubmit} disabled={!updateImg}>
             {loading && (
               <Spinner
@@ -129,7 +211,13 @@ function ImgUpdateModal(props) {
             {loading ? (
               <span style={{ paddingLeft: "5px" }}>Updating Image...</span>
             ) : (
-              <span style={{ paddingLeft: "5px" }}>Update Image</span>
+              <span style={{ paddingLeft: "5px" }}>
+                <Upload
+                  size={20}
+                  style={{ marginRight: "7px", marginBottom: "4px" }}
+                />
+                Update Image
+              </span>
             )}
           </Button>
         </Modal.Footer>

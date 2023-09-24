@@ -13,6 +13,7 @@ import BooksPage from "./pages/BooksPage";
 import Book from "./pages/book";
 import ImgUploads from "./components/ImgUploads";
 import AccSettings from "./pages/AccSettings";
+import MyDropzone from './pages/SelectFiles';
 
 const ROLES = {
   Admin: 1993,
@@ -34,6 +35,7 @@ function App() {
         <Route path="signup" element={<Signup />} />
         <Route path="unauthorized" element={<Unauthroized />} />
         <Route path="image" element={<ImgUploads />} />
+        <Route path="file" element={<MyDropzone />} />
 
         {/*Protected Routes */}
         <Route element={<PersistLogin />}>
