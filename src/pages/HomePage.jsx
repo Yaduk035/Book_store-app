@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "../api/axios";
 import { Container, Button, Row, Col } from "react-bootstrap";
-import Header from "../components/Header";
+import Header from "../components/MuiHeader";
 import "./css/home.css";
 import CarouselComponent from "../components/CarouselComponent";
 import CardTemplate from "../components/BooksCardTemplate";

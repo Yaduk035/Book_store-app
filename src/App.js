@@ -35,7 +35,6 @@ function App() {
         <Route path="signup" element={<Signup />} />
         <Route path="unauthorized" element={<Unauthroized />} />
         <Route path="image" element={<ImgUploads />} />
-        <Route path="file" element={<MyDropzone />} />
 
         {/*Protected Routes */}
         <Route element={<PersistLogin />}>
@@ -45,6 +44,7 @@ function App() {
             <Route path="/books" element={<BooksPage/>} />
             <Route path="/accountsettings" element={<AccSettings/>} />
             <Route path="/books/:bookId" element={<Book/>} />
+        {/* <Route path="file" element={<MyDropzone />} /> */}
           </Route>
         </Route>
       </Route>

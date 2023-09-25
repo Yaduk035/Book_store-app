@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from "react";
-import Header from "../components/Header";
+import Header from "../components/MuiHeader";
 import { useParams } from "react-router-dom";
 import axios from "../api/axios";
-import { Container, Row, Col, Button, Alert } from "react-bootstrap";
+import { Container, Row, Col, Button, Alert, Dropdown } from "react-bootstrap";
 import noImg from "../images/icons/image_not_found-2.jpg";
 import ImgUpdateModal from "../components/ImgUpdateModal";
 import "./css/books.css";
 import { PencilSquare, CardChecklist, Cart3 } from "react-bootstrap-icons";
 import ImageModal from "../components/ImageModal";
 import { GridLoader } from "react-spinners";
+import { Typography, Rating } from "@mui/material";
+import DeleteImgModal from "../components/DeleteImgModal";
+import { DeleteOutlineOutlined } from "@mui/icons-material";
+import { AddPhotoAlternateOutlined } from "@mui/icons-material";
+import CommentText from "../components/CommentInput";
 
 const Book = () => {
   const [id, setId] = useState("");
@@ -31,6 +36,9 @@ const Book = () => {
   const [alertMsg, setAlertMsg] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [spinner, setSpinner] = useState(false);
+  const [showDelModal, setShowDelModal] = useState(false);
+
+  const [rating, setRating] = useState(4.3);
 
   const allowedRoles = [1993];
   const name = localStorage.getItem("name");
@@ -95,6 +103,12 @@ const Book = () => {
   const closeModal = () => {
     setShowModal(false);
   };
+  const openDelImgModal = () => {
+    setShowDelModal(true);
+  };
+  const closeDelImgModal = () => {
+    setShowDelModal(false);
+  };
   const updatedImage = () => {
     setImageUpdated(true);
   };
@@ -149,7 +163,7 @@ const Book = () => {
                   >
                     <br />
                     <br />
-                    <Button
+                    {/* <Button
                       variant="outline-danger"
                       onClick={updateImgModal}
                       // style={{
@@ -159,13 +173,34 @@ const Book = () => {
                       // }}
                     >
                       <PencilSquare size={20} id="iconPadding" />
-                      Edit Image
-                    </Button>
+                      Change Image
+                    </Button> */}
+                    <Dropdown>
+                      <Dropdown.Toggle
+                        variant="outline-dark"
+                        id="dropdown-basic"
+                      >
+                        <PencilSquare size={20} id="iconPadding" />
+                        Edit image
+                      </Dropdown.Toggle>
+
+                      <Dropdown.Menu>
+                        <Dropdown.Item onClick={updateImgModal}>
+                          <AddPhotoAlternateOutlined />
+                          Update
+                        </Dropdown.Item>
+                        <Dropdown.Divider />
+                        <Dropdown.Item onClick={openDelImgModal}>
+                          <DeleteOutlineOutlined />
+                          Delete
+                        </Dropdown.Item>
+                      </Dropdown.Menu>
+                    </Dropdown>
                   </div>
                 )}
               </div>
             </Col>
-            <Col className="custom-font-col">
+            <Col className="custom-font-col" xxl={6} xl={6}>
               <Row>
                 <Col>
                   {spinner ? (
@@ -187,6 +222,15 @@ const Book = () => {
                     <div className="centered-div">
                       <br />
                       <h4> {bookName} </h4>
+                      <Typography component="legend">Rating</Typography>
+                      <Rating
+                        name="half-rating-read"
+                        defaultValue={rating}
+                        precision={0.1}
+                        readOnly
+                        value={rating}
+                      />
+                      <br />
                       <br />
                       <p>Author :{author}</p>
                       <p>Genre :{genre}</p>
@@ -196,6 +240,7 @@ const Book = () => {
                       <p>ISBN number: {ISBN}</p>
                       <p>Year released: {year}</p>
                       <p>Description: {description}</p>
+
                       <Button variant="outline-dark" id="buttonPadding">
                         <CardChecklist size={22} id="iconPadding" />
                         Add to wish list
@@ -210,6 +255,13 @@ const Book = () => {
               </Row>
             </Col>
           </Row>
+          <Container>
+            <Row>
+              <Col>
+                <CommentText />
+              </Col>
+            </Row>
+          </Container>
           <ImageModal
             isOpen={isModalOpen}
             onClose={closeImageModal}
@@ -218,6 +270,12 @@ const Book = () => {
           <ImgUpdateModal
             showModal={showModal}
             closeModal={closeModal}
+            id={id}
+            updatedImage={updatedImage}
+          />
+          <DeleteImgModal
+            showModal={showDelModal}
+            closeModal={closeDelImgModal}
             id={id}
             updatedImage={updatedImage}
           />

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Header from "../components/Header";
+import Header from "../components/MuiHeader";
 import CardTemplate from "../components/BooksCardTemplate";
 import { Container, Row } from "react-bootstrap";
 import axios from "../api/axios";

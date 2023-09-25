@@ -11,27 +11,16 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
+import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 
 import React, { useEffect, useState } from "react";
-import {
-  Container as Bcontainer,
-  Button as BootstrapButton,
-  Dropdown,
-  Row,
-} from "react-bootstrap";
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
 import useLogout from "../hooks/useLogout";
 import { useNavigate } from "react-router-dom";
 import { Dribbble, JournalBookmarkFill, PlusLg } from "react-bootstrap-icons";
 import AddBooksModal from "../components/addBooksModal";
-import { JournalText, PersonCircle } from "react-bootstrap-icons";
-import { Divider } from "@mui/material";
+import { JournalText } from "react-bootstrap-icons";
+import { Divider, capitalize } from "@mui/material";
 import { Logout } from "@mui/icons-material";
-
-const pages = ["Products", "Pricing", "Blog"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
@@ -84,6 +73,7 @@ function ResponsiveAppBar() {
 
   const addBooksClick = () => {
     setShowModal(true);
+    setAnchorElNav(false);
   };
 
   const closeModal = () => {
@@ -94,7 +84,9 @@ function ResponsiveAppBar() {
     <AppBar position="static" sx={{ backgroundColor: "black" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+          <AutoStoriesIcon
+            sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
+          />
           <Typography
             variant="h6"
             noWrap
@@ -149,12 +141,19 @@ function ResponsiveAppBar() {
               ))}
             </Menu> */}
 
-              <MenuItem onClick={handleCloseNavMenu}>
-                <Typography textAlign="center">Book</Typography>
+              <MenuItem onClick={() => navigate("/books")}>
+                <Typography textAlign="center">Books</Typography>
               </MenuItem>
+              {admin && (
+                <MenuItem onClick={addBooksClick}>
+                  <Typography textAlign="center">Add book</Typography>
+                </MenuItem>
+              )}
             </Menu>
           </Box>
-          <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
+          <AutoStoriesIcon
+            sx={{ display: { xs: "flex", md: "none" }, mr: 1 }}
+          />
           <Typography
             variant="h5"
             noWrap
@@ -171,7 +170,7 @@ function ResponsiveAppBar() {
               textDecoration: "none",
             }}
           >
-            LOGO
+            BOOKSTORE
           </Typography>
           {/* <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
@@ -212,7 +211,10 @@ function ResponsiveAppBar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Yadu Krishna" src="/static/images/avatar/2.jpg" />
+                <Avatar
+                  alt={capitalize(name)}
+                  src="/static/images/avatar/2.jpg"
+                />
               </IconButton>
             </Tooltip>
             <Menu
@@ -237,7 +239,7 @@ function ResponsiveAppBar() {
                 </Typography>
               </MenuItem>
               <MenuItem onClick={handleCloseUserMenu}>
-                <Typography textAlign="center">
+                <Typography textAlign="center" color={"grey"}>
                   {admin && <div> Admin account</div>}
                 </Typography>
               </MenuItem>
@@ -254,7 +256,7 @@ function ResponsiveAppBar() {
               </MenuItem>
               <Divider sx={{ my: 0.5 }} />
               <MenuItem onClick={logOut}>
-                <Typography textAlign="center">
+                <Typography textAlign="center" color={"red"}>
                   <Logout />
                   Log out
                 </Typography>

@@ -4,11 +4,14 @@ import { useState } from "react";
 import "./css/BookCardCss.css";
 import axios from "../api/axios";
 import noImg from "../images/icons/image_not_found-2.jpg";
+import { Rating } from "@mui/material";
 
 function CardTemplate(props) {
   const [hovered, setHovered] = useState(false);
   const navigate = useNavigate();
   const bookId = props.id;
+
+  const [rating, setRating] = useState(4);
 
   const navigateToBook = () => {
     navigate(`/books/${bookId}`);
@@ -31,6 +34,7 @@ function CardTemplate(props) {
                   transition: "all 0.3s ease",
                   transform: "scale(1)",
                   border: "3px dashed rgba(44, 41, 41, 0.400",
+                  borderRadius: "10px",
                 }
           }
           // onClick={navigateToBook}
@@ -41,7 +45,7 @@ function CardTemplate(props) {
             <Col
               style={{
                 minWidth: "190px",
-                margin: "8px",
+                margin: "10px",
                 minHeight: "190px",
               }}
               className="d-flex justify-content-center"
@@ -53,6 +57,14 @@ function CardTemplate(props) {
                 style={{ padding: "8%", backgroundColor: "aliceblue" }}
               >
                 <Card.Title className="mb-2">{props.title}</Card.Title>
+                <Rating
+                  name="half-rating-read"
+                  defaultValue={rating}
+                  precision={0.1}
+                  readOnly
+                  value={rating}
+                />
+
                 <Card.Text className="mb-2">id :{props.id} </Card.Text>
                 <Card.Text className="mb-2">Author :{props.author} </Card.Text>
                 <Card.Text className="mb-2">Genre :{props.genre} </Card.Text>
