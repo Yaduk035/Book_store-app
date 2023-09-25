@@ -8,6 +8,7 @@ import ImgUpdateModal from "../components/ImgUpdateModal";
 import "./css/books.css";
 import { PencilSquare, CardChecklist, Cart3 } from "react-bootstrap-icons";
 import ImageModal from "../components/ImageModal";
+import { GridLoader } from "react-spinners";
 
 const Book = () => {
   const [id, setId] = useState("");
@@ -29,6 +30,7 @@ const Book = () => {
   const [imageUpdated, setImageUpdated] = useState(false);
   const [alertMsg, setAlertMsg] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [spinner, setSpinner] = useState(false);
 
   const allowedRoles = [1993];
   const name = localStorage.getItem("name");
@@ -48,10 +50,11 @@ const Book = () => {
     } else {
       setAdmin(false);
     }
-  });
+  }, []);
 
   const getBookbyId = async () => {
     try {
+      setSpinner(true);
       const response = await axios.get(`/books/${bookId}`);
       console.log(response.data);
       setId(response?.data?._id);
@@ -65,10 +68,13 @@ const Book = () => {
       setRentPeriod(response?.data.rentPeriod);
       setYear(response?.data.year);
       setIsbn(response?.data.ISBNnumber);
+
+      setSpinner(false);
     } catch (err) {
       if (err?.response?.status === 500) {
         setErrMsg(`No book found with id ${bookId}`);
         setAlertMsg(true);
+        setSpinner(false);
       }
       console.error(err);
     }
@@ -108,18 +114,31 @@ const Book = () => {
           <Row xs={12} md={12} lg={12}>
             <Col style={{ borderRight: "2px solid black" }}>
               <div style={{ position: "relative" }}>
-                <img
-                  src={image || noImg}
-                  alt="Uploaded"
-                  style={{
-                    maxWidth: "65%",
-                    minWidth: "200px",
-                    cursor: "pointer",
-                    borderRadius: "10px",
-                    marginTop: "10px",
-                  }}
-                  onClick={openImageModal}
-                />
+                {spinner ? (
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      minHeight: "60vh",
+                    }}
+                  >
+                    <GridLoader color="#36d7b7" size={25} speedMultiplier={2} />
+                  </div>
+                ) : (
+                  <img
+                    src={image || noImg}
+                    alt="Uploaded"
+                    style={{
+                      maxWidth: "65%",
+                      minWidth: "200px",
+                      cursor: "pointer",
+                      borderRadius: "10px",
+                      marginTop: "10px",
+                    }}
+                    onClick={openImageModal}
+                  />
+                )}
                 {admin && (
                   <div
                     style={{
@@ -149,27 +168,44 @@ const Book = () => {
             <Col className="custom-font-col">
               <Row>
                 <Col>
-                  <div className="centered-div">
-                    <br />
-                    <h4> {bookName} </h4>
-                    <br />
-                    <p>Author :{author}</p>
-                    <p>Genre :{genre}</p>
-                    <p>Language :{language}</p>
-                    <p>Rental period :{rentPeriod}</p>
-                    <p>Availability: {availability}</p>
-                    <p>ISBN number: {ISBN}</p>
-                    <p>Year released: {year}</p>
-                    <p>Description: {description}</p>
-                    <Button variant="outline-dark" id="buttonPadding">
-                      <CardChecklist size={22} id="iconPadding" />
-                      Add to wish list
-                    </Button>
-                    <Button variant="dark">
-                      <Cart3 size={20} id="iconPadding" />
-                      Rent book
-                    </Button>
-                  </div>
+                  {spinner ? (
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        minHeight: "60vh",
+                      }}
+                    >
+                      <GridLoader
+                        color="#36d7b7"
+                        size={25}
+                        speedMultiplier={2}
+                      />
+                    </div>
+                  ) : (
+                    <div className="centered-div">
+                      <br />
+                      <h4> {bookName} </h4>
+                      <br />
+                      <p>Author :{author}</p>
+                      <p>Genre :{genre}</p>
+                      <p>Language :{language}</p>
+                      <p>Rental period :{rentPeriod}</p>
+                      <p>Availability: {availability}</p>
+                      <p>ISBN number: {ISBN}</p>
+                      <p>Year released: {year}</p>
+                      <p>Description: {description}</p>
+                      <Button variant="outline-dark" id="buttonPadding">
+                        <CardChecklist size={22} id="iconPadding" />
+                        Add to wish list
+                      </Button>
+                      <Button variant="dark">
+                        <Cart3 size={20} id="iconPadding" />
+                        Rent book
+                      </Button>
+                    </div>
+                  )}
                 </Col>
               </Row>
             </Col>
