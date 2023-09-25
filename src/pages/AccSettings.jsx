@@ -2,6 +2,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 // import axios from "axios";
 import axios from "../api/axios";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import {
   Container,
   Row,
@@ -23,7 +24,8 @@ import Header from "../components/Header";
 const signup_url = "/register";
 
 function AccSettings() {
-  const [firstname, setFirstname] = useState("");
+  const [userData, setUserdata] = useState("");
+  const [firstname, setFirstname] = useState(userData.firstname);
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -39,6 +41,7 @@ function AccSettings() {
   const [showModal, setShowModal] = useState(false);
 
   const navigate = useNavigate();
+  const axiosPrivate = useAxiosPrivate();
 
   useEffect(() => {
     const checkEmailExists = async () => {
@@ -108,12 +111,21 @@ function AccSettings() {
     }, [2000]);
   };
 
-  // const handleShowverifyAlert = () => {
-  //   setShowVerifyAlert(true);
-  //   setTimeout(() => {
-  //     setShowVerifyAlert(false);
-  //   }, [6000]);
-  // };
+  useEffect(() => {
+    const fetchUserdata = async () => {
+      try {
+        const response = await axiosPrivate.get(
+          `/users/6502b24dbcf3ef7ab606f858`
+        );
+        setUserdata(response.data);
+        console.log(response.data);
+        console.log(userData);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchUserdata();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

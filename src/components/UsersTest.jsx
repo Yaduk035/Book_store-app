@@ -37,8 +37,11 @@ const Users = () => {
 
   const getUser = async () => {
     try {
-      const response = await axiosPrivate.get("/users");
+      const response = await axiosPrivate.get(
+        "/users/6502b24dbcf3ef7ab606f858"
+      );
       setUsers(response.data);
+      console.log(response.data);
     } catch (err) {
       console.error(err);
       // navigate("/login", { state: { from: location }, replace: true });

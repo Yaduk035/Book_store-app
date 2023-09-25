@@ -7,7 +7,7 @@ import Test from "./pages/test";
 import Login from "./pages/LoginForm";
 import RequireAuth from "./components/requireAuth";
 import Unauthroized from "./pages/unauthroized";
-// import Users from "./components/UsersTest";
+import Users from "./components/UsersTest";
 import PersistLogin from "./components/PersistLogin";
 import BooksPage from "./pages/BooksPage";
 import Book from "./pages/book";
@@ -41,6 +41,7 @@ function App() {
         <Route element={<PersistLogin />}>
           <Route element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.User]} />}>
             <Route path="/" element={<HomePage />} />
+            <Route path="/usertest" element={<Users />} />
             <Route path="/books" element={<BooksPage/>} />
             <Route path="/accountsettings" element={<AccSettings/>} />
             <Route path="/books/:bookId" element={<Book/>} />
