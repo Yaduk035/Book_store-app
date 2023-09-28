@@ -32,6 +32,7 @@ const BooksPage = () => {
         });
         setBooks(formattedData);
         setSpinner(false);
+        console.log(books);
       } catch (error) {
         console.error(error);
         setSpinner(false);

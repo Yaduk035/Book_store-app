@@ -247,7 +247,7 @@ function ResponsiveAppBar() {
               <MenuItem>
                 <Typography textAlign="center">Rented Books</Typography>
               </MenuItem>
-              <MenuItem>
+              <MenuItem onClick={() => navigate("/wishlist")}>
                 <Typography textAlign="center">Wish list</Typography>
               </MenuItem>
               <Divider sx={{ my: 0.5 }} />

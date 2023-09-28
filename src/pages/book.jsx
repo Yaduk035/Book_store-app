@@ -13,7 +13,8 @@ import { Typography, Rating } from "@mui/material";
 import DeleteImgModal from "../components/DeleteImgModal";
 import { DeleteOutlineOutlined } from "@mui/icons-material";
 import { AddPhotoAlternateOutlined } from "@mui/icons-material";
-import CommentText from "../components/CommentInput";
+import InputMultiline from "../components/CommentInput";
+import HoverRating from "../components/RatingHover";
 
 const Book = () => {
   const [id, setId] = useState("");
@@ -37,12 +38,14 @@ const Book = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [spinner, setSpinner] = useState(false);
   const [showDelModal, setShowDelModal] = useState(false);
+  const [comment, setComment] = useState("");
 
   const [rating, setRating] = useState(4.3);
 
   const allowedRoles = [1993];
   const name = localStorage.getItem("name");
   const localUser = localStorage?.getItem("role");
+  const localUserId = localStorage?.getItem("userId");
   const [admin, setAdmin] = useState(localStorage.getItem("role"));
 
   useEffect(() => {
@@ -76,6 +79,8 @@ const Book = () => {
       setRentPeriod(response?.data.rentPeriod);
       setYear(response?.data.year);
       setIsbn(response?.data.ISBNnumber);
+
+      // console.log("userEffectresdata", response.data);
 
       setSpinner(false);
     } catch (err) {
@@ -120,6 +125,36 @@ const Book = () => {
   const closeImageModal = () => {
     setIsModalOpen(false);
   };
+
+  const handleCommentInput = (text) => {
+    setComment(text);
+  };
+
+  //////////////////
+  const addToWishlist = async () => {
+    try {
+      const bookId = id;
+      const userId = localUserId;
+      const wishlistData = { userId };
+
+      const response = await axios.post(
+        `books/wishlist/${bookId}`,
+        wishlistData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            withCredentials: true,
+          },
+        }
+      );
+      console.log("WishlistResponse : ", response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  // useEffect(() => {
+  //   console.log("cmt : ", comment);
+  // }, [comment]);
   return (
     <>
       <Header />
@@ -241,7 +276,11 @@ const Book = () => {
                       <p>Year released: {year}</p>
                       <p>Description: {description}</p>
 
-                      <Button variant="outline-dark" id="buttonPadding">
+                      <Button
+                        variant="outline-dark"
+                        id="buttonPadding"
+                        onClick={addToWishlist}
+                      >
                         <CardChecklist size={22} id="iconPadding" />
                         Add to wish list
                       </Button>
@@ -256,9 +295,10 @@ const Book = () => {
             </Col>
           </Row>
           <Container>
-            <Row>
+            <Row className="p-5">
               <Col>
-                <CommentText />
+                <HoverRating />
+                <InputMultiline onTextChange={handleCommentInput} />
               </Col>
             </Row>
           </Container>

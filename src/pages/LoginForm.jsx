@@ -70,8 +70,10 @@ const Login = () => {
       const roles = response?.data?.roles;
       const firstname = response?.data?.firstname;
       const lastname = response?.data?.lastname;
+      const userId = response?.data?.userId;
       localStorage.setItem("role", roles);
       localStorage.setItem("name", `${firstname} ${lastname}`);
+      localStorage.setItem("userId", userId);
 
       setAuth({ user, pwd, roles, accessToken });
       resetUser();

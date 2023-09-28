@@ -1,6 +1,11 @@
 import * as React from "react";
+import { useState } from "react";
 import { Input } from "@mui/base/Input";
 import { styled } from "@mui/system";
+import { Button, Stack } from "@mui/material";
+// import Stack from "@mui/material/Stack";
+import DeleteIcon from "@mui/icons-material/Delete";
+import SendIcon from "@mui/icons-material/Send";
 
 const CustomInput = React.forwardRef(function CustomInput(props, ref) {
   return (
@@ -12,13 +17,37 @@ const CustomInput = React.forwardRef(function CustomInput(props, ref) {
   );
 });
 
-export default function InputMultiline() {
+export default function InputMultiline({ onTextChange }) {
+  const [text, setText] = useState("");
+
+  const handleInputChange = (e) => {
+    setText(e.target.value);
+    onTextChange(e.target.value);
+    // console.log("Comment : ", text);
+  };
+
   return (
-    <CustomInput
-      aria-label="Demo input"
-      multiline
-      placeholder="Type something…"
-    />
+    <>
+      <CustomInput
+        aria-label="Demo input"
+        multiline
+        placeholder="Type something…"
+        value={text}
+        onChange={handleInputChange}
+      />
+      <Stack direction="row" spacing={2}>
+        <Button
+          variant="outlined"
+          startIcon={<DeleteIcon />}
+          onClick={() => setText("")}
+        >
+          Delete
+        </Button>
+        <Button variant="contained" endIcon={<SendIcon />}>
+          Add comment
+        </Button>
+      </Stack>
+    </>
   );
 }
 
@@ -82,7 +111,7 @@ const StyledTextareaElement = styled("textarea", {
     !["ownerState", "minRows", "maxRows"].includes(prop.toString()),
 })(
   ({ theme }) => `
-  width: 320px;
+  width: 420px;
   font-family: IBM Plex Sans, sans-serif;
   font-size: 0.875rem;
   font-weight: 400;
