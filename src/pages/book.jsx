@@ -18,9 +18,8 @@ import { Typography, Rating } from "@mui/material";
 import DeleteImgModal from "../components/DeleteImgModal";
 import { DeleteOutlineOutlined } from "@mui/icons-material";
 import { AddPhotoAlternateOutlined } from "@mui/icons-material";
-import InputMultiline from "../components/CommentInput";
-import HoverRating from "../components/RatingHover";
 import SuccessAlert from "../components/SuccessAlertBar";
+import CommentSection from "../components/CommentSection";
 
 const Book = () => {
   const [id, setId] = useState("");
@@ -44,7 +43,6 @@ const Book = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [spinner, setSpinner] = useState(false);
   const [showDelModal, setShowDelModal] = useState(false);
-  const [comment, setComment] = useState("");
   const [wishlistData, setWishlistData] = useState("");
   const [userWishlisted, setUserWishlisted] = useState(false);
   const [openAlert, setOpenAlert] = React.useState(false);
@@ -54,6 +52,7 @@ const Book = () => {
 
   const allowedRoles = [1993];
   const name = localStorage.getItem("name");
+  const email = localStorage?.getItem("user");
   const localUser = localStorage?.getItem("role");
   const localUserId = localStorage?.getItem("userId");
   const [admin, setAdmin] = useState(localStorage.getItem("role"));
@@ -75,9 +74,9 @@ const Book = () => {
 
   const checkUserWishlisted = async () => {
     const wishlistArray = wishlistData;
-    console.log("wish : ", wishlistArray);
+    // console.log("wish : ", wishlistArray);
     const userIdStr = JSON.stringify(localUserId);
-    console.log(userIdStr);
+    // console.log(userIdStr);
     if (wishlistArray.includes(userIdStr)) {
       setUserWishlisted(true);
     } else {
@@ -124,9 +123,9 @@ const Book = () => {
     checkUserWishlisted();
   }, [wishlistData]);
 
-  useEffect(() => {
-    console.log("is User wishlisted : ", userWishlisted);
-  }, [userWishlisted]);
+  // useEffect(() => {
+  //   console.log("is User wishlisted : ", userWishlisted);
+  // }, [userWishlisted]);
 
   useEffect(() => {
     if (!showModal && imageUpdated) {
@@ -158,9 +157,6 @@ const Book = () => {
     setIsModalOpen(false);
   };
 
-  const handleCommentInput = (text) => {
-    setComment(text);
-  };
   const closeAlert = () => {
     setOpenAlert(false);
   };
@@ -190,7 +186,7 @@ const Book = () => {
       );
       showAlert();
       setSuccessAlertMessage("Book added to wishlist");
-      console.log("WishlistResponse : ", response.data);
+      // console.log("WishlistResponse : ", response.data);
       setUserWishlisted(true);
     } catch (error) {
       console.log(error);
@@ -208,7 +204,7 @@ const Book = () => {
         data: reqData,
         withCredentials: true,
       });
-      console.log("WishlistResponse : ", response.data);
+      // console.log("WishlistResponse : ", response.data);
       setSuccessAlertMessage("Book removed from wishlist");
       showAlert();
 
@@ -372,10 +368,8 @@ const Book = () => {
           </Row>
           <Container>
             <Row className="p-5">
-              <Col>
-                <HoverRating />
-                <InputMultiline onTextChange={handleCommentInput} />
-              </Col>
+              <CommentSection bookId={bookId} userName={email} />
+              <Col></Col>
             </Row>
           </Container>
           <ImageModal

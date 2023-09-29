@@ -6,6 +6,8 @@ import { Button, Stack } from "@mui/material";
 // import Stack from "@mui/material/Stack";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SendIcon from "@mui/icons-material/Send";
+import axios from "../api/axios";
+import HoverRating from "./RatingHover";
 
 const CustomInput = React.forwardRef(function CustomInput(props, ref) {
   return (
@@ -17,8 +19,36 @@ const CustomInput = React.forwardRef(function CustomInput(props, ref) {
   );
 });
 
-export default function InputMultiline({ onTextChange }) {
+export default function InputMultiline({
+  onTextChange,
+  bookId,
+  userName,
+  userCommented,
+}) {
   const [text, setText] = useState("");
+  const [rating, setRating] = useState(1);
+  const [title, setTitle] = useState("");
+
+  const [isuserCommented, setIsUserCommented] = React.useState();
+  // React.useEffect(() => {
+  //   if (props.userId === props.currentUser) {
+  //     setCommentUser(true);
+  //   } else {
+  //     setCommentUser(false);
+  //   }
+  // }, [props.userName]);
+
+  React.useEffect(() => {
+    if (userCommented) {
+      setIsUserCommented(true);
+    } else {
+      setIsUserCommented(false);
+    }
+  }, [userCommented]);
+
+  // React.useEffect(() => {
+  //   console.log("rating :", rating);
+  // }, [rating]);
 
   const handleInputChange = (e) => {
     setText(e.target.value);
@@ -26,27 +56,59 @@ export default function InputMultiline({ onTextChange }) {
     // console.log("Comment : ", text);
   };
 
+  const onCommentSubmit = async () => {
+    try {
+      const data = {
+        userId: userName,
+        rating: rating,
+        comment: text,
+        commentTitle: title,
+      };
+      const response = await axios.post(`books/reviews/${bookId}`, data);
+      console.log("add comment respose : ", response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <>
-      <CustomInput
-        aria-label="Demo input"
-        multiline
-        placeholder="Type something…"
-        value={text}
-        onChange={handleInputChange}
-      />
-      <Stack direction="row" spacing={2}>
-        <Button
-          variant="outlined"
-          startIcon={<DeleteIcon />}
-          onClick={() => setText("")}
-        >
-          Delete
-        </Button>
-        <Button variant="contained" endIcon={<SendIcon />}>
-          Add comment
-        </Button>
-      </Stack>
+      <div>
+        <HoverRating setRating={setRating} />
+        <CustomInput
+          aria-label="Demo input"
+          placeholder="Title"
+          onChange={(e) => setTitle(e.target.value)}
+        />
+        <br />
+        <CustomInput
+          aria-label="Demo input"
+          multiline
+          placeholder="Type something…"
+          value={text}
+          onChange={handleInputChange}
+        />
+        <div>
+          <Stack direction="row" spacing={2}>
+            <Button
+              variant="outlined"
+              startIcon={<DeleteIcon />}
+              onClick={() => setText("")}
+            >
+              Delete
+            </Button>
+            <Button
+              variant="contained"
+              endIcon={<SendIcon />}
+              onClick={onCommentSubmit}
+              disabled={isuserCommented}
+            >
+              Add comment
+            </Button>
+          </Stack>
+          <br /> <br />
+        </div>
+      </div>
     </>
   );
 }

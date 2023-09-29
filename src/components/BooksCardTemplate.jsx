@@ -170,7 +170,7 @@ function CardTemplate(props) {
                   value={rating}
                 />
 
-                <Card.Text className="mb-2">id :{props.id} </Card.Text>
+                {/* <Card.Text className="mb-2">id :{props.id} </Card.Text> */}
                 <Card.Text className="mb-2">Author :{props.author} </Card.Text>
                 <Card.Text className="mb-2">Genre :{props.genre} </Card.Text>
                 {/* <Card.Text className="mb-2">Language :{props.language} </Card.Text> */}

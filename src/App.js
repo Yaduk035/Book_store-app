@@ -15,6 +15,7 @@ import ImgUploads from "./components/ImgUploads";
 import AccSettings from "./pages/AccSettings";
 import MyDropzone from './pages/SelectFiles';
 import Wishlist from "./pages/Wishlist";
+import Rentlist from "./pages/Rentlist";
 
 const ROLES = {
   Admin: 1993,
@@ -45,6 +46,7 @@ function App() {
             <Route path="/books" element={<BooksPage/>} />
             <Route path="/accountsettings" element={<AccSettings/>} />
             <Route path="/wishlist" element={<Wishlist/>} />
+            <Route path="/rentedbooks" element={<Rentlist/>} />
             <Route path="/books/:bookId" element={<Book/>} />
         {/* <Route path="file" element={<MyDropzone />} /> */}
           </Route>
