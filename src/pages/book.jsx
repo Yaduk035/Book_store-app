@@ -209,8 +209,8 @@ const Book = () => {
         withCredentials: true,
       });
       console.log("WishlistResponse : ", response.data);
+      setSuccessAlertMessage("Book removed from wishlist");
       showAlert();
-      setSuccessAlertMessage("Book removed to wishlist");
 
       setUserWishlisted(false);
     } catch (error) {
