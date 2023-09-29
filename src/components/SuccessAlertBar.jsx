@@ -49,7 +49,7 @@ export default function SuccessAlert(props) {
         open={open}
         autoHideDuration={6000}
         onClose={handleClose}
-        message="Book deleted from wishlist."
+        message={props.alertMessage}
         action={action}
         TransitionComponent={SlideTransition}
       />

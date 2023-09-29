@@ -134,6 +134,7 @@ export default function WishlistCard(props) {
         openAlert={openAlert}
         closeAlert={closeAlert}
         spinner={spinner}
+        alertMessage="Book deleted from wishlist."
       />
     </>
   );

@@ -6,7 +6,12 @@ import { Container, Row, Col, Button, Alert, Dropdown } from "react-bootstrap";
 import noImg from "../images/icons/image_not_found-2.jpg";
 import ImgUpdateModal from "../components/ImgUpdateModal";
 import "./css/books.css";
-import { PencilSquare, CardChecklist, Cart3 } from "react-bootstrap-icons";
+import {
+  PencilSquare,
+  CardChecklist,
+  Cart3,
+  CheckLg,
+} from "react-bootstrap-icons";
 import ImageModal from "../components/ImageModal";
 import { GridLoader } from "react-spinners";
 import { Typography, Rating } from "@mui/material";
@@ -15,6 +20,7 @@ import { DeleteOutlineOutlined } from "@mui/icons-material";
 import { AddPhotoAlternateOutlined } from "@mui/icons-material";
 import InputMultiline from "../components/CommentInput";
 import HoverRating from "../components/RatingHover";
+import SuccessAlert from "../components/SuccessAlertBar";
 
 const Book = () => {
   const [id, setId] = useState("");
@@ -39,6 +45,10 @@ const Book = () => {
   const [spinner, setSpinner] = useState(false);
   const [showDelModal, setShowDelModal] = useState(false);
   const [comment, setComment] = useState("");
+  const [wishlistData, setWishlistData] = useState("");
+  const [userWishlisted, setUserWishlisted] = useState(false);
+  const [openAlert, setOpenAlert] = React.useState(false);
+  const [successAlertMessage, setSuccessAlertMessage] = useState("");
 
   const [rating, setRating] = useState(4.3);
 
@@ -63,11 +73,22 @@ const Book = () => {
     }
   }, []);
 
+  const checkUserWishlisted = async () => {
+    const wishlistArray = wishlistData;
+    console.log("wish : ", wishlistArray);
+    const userIdStr = JSON.stringify(localUserId);
+    console.log(userIdStr);
+    if (wishlistArray.includes(userIdStr)) {
+      setUserWishlisted(true);
+    } else {
+      setUserWishlisted(false);
+    }
+  };
+
   const getBookbyId = async () => {
     try {
       setSpinner(true);
       const response = await axios.get(`/books/${bookId}`);
-      console.log(response.data);
       setId(response?.data?._id);
       setImage(response?.data?.image);
       setBookName(response?.data.bookName);
@@ -80,8 +101,11 @@ const Book = () => {
       setYear(response?.data.year);
       setIsbn(response?.data.ISBNnumber);
 
+      const wishlistedUsers = JSON.stringify(response?.data.users.wishlist);
+      setWishlistData(wishlistedUsers);
+      // console.log("WishlistData : ", wishlistData);
       // console.log("userEffectresdata", response.data);
-
+      // checkUserWishlisted();
       setSpinner(false);
     } catch (err) {
       if (err?.response?.status === 500) {
@@ -95,6 +119,14 @@ const Book = () => {
   useEffect(() => {
     getBookbyId();
   }, []);
+
+  useEffect(() => {
+    checkUserWishlisted();
+  }, [wishlistData]);
+
+  useEffect(() => {
+    console.log("is User wishlisted : ", userWishlisted);
+  }, [userWishlisted]);
 
   useEffect(() => {
     if (!showModal && imageUpdated) {
@@ -129,6 +161,15 @@ const Book = () => {
   const handleCommentInput = (text) => {
     setComment(text);
   };
+  const closeAlert = () => {
+    setOpenAlert(false);
+  };
+  const showAlert = () => {
+    setOpenAlert(true);
+    setTimeout(() => {
+      setOpenAlert(false);
+    }, [3000]);
+  };
 
   //////////////////
   const addToWishlist = async () => {
@@ -147,9 +188,33 @@ const Book = () => {
           },
         }
       );
+      showAlert();
+      setSuccessAlertMessage("Book added to wishlist");
       console.log("WishlistResponse : ", response.data);
+      setUserWishlisted(true);
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const deleteFromWishlist = async () => {
+    try {
+      const bookId = id;
+      const reqData = { userId: localUserId };
+      const response = await axios.delete(`books/wishlist/${bookId}`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: reqData,
+        withCredentials: true,
+      });
+      console.log("WishlistResponse : ", response.data);
+      showAlert();
+      setSuccessAlertMessage("Book removed to wishlist");
+
+      setUserWishlisted(false);
+    } catch (error) {
+      console.error(error);
     }
   };
   // useEffect(() => {
@@ -180,7 +245,7 @@ const Book = () => {
                     alt="Uploaded"
                     style={{
                       maxWidth: "65%",
-                      minWidth: "200px",
+                      width: "400px",
                       cursor: "pointer",
                       borderRadius: "10px",
                       marginTop: "10px",
@@ -276,14 +341,25 @@ const Book = () => {
                       <p>Year released: {year}</p>
                       <p>Description: {description}</p>
 
-                      <Button
-                        variant="outline-dark"
-                        id="buttonPadding"
-                        onClick={addToWishlist}
-                      >
-                        <CardChecklist size={22} id="iconPadding" />
-                        Add to wish list
-                      </Button>
+                      {userWishlisted ? (
+                        <Button
+                          variant="outline-dark"
+                          id="buttonPadding"
+                          onClick={deleteFromWishlist}
+                        >
+                          <CheckLg size={22} id="iconPadding" />
+                          Wishlisted
+                        </Button>
+                      ) : (
+                        <Button
+                          variant="outline-dark"
+                          id="buttonPadding"
+                          onClick={addToWishlist}
+                        >
+                          <CardChecklist size={22} id="iconPadding" />
+                          Add to wish list
+                        </Button>
+                      )}
                       <Button variant="dark">
                         <Cart3 size={20} id="iconPadding" />
                         Rent book
@@ -319,6 +395,13 @@ const Book = () => {
             id={id}
             updatedImage={updatedImage}
           />
+          <SuccessAlert
+            openAlert={openAlert}
+            closeAlert={closeAlert}
+            spinner={spinner}
+            alertMessage={successAlertMessage}
+          />
+
           {/* <div>
           <p>Book name: {bookName} </p>
           <p>Book Id:{bookId}</p>
