@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 function AddBooksModal(props) {
   const [show, setShow] = useState(false);
   const [bookName, setBookName] = useState("");
+  const [rentAmount, setRentAmount] = useState("");
   const [author, setAuthor] = useState("");
   const [genre, setGenre] = useState("");
   const [language, setLanguage] = useState("");
@@ -52,6 +53,7 @@ function AddBooksModal(props) {
     try {
       const bookData = {
         bookName: bookName,
+        rentAmount: rentAmount,
         author: author,
         genre: genre,
         language: language,
@@ -97,6 +99,28 @@ function AddBooksModal(props) {
         </Modal.Header>
         <Modal.Body className="p-4">
           <Form>
+            <Row>
+              <Col md={6} xs={12}>
+                <Form.Group className="p-2">
+                  <Form.Label>Book name :</Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={bookName}
+                    onChange={(e) => setBookName(e.target.value)}
+                  ></Form.Control>
+                </Form.Group>
+              </Col>
+              <Col md={6} xs={12}>
+                <Form.Group className="p-2">
+                  <Form.Label>Rent amount (INR) :</Form.Label>
+                  <Form.Control
+                    type="number"
+                    value={rentAmount}
+                    onChange={(e) => setRentAmount(e.target.value)}
+                  ></Form.Control>
+                </Form.Group>
+              </Col>
+            </Row>
             <Row>
               <Col md={6} xs={12}>
                 <Form.Group className="p-2">
