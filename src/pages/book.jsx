@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Header from "../components/MuiHeader";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "../api/axios";
 import { Container, Row, Col, Button, Alert, Dropdown } from "react-bootstrap";
 import noImg from "../images/icons/image_not_found-2.jpg";
@@ -50,6 +50,7 @@ const Book = () => {
 
   const [rating, setRating] = useState(4.3);
 
+  const navigate = useNavigate();
   const allowedRoles = [1993];
   const name = localStorage.getItem("name");
   const email = localStorage?.getItem("user");
@@ -66,7 +67,11 @@ const Book = () => {
 
       // Use .some() to check if any of the allowedRoles exists in userRoles
       const roleExists = userRoles.some((role) => allowedRoles.includes(role));
-      setAdmin(roleExists);
+      if (roleExists) {
+        setAdmin(true);
+      } else {
+        setAdmin(false);
+      }
     } else {
       setAdmin(false);
     }
@@ -222,7 +227,7 @@ const Book = () => {
       {!alertMsg ? (
         <Container>
           <Row xs={12} md={12} lg={12}>
-            <Col style={{ borderRight: "2px solid black" }}>
+            <Col style={{ borderRight: "3px dashed grey" }}>
               <div style={{ position: "relative" }}>
                 {spinner ? (
                   <div
@@ -250,7 +255,7 @@ const Book = () => {
                   />
                 )}
                 {admin && (
-                  <div
+                  <span
                     style={{
                       position: "absolute",
                       bottom: "10%",
@@ -275,9 +280,10 @@ const Book = () => {
                       <Dropdown.Toggle
                         variant="outline-dark"
                         id="dropdown-basic"
+                        size="sm"
                       >
                         <PencilSquare size={20} id="iconPadding" />
-                        Edit image
+                        Edit
                       </Dropdown.Toggle>
 
                       <Dropdown.Menu>
@@ -292,7 +298,7 @@ const Book = () => {
                         </Dropdown.Item>
                       </Dropdown.Menu>
                     </Dropdown>
-                  </div>
+                  </span>
                 )}
               </div>
             </Col>
@@ -356,7 +362,10 @@ const Book = () => {
                           Add to wish list
                         </Button>
                       )}
-                      <Button variant="dark">
+                      <Button
+                        variant="dark"
+                        onClick={() => navigate(`/books/${bookId}/payment`)}
+                      >
                         <Cart3 size={20} id="iconPadding" />
                         Rent book
                       </Button>
@@ -368,10 +377,15 @@ const Book = () => {
           </Row>
           <Container>
             <Row className="p-5">
-              <CommentSection bookId={bookId} userName={email} />
+              <CommentSection
+                bookId={bookId}
+                userName={email}
+                isAdmin={admin}
+              />
               <Col></Col>
             </Row>
           </Container>
+
           <ImageModal
             isOpen={isModalOpen}
             onClose={closeImageModal}

@@ -45,7 +45,6 @@ function AddBooksModal(props) {
       }
     };
     data();
-    console.log(rentData);
   }, [rentPeriodInt, rentString]);
 
   const handleBookSubmit = async (e) => {
@@ -71,7 +70,6 @@ function AddBooksModal(props) {
         },
       });
       const bookId = response?.data._id;
-      console.log(bookId);
       setShowAlert(true);
       setTimeout(() => {
         handleClose();

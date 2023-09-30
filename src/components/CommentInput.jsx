@@ -8,6 +8,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import SendIcon from "@mui/icons-material/Send";
 import axios from "../api/axios";
 import HoverRating from "./RatingHover";
+import { common } from "@mui/material/colors";
 
 const CustomInput = React.forwardRef(function CustomInput(props, ref) {
   return (
@@ -24,10 +25,12 @@ export default function InputMultiline({
   bookId,
   userName,
   userCommented,
+  setReload,
 }) {
   const [text, setText] = useState("");
-  const [rating, setRating] = useState(1);
+  const [rating, setRating] = useState();
   const [title, setTitle] = useState("");
+  const [reviewAdded, setReviewAdded] = useState(false);
 
   const [isuserCommented, setIsUserCommented] = React.useState();
   // React.useEffect(() => {
@@ -50,6 +53,14 @@ export default function InputMultiline({
   //   console.log("rating :", rating);
   // }, [rating]);
 
+  React.useEffect(() => {
+    if (rating && title && text) {
+      setReviewAdded(true);
+    } else {
+      setReviewAdded(false);
+    }
+  }, [rating, title, text]);
+
   const handleInputChange = (e) => {
     setText(e.target.value);
     onTextChange(e.target.value);
@@ -66,6 +77,7 @@ export default function InputMultiline({
       };
       const response = await axios.post(`books/reviews/${bookId}`, data);
       console.log("add comment respose : ", response.data);
+      setReload(true);
     } catch (error) {
       console.error(error);
     }
@@ -73,42 +85,71 @@ export default function InputMultiline({
 
   return (
     <>
-      <div>
-        <HoverRating setRating={setRating} />
-        <CustomInput
-          aria-label="Demo input"
-          placeholder="Title"
-          onChange={(e) => setTitle(e.target.value)}
-        />
-        <br />
-        <CustomInput
-          aria-label="Demo input"
-          multiline
-          placeholder="Type something…"
-          value={text}
-          onChange={handleInputChange}
-        />
-        <div>
-          <Stack direction="row" spacing={2}>
-            <Button
-              variant="outlined"
-              startIcon={<DeleteIcon />}
-              onClick={() => setText("")}
-            >
-              Delete
-            </Button>
-            <Button
-              variant="contained"
-              endIcon={<SendIcon />}
-              onClick={onCommentSubmit}
-              disabled={isuserCommented}
-            >
-              Add comment
-            </Button>
-          </Stack>
-          <br /> <br />
+      {/* {!isuserCommented && ( */}
+      <div
+        style={{
+          borderTop: "3px dashed grey",
+          padding: "20px",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <div
+            style={{
+              border: "3px dashed grey",
+              padding: "20px",
+              borderRadius: "10px",
+            }}
+          >
+            <h4>Add a review</h4>
+            <HoverRating setRating={setRating} />
+            <CustomInput
+              aria-label="Demo input"
+              placeholder="Title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+            <br />
+            <CustomInput
+              aria-label="Demo input"
+              multiline
+              placeholder="Type your comment here"
+              value={text}
+              onChange={handleInputChange}
+            />
+            <div>
+              <Stack direction="row" spacing={2}>
+                <Button
+                  variant="outlined"
+                  startIcon={<DeleteIcon />}
+                  onClick={() => {
+                    setText("");
+                    setTitle("");
+                  }}
+                >
+                  Delete
+                </Button>
+                <Button
+                  variant="contained"
+                  endIcon={<SendIcon />}
+                  onClick={onCommentSubmit}
+                  disabled={!reviewAdded || isuserCommented}
+                  // disabled={isuserCommented && reviewAdded}
+                >
+                  Add comment
+                </Button>
+              </Stack>
+              {/* <br /> <br /> */}
+            </div>
+          </div>
         </div>
       </div>
+      {/* )} */}
     </>
   );
 }

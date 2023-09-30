@@ -7,11 +7,12 @@ import axios from "../api/axios";
 const CommentSection = (props) => {
   const [comment, setComment] = useState("");
   const [responseData, setResponseData] = useState("");
+  const [reload, setReload] = useState();
 
   const [commentUser, setCommentUser] = React.useState();
-  React.useEffect(() => {
-    console.log("User commented : ", commentUser);
-  }, [commentUser]);
+  // React.useEffect(() => {
+  //   console.log("User commented : ", commentUser);
+  // }, [commentUser]);
 
   const getReviews = async () => {
     try {
@@ -28,6 +29,11 @@ const CommentSection = (props) => {
     getReviews();
   }, []);
 
+  useEffect(() => {
+    setReload(false);
+    getReviews();
+  }, [reload]);
+
   const handleCommentInput = (text) => {
     setComment(text);
   };
@@ -39,6 +45,7 @@ const CommentSection = (props) => {
         userName={props.userName}
         bookId={props.bookId}
         userCommented={commentUser}
+        setReload={setReload}
       />
       {Array.isArray(responseData) && responseData.length > 0 ? (
         responseData.map((comments) => (
@@ -52,11 +59,17 @@ const CommentSection = (props) => {
             comment={comments.comment}
             setCommentUser={setCommentUser}
             currentUser={props.userName}
+            bookId={props.bookId}
+            isAdmin={props.isAdmin}
+            setReload={setReload}
           />
         ))
       ) : (
         <p>No reviews</p>
       )}
+      <div
+        style={{ borderBottom: "3px dashed grey", paddingTop: "20px" }}
+      ></div>
     </>
   );
 };
