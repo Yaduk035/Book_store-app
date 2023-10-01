@@ -47,6 +47,7 @@ const Book = () => {
   const [userWishlisted, setUserWishlisted] = useState(false);
   const [openAlert, setOpenAlert] = React.useState(false);
   const [successAlertMessage, setSuccessAlertMessage] = useState("");
+  const [avgRating, setAvgRating] = useState();
 
   const [rating, setRating] = useState(4.3);
 
@@ -104,6 +105,7 @@ const Book = () => {
       setRentPeriod(response?.data.rentPeriod);
       setYear(response?.data.year);
       setIsbn(response?.data.ISBNnumber);
+      setAvgRating(response?.data.avgRating);
 
       const wishlistedUsers = JSON.stringify(response?.data.users.wishlist);
       setWishlistData(wishlistedUsers);
@@ -324,13 +326,16 @@ const Book = () => {
                     <div className="centered-div">
                       <br />
                       <h4> {bookName} </h4>
-                      <Typography component="legend">Rating</Typography>
+                      <Typography component="legend" style={{ color: "grey" }}>
+                        Rating :
+                        <span style={{ color: "grey" }}> {avgRating}</span>
+                      </Typography>
                       <Rating
                         name="half-rating-read"
                         defaultValue={rating}
                         precision={0.1}
                         readOnly
-                        value={rating}
+                        value={avgRating}
                       />
                       <br />
                       <br />
@@ -381,6 +386,8 @@ const Book = () => {
                 bookId={bookId}
                 userName={email}
                 isAdmin={admin}
+                avgRating={avgRating}
+                setAvgRating={setAvgRating}
               />
               <Col></Col>
             </Row>

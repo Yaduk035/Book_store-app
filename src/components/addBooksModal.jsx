@@ -5,6 +5,7 @@ import Modal from "react-bootstrap/Modal";
 import { PlusLg } from "react-bootstrap-icons";
 import axios from "../api/axios";
 import { useNavigate } from "react-router-dom";
+import { Trash3Fill } from "react-bootstrap-icons";
 
 function AddBooksModal(props) {
   const [show, setShow] = useState(false);
@@ -100,23 +101,13 @@ function AddBooksModal(props) {
         <Modal.Body className="p-4">
           <Form>
             <Row>
-              <Col md={6} xs={12}>
+              <Col>
                 <Form.Group className="p-2">
                   <Form.Label>Book name :</Form.Label>
                   <Form.Control
                     type="text"
                     value={bookName}
                     onChange={(e) => setBookName(e.target.value)}
-                  ></Form.Control>
-                </Form.Group>
-              </Col>
-              <Col md={6} xs={12}>
-                <Form.Group className="p-2">
-                  <Form.Label>Rent amount (INR) :</Form.Label>
-                  <Form.Control
-                    type="number"
-                    value={rentAmount}
-                    onChange={(e) => setRentAmount(e.target.value)}
                   ></Form.Control>
                 </Form.Group>
               </Col>
@@ -124,11 +115,11 @@ function AddBooksModal(props) {
             <Row>
               <Col md={6} xs={12}>
                 <Form.Group className="p-2">
-                  <Form.Label>Book name :</Form.Label>
+                  <Form.Label>Rent amount (INR) :</Form.Label>
                   <Form.Control
-                    type="text"
-                    value={bookName}
-                    onChange={(e) => setBookName(e.target.value)}
+                    type="number"
+                    value={rentAmount}
+                    onChange={(e) => setRentAmount(e.target.value)}
                   ></Form.Control>
                 </Form.Group>
               </Col>
@@ -296,6 +287,25 @@ function AddBooksModal(props) {
           </Form>
         </Modal.Body>
         <Modal.Footer>
+          <Button
+            size="sm"
+            variant="outline-danger"
+            color="grey"
+            onClick={() => {
+              setAuthor("");
+              setAvailiability("");
+              setBookName("");
+              setDescription("");
+              setGenre("");
+              setIsbnNumber(null);
+              setLanguage("");
+              setRentAmount(null);
+              setYear(null);
+            }}
+          >
+            <Trash3Fill />
+          </Button>
+
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>

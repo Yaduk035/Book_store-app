@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Header from "../components/MuiHeader";
 import { Container, Row } from "react-bootstrap";
-import { Trash, Trash2, Trash3, Trash3Fill } from "react-bootstrap-icons";
+import { Trash3Fill } from "react-bootstrap-icons";
 import PurchaseForm from "../components/PurchaseForm";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";

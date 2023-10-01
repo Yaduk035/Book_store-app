@@ -21,7 +21,6 @@ function CardTemplate(props) {
   const bookId = props.id;
   const localUserId = localStorage?.getItem("userId");
 
-  const [rating, setRating] = useState(4);
   const [userWishlisted, setUserWishlisted] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
   const [successAlertMessage, setSuccessAlertMessage] = useState("");
@@ -164,10 +163,10 @@ function CardTemplate(props) {
                 <Card.Title className="mb-2">{props.title}</Card.Title>
                 <Rating
                   name="half-rating-read"
-                  defaultValue={rating}
+                  defaultValue={0}
                   precision={0.1}
                   readOnly
-                  value={rating}
+                  value={props.avgRating}
                 />
 
                 {/* <Card.Text className="mb-2">id :{props.id} </Card.Text> */}

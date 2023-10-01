@@ -9,8 +9,9 @@ import { Col } from "react-bootstrap";
 import Rating from "@mui/material/Rating";
 import Stack from "@mui/material/Stack";
 import axios from "../api/axios";
-import { CardChecklist, ThreeDotsVertical } from "react-bootstrap-icons";
+import { ThreeDotsVertical } from "react-bootstrap-icons";
 import { DropdownButton, Dropdown } from "react-bootstrap";
+import AlertBar from "./SuccessAlertBar";
 
 const bull = (
   <Box
@@ -25,6 +26,19 @@ export default function CommentCard(props) {
   const [isAdmin, setIdAdmin] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState(false);
   const [enableDelete, setEnableDelete] = React.useState(false);
+  const [openAlert, setOpenAlert] = React.useState(false);
+
+  const showAlert = () => {
+    setOpenAlert(true);
+    setTimeout(() => {
+      setOpenAlert(false);
+      props.setReload(true);
+    }, [2000]);
+  };
+
+  const closeAlert = () => {
+    setOpenAlert(false);
+  };
 
   React.useEffect(() => {
     if (props.currentUser === props.userId) {
@@ -62,7 +76,7 @@ export default function CommentCard(props) {
         withCredentials: true,
       });
       console.log("Delete cmnt response", response.data);
-      props.setReload(true);
+      showAlert();
     } catch (error) {
       console.error(error);
     }
@@ -107,6 +121,12 @@ export default function CommentCard(props) {
           </Dropdown>
         )}
       </CardContent>
+      <AlertBar
+        openAlert={openAlert}
+        closeAlert={closeAlert}
+        alertMessage="Comment Deleted"
+      />
+
       {/* <CardActions>
         <Button size="small">Learn More</Button>
       </CardActions> */}

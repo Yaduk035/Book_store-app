@@ -8,6 +8,7 @@ const CommentSection = (props) => {
   const [comment, setComment] = useState("");
   const [responseData, setResponseData] = useState("");
   const [reload, setReload] = useState();
+  const [avgRating, setAvgRating] = useState();
 
   const [commentUser, setCommentUser] = React.useState();
   // React.useEffect(() => {
@@ -24,10 +25,58 @@ const CommentSection = (props) => {
       console.error(error);
     }
   };
-
   useEffect(() => {
     getReviews();
   }, []);
+
+  function calculateAverageRating(responseData) {
+    let sum = 0;
+    let count = 0;
+    for (let i = 0; i < responseData.length; i++) {
+      const response = responseData[i];
+
+      if (response.hasOwnProperty("rating")) {
+        const rating = parseFloat(response.rating); // Convert the rating to a number
+
+        // Check if the conversion was successful (not NaN)
+        if (!isNaN(rating)) {
+          sum += rating; // Add the rating to the sum
+          count++; // Increment the count of valid ratings
+        }
+      }
+    }
+
+    if (count === 0) {
+      return 0;
+    }
+
+    const averageRating = sum / count; // Calculate the average rating
+    setAvgRating(averageRating);
+  }
+  useEffect(() => {
+    const averageRating = calculateAverageRating(responseData);
+    console.log("Average Rating:", avgRating);
+
+    const updateRating = async () => {
+      try {
+        const newRating = { avgRating: avgRating };
+        const response = await axios.put(`books/${props.bookId}`, newRating);
+        console.log(response.data);
+        props.setAvgRating(avgRating);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    if (avgRating !== props.avgRating) {
+      updateRating();
+    }
+  }, [responseData]);
+
+  // useEffect(() => {
+  //   // const clgData = (responseData);
+  //   console.log(responseData);
+  // }, [responseData]);
 
   useEffect(() => {
     setReload(false);
@@ -46,6 +95,7 @@ const CommentSection = (props) => {
         bookId={props.bookId}
         userCommented={commentUser}
         setReload={setReload}
+        reload={reload}
       />
       {Array.isArray(responseData) && responseData.length > 0 ? (
         responseData.map((comments) => (

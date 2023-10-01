@@ -68,6 +68,7 @@ const BooksPage = () => {
               <CardTemplate
                 key={book._id}
                 id={book._id}
+                avgRating={book.avgRating}
                 title={book.bookName}
                 author={book.author}
                 genre={book.genre}

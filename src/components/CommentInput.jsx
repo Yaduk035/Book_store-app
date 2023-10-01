@@ -9,6 +9,7 @@ import SendIcon from "@mui/icons-material/Send";
 import axios from "../api/axios";
 import HoverRating from "./RatingHover";
 import { common } from "@mui/material/colors";
+import AlertBar from "./SuccessAlertBar";
 
 const CustomInput = React.forwardRef(function CustomInput(props, ref) {
   return (
@@ -26,11 +27,13 @@ export default function InputMultiline({
   userName,
   userCommented,
   setReload,
+  reload,
 }) {
   const [text, setText] = useState("");
   const [rating, setRating] = useState();
   const [title, setTitle] = useState("");
   const [reviewAdded, setReviewAdded] = useState(false);
+  const [openAlert, setOpenAlert] = React.useState(false);
 
   const [isuserCommented, setIsUserCommented] = React.useState();
   // React.useEffect(() => {
@@ -47,7 +50,7 @@ export default function InputMultiline({
     } else {
       setIsUserCommented(false);
     }
-  }, [userCommented]);
+  }, [userCommented, reload]);
 
   // React.useEffect(() => {
   //   console.log("rating :", rating);
@@ -67,6 +70,18 @@ export default function InputMultiline({
     // console.log("Comment : ", text);
   };
 
+  const showAlert = () => {
+    setOpenAlert(true);
+    setTimeout(() => {
+      setOpenAlert(false);
+      setReload(true);
+    }, [2000]);
+  };
+
+  const closeAlert = () => {
+    setOpenAlert(false);
+  };
+
   const onCommentSubmit = async () => {
     try {
       const data = {
@@ -77,7 +92,7 @@ export default function InputMultiline({
       };
       const response = await axios.post(`books/reviews/${bookId}`, data);
       console.log("add comment respose : ", response.data);
-      setReload(true);
+      showAlert();
     } catch (error) {
       console.error(error);
     }
@@ -130,6 +145,7 @@ export default function InputMultiline({
                   onClick={() => {
                     setText("");
                     setTitle("");
+                    setOpenAlert(true);
                   }}
                 >
                   Delete
@@ -144,6 +160,11 @@ export default function InputMultiline({
                   Add comment
                 </Button>
               </Stack>
+              <AlertBar
+                openAlert={openAlert}
+                closeAlert={closeAlert}
+                alertMessage="Comment added"
+              />
               {/* <br /> <br /> */}
             </div>
           </div>
