@@ -11,6 +11,8 @@ import {
   CardChecklist,
   Cart3,
   CheckLg,
+  JournalArrowUp,
+  CurrencyRupee,
 } from "react-bootstrap-icons";
 import ImageModal from "../components/ImageModal";
 import { GridLoader } from "react-spinners";
@@ -20,11 +22,14 @@ import { DeleteOutlineOutlined } from "@mui/icons-material";
 import { AddPhotoAlternateOutlined } from "@mui/icons-material";
 import SuccessAlert from "../components/SuccessAlertBar";
 import CommentSection from "../components/CommentSection";
+import EditBooksModal from "../components/editBooksModal";
 
 const Book = () => {
+  const [bookData, setBookData] = useState();
   const [id, setId] = useState("");
   const [bookName, setBookName] = useState("");
   const [image, setImage] = useState("");
+  const [rentAmount, setRentAmount] = useState();
   const [author, setAuthor] = useState("");
   const [availability, setAvailability] = useState("");
   const [description, setDescription] = useState("");
@@ -44,12 +49,14 @@ const Book = () => {
   const [spinner, setSpinner] = useState(false);
   const [showDelModal, setShowDelModal] = useState(false);
   const [wishlistData, setWishlistData] = useState("");
+  const [rentlistData, setRentlistData] = useState("");
   const [userWishlisted, setUserWishlisted] = useState(false);
+  const [userRentlisted, setUserRentlisted] = useState(false);
   const [openAlert, setOpenAlert] = React.useState(false);
   const [successAlertMessage, setSuccessAlertMessage] = useState("");
   const [avgRating, setAvgRating] = useState();
 
-  const [rating, setRating] = useState(4.3);
+  const [showEditbookModal, setShowEditbookModal] = useState(false);
 
   const navigate = useNavigate();
   const allowedRoles = [1993];
@@ -89,13 +96,26 @@ const Book = () => {
       setUserWishlisted(false);
     }
   };
+  const checkUserRentlisted = async () => {
+    const rentlistArray = rentlistData;
+    // console.log("wish : ", wishlistArray);
+    const userIdStr = JSON.stringify(localUserId);
+    // console.log(userIdStr);
+    if (rentlistArray.includes(userIdStr)) {
+      setUserRentlisted(true);
+    } else {
+      setUserRentlisted(false);
+    }
+  };
 
   const getBookbyId = async () => {
     try {
       setSpinner(true);
       const response = await axios.get(`/books/${bookId}`);
+      setBookData(response?.data);
       setId(response?.data?._id);
       setImage(response?.data?.image);
+      setRentAmount(response?.data.rentAmount);
       setBookName(response?.data.bookName);
       setDescription(response?.data.description);
       setAuthor(response?.data.author);
@@ -108,7 +128,9 @@ const Book = () => {
       setAvgRating(response?.data.avgRating);
 
       const wishlistedUsers = JSON.stringify(response?.data.users.wishlist);
+      const rentlistedUsers = JSON.stringify(response?.data.users.rentlist);
       setWishlistData(wishlistedUsers);
+      setRentlistData(rentlistedUsers);
       // console.log("WishlistData : ", wishlistData);
       // console.log("userEffectresdata", response.data);
       // checkUserWishlisted();
@@ -128,7 +150,8 @@ const Book = () => {
 
   useEffect(() => {
     checkUserWishlisted();
-  }, [wishlistData]);
+    checkUserRentlisted();
+  }, [wishlistData, rentlistData]);
 
   // useEffect(() => {
   //   console.log("is User wishlisted : ", userWishlisted);
@@ -172,6 +195,15 @@ const Book = () => {
     setTimeout(() => {
       setOpenAlert(false);
     }, [3000]);
+  };
+
+  const editBooksClick = () => {
+    setShowEditbookModal(true);
+  };
+
+  const closeEditbookModal = () => {
+    setShowEditbookModal(false);
+    setImageUpdated(true);
   };
 
   //////////////////
@@ -226,6 +258,11 @@ const Book = () => {
   return (
     <>
       <Header />
+      <EditBooksModal
+        showModal={showEditbookModal}
+        closeModal={closeEditbookModal}
+        bookData={bookData}
+      />
       {!alertMsg ? (
         <Container>
           <Row xs={12} md={12} lg={12}>
@@ -291,12 +328,17 @@ const Book = () => {
                       <Dropdown.Menu>
                         <Dropdown.Item onClick={updateImgModal}>
                           <AddPhotoAlternateOutlined />
-                          Update
+                          Update image
                         </Dropdown.Item>
                         <Dropdown.Divider />
                         <Dropdown.Item onClick={openDelImgModal}>
                           <DeleteOutlineOutlined />
-                          Delete
+                          Delete image
+                        </Dropdown.Item>
+                        <Dropdown.Divider />
+                        <Dropdown.Item onClick={editBooksClick}>
+                          <JournalArrowUp size={22} id="iconPadding" />
+                          Edit book info
                         </Dropdown.Item>
                       </Dropdown.Menu>
                     </Dropdown>
@@ -332,13 +374,17 @@ const Book = () => {
                       </Typography>
                       <Rating
                         name="half-rating-read"
-                        defaultValue={rating}
+                        defaultValue={0}
                         precision={0.1}
                         readOnly
                         value={avgRating}
                       />
                       <br />
                       <br />
+                      <p>
+                        Rent :<CurrencyRupee />
+                        {rentAmount}
+                      </p>
                       <p>Author :{author}</p>
                       <p>Genre :{genre}</p>
                       <p>Language :{language}</p>
@@ -367,9 +413,15 @@ const Book = () => {
                           Add to wish list
                         </Button>
                       )}
+                      {/* { (availability === 'Unavailable') &&
+                      
+                       } */}
                       <Button
                         variant="dark"
                         onClick={() => navigate(`/books/${bookId}/payment`)}
+                        disabled={
+                          (availability === "Unavailable") | userRentlisted
+                        }
                       >
                         <Cart3 size={20} id="iconPadding" />
                         Rent book

@@ -12,6 +12,29 @@ const Rentlist = () => {
   const [wishlistedBooks, setWishlistedBooks] = useState("");
   const [reloadList, setReloadList] = useState(false);
 
+  const allowedRoles = [1993];
+  const localUser = localStorage?.getItem("role");
+  const [admin, setAdmin] = useState(localStorage.getItem("role"));
+
+  useEffect(() => {
+    if (localUser) {
+      // Split the localUser string into an array of roles
+      const userRoles = localUser
+        .split(",")
+        .map((role) => parseInt(role.trim(), 10));
+
+      // Use .some() to check if any of the allowedRoles exists in userRoles
+      const roleExists = userRoles.some((role) => allowedRoles.includes(role));
+      if (roleExists) {
+        setAdmin(true);
+      } else {
+        setAdmin(false);
+      }
+    } else {
+      setAdmin(false);
+    }
+  }, []);
+
   const getWishlist = async () => {
     try {
       setSpinner(true);
@@ -56,6 +79,7 @@ const Rentlist = () => {
         ) : Array.isArray(wishlistedBooks) && wishlistedBooks.length > 0 ? (
           wishlistedBooks.map((book) => (
             <WishlistCard
+              disableButton={!admin}
               key={book._id}
               bookId={book._id}
               title={book.bookName}

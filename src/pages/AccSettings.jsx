@@ -22,7 +22,7 @@ import Header from "../components/MuiHeader";
 
 function AccSettings() {
   const [userData, setUserdata] = useState("");
-  const [firstname, setFirstname] = useState(userData.firstname);
+  const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

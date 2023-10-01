@@ -106,14 +106,16 @@ export default function WishlistCard(props) {
           </Grid>
           <CardActions>
             <Stack direction="column" spacing={2}>
-              <Button
-                variant="contained"
-                color="error"
-                startIcon={<DeleteIcon />}
-                onClick={handleOpenModal}
-              >
-                Delete
-              </Button>
+              {!props.disableButton && (
+                <Button
+                  variant="contained"
+                  color="error"
+                  startIcon={<DeleteIcon />}
+                  onClick={handleOpenModal}
+                >
+                  Delete
+                </Button>
+              )}
               <Button
                 variant="outlined"
                 onClick={() => navigate(`/books/${bookId}`)}
