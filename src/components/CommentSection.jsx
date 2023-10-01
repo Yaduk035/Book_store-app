@@ -36,21 +36,18 @@ const CommentSection = (props) => {
       const response = responseData[i];
 
       if (response.hasOwnProperty("rating")) {
-        const rating = parseFloat(response.rating); // Convert the rating to a number
+        const rating = parseFloat(response.rating);
 
-        // Check if the conversion was successful (not NaN)
         if (!isNaN(rating)) {
-          sum += rating; // Add the rating to the sum
-          count++; // Increment the count of valid ratings
+          sum += rating;
+          count++;
         }
       }
     }
-
     if (count === 0) {
       return 0;
     }
-
-    const averageRating = sum / count; // Calculate the average rating
+    const averageRating = sum / count;
     setAvgRating(averageRating);
   }
   useEffect(() => {

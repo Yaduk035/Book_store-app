@@ -12,16 +12,13 @@ import {
   Alert,
   Spinner,
   InputGroup,
-  Modal,
 } from "react-bootstrap";
 import "./css/accSettings.css";
 import { CheckCircleFill, XCircleFill } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
-import Header from "../components/Header";
-
-const signup_url = "/register";
+import Header from "../components/MuiHeader";
 
 function AccSettings() {
   const [userData, setUserdata] = useState("");
@@ -38,25 +35,34 @@ function AccSettings() {
   // const [showVerifyAlert, setShowVerifyAlert] = useState(false);
   const [emailNull, setEmailNull] = useState(true);
   const [errorMsg, setErrormsg] = useState("");
-  const [showModal, setShowModal] = useState(false);
+
+  const userId = localStorage.getItem("userId");
 
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
 
   useEffect(() => {
-    const checkEmailExists = async () => {
-      try {
-        const checkEmail_url = `http://localhost:4000/check/email/${email}`;
-        const response = await axios.get(checkEmail_url);
-        const { exists } = response.data;
-        setEmailUnique(!exists);
-      } catch (error) {
-        console.error(error);
-      }
-    };
+    setFirstname(userData.firstname);
+    setLastname(userData.lastname);
+    setEmail(userData.email);
+  }, [userData]);
 
-    if (email) {
-      checkEmailExists();
+  useEffect(() => {
+    if (email !== userData.email) {
+      const checkEmailExists = async () => {
+        try {
+          const checkEmail_url = `http://localhost:4000/check/email/${email}`;
+          const response = await axios.get(checkEmail_url);
+          const { exists } = response.data;
+          setEmailUnique(!exists);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
+      if (email) {
+        checkEmailExists();
+      }
     }
   }, [email]);
 
@@ -100,23 +106,10 @@ function AccSettings() {
     checkEmailstate();
   }, [email]);
 
-  const handleShow = () => setShowModal(true);
-  const handleClose = () => setShowModal(false);
-
-  const handleSuccessModal = () => {
-    handleShow();
-    setTimeout(() => {
-      handleClose();
-      navigate("/login");
-    }, [2000]);
-  };
-
   useEffect(() => {
     const fetchUserdata = async () => {
       try {
-        const response = await axiosPrivate.get(
-          `/users/6502b24dbcf3ef7ab606f858`
-        );
+        const response = await axiosPrivate.get(`/edituser/${userId}`);
         setUserdata(response.data);
         console.log(response.data);
         console.log(userData);
@@ -139,7 +132,7 @@ function AccSettings() {
         pwd: password,
       };
       const jsonData = JSON.stringify(userData);
-      const response = await axios.post(signup_url, jsonData, {
+      const response = await axios.put(`edituser/${userId}`, jsonData, {
         headers: {
           "Content-Type": "application/json",
           withCredentials: true,
@@ -148,7 +141,6 @@ function AccSettings() {
       setFormSubmit(true);
       setSpinner(false);
       console.log("Response :", response?.data);
-      handleSuccessModal();
     } catch (err) {
       console.error("Response error :", err?.response?.data);
       if (!err?.response) {
@@ -276,7 +268,7 @@ function AccSettings() {
                   {/* {samePass && <br></br>} */}
                 </Form.Group>
                 {formSubmit ? (
-                  <Alert variant="success">Account created successfully!</Alert>
+                  <Alert variant="success">Account updated.</Alert>
                 ) : (
                   <br />
                 )}
@@ -318,44 +310,6 @@ function AccSettings() {
                 )}
               </Form>
               {/* Success modal */}
-              <Modal
-                show={showModal}
-                onHide={handleClose}
-                keyboard={false}
-                centered
-              >
-                <Modal.Header closeButton>
-                  <Modal.Title>Account created!</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                  <Container fluid>
-                    <Row>
-                      <Col>
-                        <Container fluid>
-                          <span>Redirecting to Login page...</span>
-                        </Container>
-                        <Container fluid>
-                          <CountdownCircleTimer
-                            isPlaying
-                            duration={3}
-                            size={50}
-                            strokeWidth={7}
-                            colors={[
-                              "#004777",
-                              "#F7B801",
-                              "#A30000",
-                              "#A30000",
-                            ]}
-                            colorsTime={[7, 5, 2, 0]}
-                          >
-                            {({ remainingTime }) => remainingTime}
-                          </CountdownCircleTimer>
-                        </Container>
-                      </Col>
-                    </Row>
-                  </Container>
-                </Modal.Body>
-              </Modal>
             </div>
           </div>
         </Container>
