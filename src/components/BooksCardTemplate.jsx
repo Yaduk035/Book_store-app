@@ -83,8 +83,8 @@ function CardTemplate(props) {
   };
 
   return (
-    <Col xs={12} md={6} lg={6} xl={6} xxl={4}>
-      <div style={{ padding: "10px" }}>
+    <Col xs={12} md={6} lg={6} xl={4} xxl={4}>
+      <div style={{ padding: "6px" }}>
         <Card
           onClick={navigateToBook}
           style={
@@ -93,13 +93,13 @@ function CardTemplate(props) {
                   transform: "scale(1.05)",
                   boxShadow: "0 5px 20px rgba(0, 0, 0, 0.4)",
                   borderRadius: "20px",
-                  border: "3px dashed rgba(44, 41, 41, 0.400",
+                  border: "3px  rgba(44, 41, 41, 0.400",
                   cursor: "pointer",
                 }
               : {
                   transition: "all 0.3s ease",
                   transform: "scale(1)",
-                  border: "3px dashed rgba(44, 41, 41, 0.400",
+                  border: "3px  rgba(44, 41, 41, 0.400",
                   borderRadius: "10px",
                 }
           }
@@ -107,18 +107,21 @@ function CardTemplate(props) {
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
         >
-          <Row xl={6}>
+          <Row>
             <Col
               style={{
-                minWidth: "190px",
+                width: "130px",
                 margin: "10px",
-                minHeight: "190px",
+                height: "180px",
+                alignContent: "center",
+                borderRight: "1px dashed grey",
               }}
               className="d-flex justify-content-center"
+              xl={3}
             >
               <Card.Img variant="top" src={props.image ? props.image : noImg} />
             </Col>
-            <Col style={{ minWidth: "200px" }}>
+            <Col style={{ minWidth: "200px" }} xl={3}>
               <span
                 style={{
                   position: "absolute",
@@ -157,10 +160,12 @@ function CardTemplate(props) {
                   </DropdownButton>
                 </Dropdown>
               </span>
-              <Card.Body
-                style={{ padding: "8%", backgroundColor: "aliceblue" }}
-              >
+              <Card.Body style={{ padding: "8%" }}>
+                <Card.Text className="mb-2 text-muted">{props.genre}</Card.Text>
                 <Card.Title className="mb-2">{props.title}</Card.Title>
+                {/* <CardalignItems.Text muted className="mb-2 text-muted">
+                  Rating :{props.avgRating}{" "}
+                </CardalignItems.Text> */}
                 <Rating
                   name="half-rating-read"
                   defaultValue={0}
@@ -168,17 +173,21 @@ function CardTemplate(props) {
                   readOnly
                   value={props.avgRating}
                 />
+                <br />
 
                 {/* <Card.Text className="mb-2">id :{props.id} </Card.Text> */}
-                <Card.Text className="mb-2">Author :{props.author} </Card.Text>
-                <Card.Text className="mb-2">Genre :{props.genre} </Card.Text>
-                {/* <Card.Text className="mb-2">Language :{props.language} </Card.Text> */}
-                <Card.Text className="mb-2">
-                  Rental period :{props.rentPeriod}
+                <Card.Text className="mb-2 text-muted">
+                  {props.author}{" "}
                 </Card.Text>
                 <Card.Text className="mb-2">
+                  Language :{props.language}{" "}
+                </Card.Text>
+                <Card.Text className="mb-2">
+                  Year released:{props.year}
+                </Card.Text>
+                {/* <Card.Text className="mb-2">
                   Availability :{props.availabilityStatus}
-                </Card.Text>
+                </Card.Text> */}
               </Card.Body>
             </Col>
           </Row>
