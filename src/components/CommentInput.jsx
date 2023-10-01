@@ -73,8 +73,8 @@ export default function InputMultiline({
   const showAlert = () => {
     setOpenAlert(true);
     setTimeout(() => {
-      setOpenAlert(false);
       setReload(true);
+      setOpenAlert(false);
     }, [2000]);
   };
 
