@@ -99,6 +99,7 @@ const HomePage = () => {
                   updatedAt={book.updatedAt}
                   createdAt={book.createdAt}
                   image={book.image}
+                  rentAmount={book.rentAmount}
                 />
               ))
             ) : (

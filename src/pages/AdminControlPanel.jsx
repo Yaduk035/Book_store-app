@@ -1,44 +1,28 @@
 import React, { useEffect, useState } from "react";
 import Header from "../components/MuiHeader";
+import { Container } from "@mui/material";
+import { Dropdown } from "react-bootstrap";
+import { SyncLoader } from "react-spinners";
 import axios from "../api/axios";
 import WishlistCard from "../components/WishlistCard";
-import { Container } from "@mui/material";
-import { SyncLoader } from "react-spinners";
+import RentedUsersModal from "../components/RentedUsersModal";
 
-const Rentlist = () => {
+const AdminControlPanel = () => {
   const [spinner, setSpinner] = useState(false);
-
-  const userId = localStorage.getItem("userId");
   const [wishlistedBooks, setWishlistedBooks] = useState("");
   const [reloadList, setReloadList] = useState(false);
-
-  const allowedRoles = [1993];
-  const localUser = localStorage?.getItem("role");
-  const [admin, setAdmin] = useState(localStorage.getItem("role"));
+  const [openUserModal, setOpenUserModal] = useState(false);
+  const [modalId, setModalId] = useState("");
+  const [bookTitle, setBookTitle] = useState("");
 
   useEffect(() => {
-    if (localUser) {
-      // Split the localUser string into an array of roles
-      const userRoles = localUser
-        .split(",")
-        .map((role) => parseInt(role.trim(), 10));
-
-      // Use .some() to check if any of the allowedRoles exists in userRoles
-      const roleExists = userRoles.some((role) => allowedRoles.includes(role));
-      if (roleExists) {
-        setAdmin(true);
-      } else {
-        setAdmin(false);
-      }
-    } else {
-      setAdmin(false);
-    }
-  }, []);
+    console.log("Modal Id :", modalId);
+  }, [modalId]);
 
   const getRentlist = async () => {
     try {
       setSpinner(true);
-      const response = await axios.get(`books/userrentlist/${userId}`);
+      const response = await axios.get(`books/`);
 
       setWishlistedBooks(response.data);
       setSpinner(false);
@@ -60,9 +44,34 @@ const Rentlist = () => {
     getRentlist();
   }, [reloadList]);
 
+  const openModal = () => {
+    setOpenUserModal(true);
+  };
+  //   const closeModal = () => {
+  //     setOpenUserModal(false);
+  //   };
+
   return (
     <>
       <Header />
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          margin: "20px",
+        }}
+      >
+        <Dropdown>
+          <Dropdown.Toggle variant="outline-dark" size="xl" id="dropdown-basic">
+            Sort by
+          </Dropdown.Toggle>
+
+          <Dropdown.Menu>
+            <Dropdown.Item href="#/action-1">Book</Dropdown.Item>
+            <Dropdown.Item href="#/action-2">User</Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>{" "}
+      </div>
       <Container maxWidth="lg">
         {spinner ? (
           <div
@@ -78,7 +87,8 @@ const Rentlist = () => {
         ) : Array.isArray(wishlistedBooks) && wishlistedBooks.length > 0 ? (
           wishlistedBooks.map((book) => (
             <WishlistCard
-              disableButton={!admin}
+              disableButton={true}
+              showUser={true}
               key={book._id}
               bookId={book._id}
               title={book.bookName}
@@ -95,14 +105,23 @@ const Rentlist = () => {
               createdAt={book.createdAt}
               image={book.image}
               reload={reload}
+              openModal={openModal}
+              setModalId={setModalId}
+              setBookTitle={setBookTitle}
             />
           ))
         ) : (
           <p>No book Rented</p>
         )}
       </Container>
+      <RentedUsersModal
+        openModal={openUserModal}
+        closeModal={setOpenUserModal}
+        modalId={modalId}
+        bookTitle={bookTitle}
+      />
     </>
   );
 };
 
-export default Rentlist;
+export default AdminControlPanel;

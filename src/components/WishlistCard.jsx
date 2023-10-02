@@ -6,6 +6,7 @@ import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import { Typography, Stack } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { PermContactCalendar } from "@mui/icons-material";
 import { Grid } from "@mui/material";
 import DeleteConfirmModal from "./listDeleteModal";
 import axios from "../api/axios";
@@ -114,6 +115,20 @@ export default function WishlistCard(props) {
                   onClick={handleOpenModal}
                 >
                   Delete
+                </Button>
+              )}
+              {props.showUser && (
+                <Button
+                  variant="contained"
+                  color="error"
+                  onClick={() => {
+                    props.setModalId(bookId);
+                    props.setBookTitle(props.title);
+                    props.openModal();
+                  }}
+                  startIcon={<PermContactCalendar />}
+                >
+                  Show users
                 </Button>
               )}
               <Button

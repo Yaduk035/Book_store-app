@@ -12,7 +12,11 @@ import "./css/BookCardCss.css";
 import axios from "../api/axios";
 import noImg from "../images/icons/image_not_found-2.jpg";
 import { Rating } from "@mui/material";
-import { CardChecklist, ThreeDotsVertical } from "react-bootstrap-icons";
+import {
+  CardChecklist,
+  ThreeDotsVertical,
+  CurrencyRupee,
+} from "react-bootstrap-icons";
 import SuccessAlert from "../components/SuccessAlertBar";
 
 function CardTemplate(props) {
@@ -180,10 +184,10 @@ function CardTemplate(props) {
                   {props.author}{" "}
                 </Card.Text>
                 <Card.Text className="mb-2">
-                  Language :{props.language}{" "}
+                  Rent <CurrencyRupee /> :{props.rentAmount}
                 </Card.Text>
                 <Card.Text className="mb-2">
-                  Year released:{props.year}
+                  Language :{props.language}{" "}
                 </Card.Text>
                 {/* <Card.Text className="mb-2">
                   Availability :{props.availabilityStatus}

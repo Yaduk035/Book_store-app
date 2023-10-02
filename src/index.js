@@ -5,6 +5,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import "./bootstrap.css";
 import { AuthProvider } from "./context/AuthProvider";
+import { DataProvider } from "./context/DataContext";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -12,9 +13,11 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <AuthProvider>
-        <Routes>
-          <Route path="/*" element={<App />} />
-        </Routes>
+        <DataProvider>
+          <Routes>
+            <Route path="/*" element={<App />} />
+          </Routes>
+        </DataProvider>
       </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>

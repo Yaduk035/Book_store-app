@@ -235,15 +235,23 @@ function ResponsiveAppBar() {
             >
               <MenuItem onClick={handleCloseUserMenu}>
                 <Typography textAlign="center">
-                  Hello {name || "user"}
+                  <span style={{ color: "grey" }}>Hello</span> {name || "user"}
                 </Typography>
               </MenuItem>
-              <MenuItem onClick={handleCloseUserMenu}>
+              <MenuItem
+                onClick={handleCloseUserMenu}
+                style={{ cursor: "default" }}
+              >
                 <Typography textAlign="center" color={"grey"}>
                   {admin && <div> Admin account</div>}
                 </Typography>
               </MenuItem>
-              <Divider sx={{ my: 0.5 }} />
+              <MenuItem onClick={() => navigate("/admincontrols")}>
+                <Typography textAlign="center">
+                  {admin && <div> Admin Control Panel</div>}
+                </Typography>
+              </MenuItem>
+              <Divider variant="middle" />{" "}
               <MenuItem onClick={() => navigate("/rentedbooks")}>
                 <Typography textAlign="center">Rented Books</Typography>
               </MenuItem>
