@@ -3,6 +3,7 @@ import InputMultiline from "../components/CommentInput";
 import CommentCard from "./CommentCard";
 import { Container } from "@mui/material";
 import axios from "../api/axios";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 const CommentSection = (props) => {
   const [comment, setComment] = useState("");
@@ -11,6 +12,8 @@ const CommentSection = (props) => {
   const [avgRating, setAvgRating] = useState();
 
   const [commentUser, setCommentUser] = React.useState();
+  const axiosPrivate = useAxiosPrivate();
+
   // React.useEffect(() => {
   //   console.log("User commented : ", commentUser);
   // }, [commentUser]);
@@ -18,7 +21,7 @@ const CommentSection = (props) => {
   const getReviews = async () => {
     try {
       const id = props.bookId;
-      const response = await axios.get(`books/reviews/${id}`);
+      const response = await axiosPrivate.get(`books/reviews/${id}`);
       setResponseData(response.data.reviews);
       //   console.log("response data:", response.data.reviews);
     } catch (error) {
@@ -57,7 +60,10 @@ const CommentSection = (props) => {
     const updateRating = async () => {
       try {
         const newRating = { avgRating: avgRating };
-        const response = await axios.put(`books/${props.bookId}`, newRating);
+        const response = await axiosPrivate.put(
+          `books/${props.bookId}`,
+          newRating
+        );
         console.log(response.data);
         props.setAvgRating(avgRating);
       } catch (error) {

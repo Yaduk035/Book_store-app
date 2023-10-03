@@ -39,7 +39,7 @@ const AdminControlPanel = () => {
   const getRentlist = async () => {
     try {
       setSpinner(true);
-      const response = await axios.get(`books/`);
+      const response = await axiosPrivate.get(`books/`);
 
       setWishlistedBooks(response.data);
       addToAdminRentlist(response.data);
@@ -98,31 +98,36 @@ const AdminControlPanel = () => {
     <>
       <Header />
       <Container>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            margin: "20px",
-          }}
-        >
-          <Dropdown>
-            <Dropdown.Toggle
-              variant="outline-dark"
-              size="xl"
-              id="dropdown-basic"
+        <div>
+          <span style={{ textAlign: "center", marginTop: "20px" }}>
+            <h2>All books</h2>
+          </span>
+          <span>
+            <Dropdown
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                marginBottom: "20px",
+              }}
             >
-              Sort by
-            </Dropdown.Toggle>
+              <Dropdown.Toggle
+                variant="outline-dark"
+                size="xl"
+                id="dropdown-basic"
+              >
+                Sort by
+              </Dropdown.Toggle>
 
-            <Dropdown.Menu>
-              <Dropdown.Item onClick={() => setSortByBooks(true)}>
-                Book
-              </Dropdown.Item>
-              <Dropdown.Item onClick={() => setSortByBooks(false)}>
-                User
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>{" "}
+              <Dropdown.Menu>
+                <Dropdown.Item onClick={() => setSortByBooks(true)}>
+                  Book
+                </Dropdown.Item>
+                <Dropdown.Item onClick={() => setSortByBooks(false)}>
+                  User
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>{" "}
+          </span>
         </div>
       </Container>
       <Container maxWidth="lg">
@@ -162,6 +167,8 @@ const AdminControlPanel = () => {
                 openModal={openModal}
                 setModalId={setModalId}
                 setBookTitle={setBookTitle}
+                rentmsgHeader="Wishlist"
+                modalType="wishlist"
               />
             ))
           ) : (

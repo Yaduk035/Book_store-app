@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import axios from "../api/axios";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import UsersList from "./UsersList";
 import { PropagateLoader, RotateLoader } from "react-spinners";
 
@@ -14,6 +15,7 @@ function RentedUsersModal(props) {
   const [rentedUsers, setRentedUsers] = useState("");
   const [spinner, setSpinner] = useState(false);
   const [reloadList, setReloadList] = useState(false);
+  const axiosPrivate = useAxiosPrivate();
 
   useEffect(() => {
     setLgShow(props.openModal);
@@ -39,7 +41,9 @@ function RentedUsersModal(props) {
   const getRentlist = async () => {
     try {
       setSpinner(true);
-      const response = await axios.get(`books/bookrentlist/${props.modalId}`);
+      const response = await axiosPrivate.get(
+        `books/bookrentlist/${props.modalId}`
+      );
       setRentedUsers(response.data);
       setSpinner(false);
     } catch (error) {

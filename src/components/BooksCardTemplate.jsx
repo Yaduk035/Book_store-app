@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "./css/BookCardCss.css";
 import axios from "../api/axios";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import noImg from "../images/icons/image_not_found-2.jpg";
 import { Rating } from "@mui/material";
 import {
@@ -24,6 +25,7 @@ function CardTemplate(props) {
   const navigate = useNavigate();
   const bookId = props.id;
   const localUserId = localStorage?.getItem("userId");
+  const axiosPrivate = useAxiosPrivate();
 
   const [userWishlisted, setUserWishlisted] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
@@ -49,7 +51,7 @@ function CardTemplate(props) {
       setSuccessAlertMessage("Book added to wishlist");
       const wishlistData = { userId };
 
-      const response = await axios.post(
+      const response = await axiosPrivate.post(
         `books/wishlist/${bookId}`,
         wishlistData,
         {
@@ -70,7 +72,7 @@ function CardTemplate(props) {
     try {
       const reqData = { userId: localUserId };
       setSuccessAlertMessage("Book removed from wishlist");
-      const response = await axios.delete(`books/wishlist/${bookId}`, {
+      const response = await axiosPrivate.delete(`books/wishlist/${bookId}`, {
         headers: {
           "Content-Type": "application/json",
         },

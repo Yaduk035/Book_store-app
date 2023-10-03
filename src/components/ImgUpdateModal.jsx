@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button, Modal, Spinner, Alert, Row, Col } from "react-bootstrap";
 import axios from "../api/axios";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { FileUploader } from "react-drag-drop-files";
 import {
   Trash3Fill,
@@ -21,6 +22,7 @@ function ImgUpdateModal(props) {
   const [loading, setLoading] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [file, setFile] = useState(null);
+  const axiosPrivate = useAxiosPrivate();
 
   const [cropping, setCropping] = useState(false);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -65,7 +67,7 @@ function ImgUpdateModal(props) {
     try {
       setUpdateImg(croppedImage);
       const imgData = { image: updateImg };
-      const response = await axios.put(`/books/${props.id}`, imgData, {
+      const response = await axiosPrivate.put(`/books/${props.id}`, imgData, {
         headers: {
           "Content-Type": "application/json",
           withCredentials: true,

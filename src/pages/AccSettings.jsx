@@ -132,7 +132,7 @@ function AccSettings() {
         pwd: password,
       };
       const jsonData = JSON.stringify(userData);
-      const response = await axios.put(`edituser/${userId}`, jsonData, {
+      const response = await axiosPrivate.put(`edituser/${userId}`, jsonData, {
         headers: {
           "Content-Type": "application/json",
           withCredentials: true,

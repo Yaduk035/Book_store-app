@@ -10,6 +10,7 @@ import { PermContactCalendar } from "@mui/icons-material";
 import { Grid } from "@mui/material";
 import DeleteConfirmModal from "./listDeleteModal";
 import axios from "../api/axios";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { useNavigate } from "react-router-dom";
 import SuccessAlert from "./SuccessAlertBar";
 
@@ -26,6 +27,7 @@ export default function WishlistCard(props) {
   const [openModal, setOpenModal] = React.useState(false);
   const [openAlert, setOpenAlert] = React.useState(false);
   const [spinner, setSpinner] = React.useState(true);
+  const axiosPrivate = useAxiosPrivate();
 
   const navigate = useNavigate();
 
@@ -55,13 +57,16 @@ export default function WishlistCard(props) {
     try {
       setSpinner(true);
       const reqData = { userId: user };
-      const response = await axios.delete(`books/${props.url}/${bookId}`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        data: reqData,
-        withCredentials: true,
-      });
+      const response = await axiosPrivate.delete(
+        `books/${props.url}/${bookId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          data: reqData,
+          withCredentials: true,
+        }
+      );
       console.log(response.data);
       setSpinner(false);
       showAlert();
@@ -146,7 +151,9 @@ export default function WishlistCard(props) {
         closeModal={handleCloseModal}
         showModal={openModal}
         deleteFromWishlist={deleteFromWishlist}
-        modalType="wishlist"
+        modalType={props.modalType}
+        rentmsgHeader={props.rentmsgHeader}
+        rentMsg={props.rentMsg}
       />
       <SuccessAlert
         openAlert={openAlert}

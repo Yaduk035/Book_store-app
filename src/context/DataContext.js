@@ -5,7 +5,7 @@ const DataContext = createContext({});
 export const DataProvider = ({ children }) => {
   const [contBook, setBooks] = useState("");
   const [adminRentList, setAdminRentList] = useState("");
-  const [adminSortBy, setAdminSortBy] = useState();
+  const [adminSortBy, setAdminSortBy] = useState(true);
 
   const addBook = (newBook) => {
     setBooks(newBook);

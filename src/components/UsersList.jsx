@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Badge from "react-bootstrap/Badge";
 import ListGroup from "react-bootstrap/ListGroup";
 import axios from "../api/axios";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { Button } from "@mui/material";
 import Modal from "react-bootstrap/Modal";
 import SuccessAlert from "./SuccessAlertBar";
@@ -11,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 const UsersList = (props) => {
   const [show, setShow] = useState(false);
   const [openAlert, setOpenAlert] = React.useState(false);
+  const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
 
   const handleClose = () => setShow(false);
@@ -18,13 +20,16 @@ const UsersList = (props) => {
   const delFromRentlist = async () => {
     try {
       const reqData = { userId: props.userId };
-      const response = await axios.delete(`books/rentlist/${props.bookId}`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        data: reqData,
-        withCredentials: true,
-      });
+      const response = await axiosPrivate.delete(
+        `books/rentlist/${props.bookId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          data: reqData,
+          withCredentials: true,
+        }
+      );
       console.log(response.data);
     } catch (error) {
       console.error(error);

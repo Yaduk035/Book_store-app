@@ -7,6 +7,7 @@ import { Button, Stack } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SendIcon from "@mui/icons-material/Send";
 import axios from "../api/axios";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import HoverRating from "./RatingHover";
 import { common } from "@mui/material/colors";
 import AlertBar from "./SuccessAlertBar";
@@ -35,6 +36,7 @@ export default function InputMultiline({
   const [reviewAdded, setReviewAdded] = useState(false);
   const [openAlert, setOpenAlert] = React.useState(false);
 
+  const axiosPrivate = useAxiosPrivate();
   const [isuserCommented, setIsUserCommented] = React.useState();
   // React.useEffect(() => {
   //   if (props.userId === props.currentUser) {
@@ -90,7 +92,7 @@ export default function InputMultiline({
         comment: text,
         commentTitle: title,
       };
-      const response = await axios.post(`books/reviews/${bookId}`, data);
+      const response = await axiosPrivate.post(`books/reviews/${bookId}`, data);
       console.log("add comment respose : ", response.data);
       showAlert();
     } catch (error) {

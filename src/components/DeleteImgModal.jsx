@@ -2,9 +2,11 @@ import { useState, useEffect } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import axios from "../api/axios";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 function DeleteImgModal(props) {
   const [show, setShow] = useState(false);
+  const axiosPrivate = useAxiosPrivate();
 
   useEffect(() => {
     setShow(props.showModal);
@@ -18,7 +20,7 @@ function DeleteImgModal(props) {
   const deleteImage = async () => {
     try {
       const imgData = { image: "" };
-      await axios.put(`/books/${props.id}`, imgData, {
+      await axiosPrivate.put(`/books/${props.id}`, imgData, {
         headers: {
           "Content-Type": "application/json",
           withCredentials: true,

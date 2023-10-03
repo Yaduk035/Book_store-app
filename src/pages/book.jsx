@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Header from "../components/MuiHeader";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "../api/axios";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { Container, Row, Col, Button, Alert, Dropdown } from "react-bootstrap";
 import noImg from "../images/icons/image_not_found-2.jpg";
 import ImgUpdateModal from "../components/ImgUpdateModal";
@@ -65,6 +66,7 @@ const Book = () => {
   const localUser = localStorage?.getItem("role");
   const localUserId = localStorage?.getItem("userId");
   const [admin, setAdmin] = useState(localStorage.getItem("role"));
+  const axiosPrivate = useAxiosPrivate();
 
   useEffect(() => {
     if (localUser) {
@@ -111,7 +113,7 @@ const Book = () => {
   const getBookbyId = async () => {
     try {
       setSpinner(true);
-      const response = await axios.get(`/books/${bookId}`);
+      const response = await axiosPrivate.get(`/books/${bookId}`);
       setBookData(response?.data);
       setId(response?.data?._id);
       setImage(response?.data?.image);
@@ -213,7 +215,7 @@ const Book = () => {
       const userId = localUserId;
       const wishlistData = { userId };
 
-      const response = await axios.post(
+      const response = await axiosPrivate.post(
         `books/wishlist/${bookId}`,
         wishlistData,
         {
@@ -236,7 +238,7 @@ const Book = () => {
     try {
       const bookId = id;
       const reqData = { userId: localUserId };
-      const response = await axios.delete(`books/wishlist/${bookId}`, {
+      const response = await axiosPrivate.delete(`books/wishlist/${bookId}`, {
         headers: {
           "Content-Type": "application/json",
         },

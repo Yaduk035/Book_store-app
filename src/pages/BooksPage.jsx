@@ -3,19 +3,21 @@ import Header from "../components/MuiHeader";
 import CardTemplate from "../components/BooksCardTemplate";
 import { Container, Row } from "react-bootstrap";
 import axios from "../api/axios";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { SyncLoader } from "react-spinners";
 import { useData } from "../context/DataContext";
 
 const BooksPage = () => {
   const [books, setBooks] = useState("");
   const [spinner, setSpinner] = useState(false);
+  const axiosPrivate = useAxiosPrivate();
 
   const { addBook, contBook } = useData();
 
   const bookData = async () => {
     setSpinner(true);
     try {
-      const response = await axios.get("/books");
+      const response = await axiosPrivate.get("/books");
       console.log("Data :", response.data);
       const formattedData = response.data.map((book) => {
         const createdAt =

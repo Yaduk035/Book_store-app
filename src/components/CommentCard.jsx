@@ -9,6 +9,7 @@ import { Col } from "react-bootstrap";
 import Rating from "@mui/material/Rating";
 import Stack from "@mui/material/Stack";
 import axios from "../api/axios";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { ThreeDotsVertical } from "react-bootstrap-icons";
 import { DropdownButton, Dropdown } from "react-bootstrap";
 import AlertBar from "./SuccessAlertBar";
@@ -27,6 +28,7 @@ export default function CommentCard(props) {
   const [currentUser, setCurrentUser] = React.useState(false);
   const [enableDelete, setEnableDelete] = React.useState(false);
   const [openAlert, setOpenAlert] = React.useState(false);
+  const axiosPrivate = useAxiosPrivate();
 
   const showAlert = () => {
     setOpenAlert(true);
@@ -68,7 +70,7 @@ export default function CommentCard(props) {
       const commentId = props.commentId;
       const bookId = props.bookId;
       const reqData = { reviewId: commentId };
-      const response = await axios.delete(`books/reviews/${bookId}`, {
+      const response = await axiosPrivate.delete(`books/reviews/${bookId}`, {
         headers: {
           "Content-Type": "application/json",
         },

@@ -16,6 +16,7 @@ import {
 import { Form } from "react-bootstrap";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "../api/axios";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import SuccessAlert from "../components/SuccessAlertBar";
 
 const PurchasePage = () => {
@@ -25,6 +26,7 @@ const PurchasePage = () => {
   const { bookId } = useParams();
   const localUserId = localStorage.getItem("userId");
   const navigate = useNavigate();
+  const axiosPrivate = useAxiosPrivate();
 
   const [alignment, setAlignment] = useState("");
   const [submitButton, setSubmitButton] = useState(false);
@@ -66,7 +68,7 @@ const PurchasePage = () => {
 
   const bookById = async () => {
     try {
-      const response = await axios.get(`/books/${bookId}`);
+      const response = await axiosPrivate.get(`/books/${bookId}`);
       setBook_Id(response.data._id);
       setBookName(response.data.bookName);
       setImage(response.data.image);
@@ -90,7 +92,7 @@ const PurchasePage = () => {
       const userId = localUserId;
       const rentlistData = { userId };
 
-      const response = await axios.post(
+      const response = await axiosPrivate.post(
         `books/rentlist/${bookId}`,
         rentlistData,
         {

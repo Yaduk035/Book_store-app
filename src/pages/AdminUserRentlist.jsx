@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Header from "../components/MuiHeader";
 import axios from "../api/axios";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import WishlistCard from "../components/WishlistCard";
 import { Container } from "@mui/material";
 import { SyncLoader } from "react-spinners";
@@ -9,6 +10,7 @@ import { useParams } from "react-router-dom";
 const AdminPanelRentlist = () => {
   const [spinner, setSpinner] = useState(false);
   const { userId } = useParams();
+  const axiosPrivate = useAxiosPrivate();
 
   const [wishlistedBooks, setWishlistedBooks] = useState("");
   const [reloadList, setReloadList] = useState(false);
@@ -39,7 +41,7 @@ const AdminPanelRentlist = () => {
   const getRentlist = async () => {
     try {
       setSpinner(true);
-      const response = await axios.get(`books/userrentlist/${userId}`);
+      const response = await axiosPrivate.get(`books/userrentlist/${userId}`);
 
       setWishlistedBooks(response.data);
       setSpinner(false);
@@ -101,6 +103,8 @@ const AdminPanelRentlist = () => {
               createdAt={book.createdAt}
               image={book.image}
               reload={reload}
+              rentmsgHeader="Rentlist"
+              modalType="rentlist"
             />
           ))
         ) : (

@@ -4,6 +4,7 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { ArrowClockwise } from "react-bootstrap-icons";
 import axios from "../api/axios";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { useNavigate } from "react-router-dom";
 import { Trash3Fill } from "react-bootstrap-icons";
 
@@ -25,6 +26,7 @@ function EditBooksModal(props) {
   const [year, setYear] = useState();
   const [description, setDescription] = useState("");
 
+  const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -84,7 +86,7 @@ function EditBooksModal(props) {
         description: description,
       };
       const jsonData = JSON.stringify(bookData);
-      const response = await axios.put(`books/${bookId}`, jsonData, {
+      const response = await axiosPrivate.put(`books/${bookId}`, jsonData, {
         headers: {
           "Content-Type": "application/json",
           withCredentials: true,

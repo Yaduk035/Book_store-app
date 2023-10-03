@@ -49,7 +49,7 @@ export default function DeleteConfirmModal(props) {
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Wishlist
+            {props.rentmsgHeader || "Wishlist"}
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
             Remove book from {props.modalType}?

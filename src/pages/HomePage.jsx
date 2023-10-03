@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "../api/axios";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { Container, Button, Row, Col } from "react-bootstrap";
 import Header from "../components/MuiHeader";
 import "./css/home.css";
@@ -22,11 +23,13 @@ const HomePage = () => {
   const [books, setBooks] = useState("");
   const [spinner, setSpinner] = useState(false);
 
+  const axiosPrivate = useAxiosPrivate();
+
   useEffect(() => {
     const bookData = async () => {
       setSpinner(true);
       try {
-        const response = await axios.get("/books/recentbooks");
+        const response = await axiosPrivate.get("/books/recentbooks");
         console.log("Data :", response.data);
         const formattedData = response.data.map((book) => {
           const createdAt =
