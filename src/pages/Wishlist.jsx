@@ -42,6 +42,7 @@ const Wishlist = () => {
     <>
       <Header />
       <Container maxWidth="lg">
+        <h3 style={{ textAlign: "center", padding: "20px" }}>Wish list</h3>
         {spinner ? (
           <div
             style={{
@@ -56,6 +57,7 @@ const Wishlist = () => {
         ) : Array.isArray(wishlistedBooks) && wishlistedBooks.length > 0 ? (
           wishlistedBooks.map((book) => (
             <WishlistCard
+              url="wishlist"
               key={book._id}
               bookId={book._id}
               title={book.bookName}

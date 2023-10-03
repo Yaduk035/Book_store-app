@@ -64,6 +64,9 @@ const Rentlist = () => {
     <>
       <Header />
       <Container maxWidth="lg">
+        <h3 style={{ textAlign: "center", padding: "20px" }}>
+          Currently rented books
+        </h3>
         {spinner ? (
           <div
             style={{
@@ -78,6 +81,7 @@ const Rentlist = () => {
         ) : Array.isArray(wishlistedBooks) && wishlistedBooks.length > 0 ? (
           wishlistedBooks.map((book) => (
             <WishlistCard
+              url="rentlist"
               disableButton={!admin}
               key={book._id}
               bookId={book._id}

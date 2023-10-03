@@ -91,7 +91,7 @@ function ResponsiveAppBar() {
             variant="h6"
             noWrap
             component="a"
-            href="/"
+            onClick={() => navigate("/")}
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -101,6 +101,7 @@ function ResponsiveAppBar() {
               color: "inherit",
               textDecoration: "none",
             }}
+            style={{ cursor: "pointer" }}
           >
             BOOKSTORE
           </Typography>
@@ -243,15 +244,17 @@ function ResponsiveAppBar() {
                 style={{ cursor: "default" }}
               >
                 <Typography textAlign="center" color={"grey"}>
-                  {admin && <div> Admin account</div>}
+                  {admin ? <div> Admin account</div> : <div>User account</div>}
                 </Typography>
               </MenuItem>
-              <MenuItem onClick={() => navigate("/admincontrols")}>
-                <Typography textAlign="center">
-                  {admin && <div> Admin Control Panel</div>}
-                </Typography>
-              </MenuItem>
-              <Divider variant="middle" />{" "}
+              {admin && (
+                <MenuItem onClick={() => navigate("/admincontrols")}>
+                  <Typography textAlign="center">
+                    Admin Control Panel
+                  </Typography>
+                </MenuItem>
+              )}
+              <Divider variant="middle" />
               <MenuItem onClick={() => navigate("/rentedbooks")}>
                 <Typography textAlign="center">Rented Books</Typography>
               </MenuItem>

@@ -54,7 +54,7 @@ export default function WishlistCard(props) {
     try {
       setSpinner(true);
       const reqData = { userId: user };
-      const response = await axios.delete(`books/wishlist/${bookId}`, {
+      const response = await axios.delete(`books/${props.url}/${bookId}`, {
         headers: {
           "Content-Type": "application/json",
         },

@@ -1,11 +1,14 @@
 import axios from "../api/axios";
 import useAuth from "./useAuth";
+import { useData } from "../context/DataContext";
 
 const useLogout = () => {
   const { setAuth } = useAuth();
+  const { addBook } = useData();
 
   const logout = async () => {
     setAuth({});
+    addBook("");
     try {
       const response = await axios("/logout", {
         withCredentials: true,

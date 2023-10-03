@@ -15,9 +15,9 @@ const AdminControlPanel = () => {
   const [modalId, setModalId] = useState("");
   const [bookTitle, setBookTitle] = useState("");
 
-  useEffect(() => {
-    console.log("Modal Id :", modalId);
-  }, [modalId]);
+  // useEffect(() => {
+  //   console.log("Modal Id :", modalId);
+  // }, [modalId]);
 
   const getRentlist = async () => {
     try {
@@ -47,9 +47,10 @@ const AdminControlPanel = () => {
   const openModal = () => {
     setOpenUserModal(true);
   };
-  //   const closeModal = () => {
-  //     setOpenUserModal(false);
-  //   };
+  const closeModal = () => {
+    setOpenUserModal(false);
+    setModalId("");
+  };
 
   return (
     <>
@@ -116,7 +117,7 @@ const AdminControlPanel = () => {
       </Container>
       <RentedUsersModal
         openModal={openUserModal}
-        closeModal={setOpenUserModal}
+        closeModal={closeModal}
         modalId={modalId}
         bookTitle={bookTitle}
       />
