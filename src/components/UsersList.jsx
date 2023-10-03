@@ -6,10 +6,12 @@ import { Button } from "@mui/material";
 import Modal from "react-bootstrap/Modal";
 import SuccessAlert from "./SuccessAlertBar";
 import Stack from "@mui/material/Stack";
+import { useNavigate } from "react-router-dom";
 
 const UsersList = (props) => {
   const [show, setShow] = useState(false);
   const [openAlert, setOpenAlert] = React.useState(false);
+  const navigate = useNavigate();
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -57,9 +59,21 @@ const UsersList = (props) => {
             <br />
             Id : {props.userId}
           </div>
-          <Button variant="outlined" color="error" onClick={handleShow}>
-            Remove from list
-          </Button>
+          {!props.disableRemoveButton ? (
+            <Button variant="outlined" color="error" onClick={handleShow}>
+              Remove from list
+            </Button>
+          ) : (
+            <Button
+              variant="outlined"
+              color="secondary"
+              onClick={() =>
+                navigate(`/admincontrols/${props.userId}/rentlist`)
+              }
+            >
+              Show user rentlist
+            </Button>
+          )}
         </ListGroup.Item>
       </ListGroup>
 
@@ -67,12 +81,15 @@ const UsersList = (props) => {
         show={show}
         onHide={handleClose}
         centered
-        style={{ backgroundColor: "rgba(0, 0, 0, 0.3)" }}
+        style={{ backgroundColor: "rgba(0, 0, 0, 0.2)" }}
       >
         <Modal.Header closeButton>
           <Modal.Title>Remove user</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Remove user from rent list?</Modal.Body>
+        <Modal.Body>
+          Remove user <span style={{ color: "red" }}> {props.email} </span>
+          from rent list?
+        </Modal.Body>
         <Modal.Footer>
           <Stack spacing={2} direction="row">
             <Button variant="outlined" onClick={handleClose}>

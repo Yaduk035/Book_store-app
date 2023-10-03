@@ -18,6 +18,7 @@ import Wishlist from "./pages/Wishlist";
 import Rentlist from "./pages/Rentlist";
 import PurchasePage from "./pages/PurchasePage";
 import AdminControlPanel from "./pages/AdminControlPanel";
+import AdminPanelRentlist from "./pages/AdminUserRentlist";
 
 const ROLES = {
   Admin: 1993,
@@ -50,6 +51,7 @@ function App() {
             <Route path="/rentedbooks" element={<Rentlist/>} />
             <Route path="/wishlist" element={<Wishlist/>} />
             <Route path="/admincontrols" element={ <AdminControlPanel/> } />
+            <Route path="/admincontrols/:userId/rentlist" element={ <AdminPanelRentlist/> } />
             <Route path="/books/:bookId/payment" element={ <PurchasePage/> } />
             <Route path="/books/:bookId" element={<Book/>} />
         {/* <Route path="file" element={<MyDropzone />} /> */}

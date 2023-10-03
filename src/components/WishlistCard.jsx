@@ -30,7 +30,8 @@ export default function WishlistCard(props) {
   const navigate = useNavigate();
 
   const bookId = props.bookId;
-  const user = localStorage?.getItem("userId");
+  const user = props.userId || localStorage?.getItem("userId");
+  console.log("Adminpanel UserId:", user);
 
   const closeAlert = () => {
     setOpenAlert(false);

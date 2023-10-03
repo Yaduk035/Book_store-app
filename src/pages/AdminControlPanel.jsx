@@ -4,8 +4,11 @@ import { Container } from "@mui/material";
 import { Dropdown } from "react-bootstrap";
 import { SyncLoader } from "react-spinners";
 import axios from "../api/axios";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import WishlistCard from "../components/WishlistCard";
 import RentedUsersModal from "../components/RentedUsersModal";
+import UsersList from "../components/UsersList";
+import { useData } from "../context/DataContext";
 
 const AdminControlPanel = () => {
   const [spinner, setSpinner] = useState(false);
@@ -14,6 +17,20 @@ const AdminControlPanel = () => {
   const [openUserModal, setOpenUserModal] = useState(false);
   const [modalId, setModalId] = useState("");
   const [bookTitle, setBookTitle] = useState("");
+  const [users, setUsers] = useState("");
+  const axiosPrivate = useAxiosPrivate();
+
+  const {
+    adminRentList,
+    addToAdminRentlist,
+    adminPanelSortByState,
+    adminSortBy,
+  } = useData();
+
+  const [sortByBooks, setSortByBooks] = useState(adminSortBy);
+  adminPanelSortByState(sortByBooks);
+
+  const controller = new AbortController();
 
   // useEffect(() => {
   //   console.log("Modal Id :", modalId);
@@ -25,24 +42,49 @@ const AdminControlPanel = () => {
       const response = await axios.get(`books/`);
 
       setWishlistedBooks(response.data);
+      addToAdminRentlist(response.data);
       setSpinner(false);
     } catch (error) {
       console.error(error);
       setSpinner(false);
     }
   };
+
+  const getUsersRentlist = async () => {
+    try {
+      const response = await axiosPrivate.get(`users`, {
+        signal: controller.signal,
+      });
+      console.log(response.data);
+      setUsers(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
-    setReloadList(false);
-    getRentlist();
+    getUsersRentlist();
+  }, []);
+  // useEffect(() => {
+  //   setReloadList(false);
+  //   getRentlist();
+  // }, []);
+
+  useEffect(() => {
+    if (!adminRentList) {
+      setReloadList(false);
+      getRentlist();
+    }
   }, []);
 
   const reload = () => {
     setReloadList(!reloadList);
+    getRentlist();
   };
 
-  useEffect(() => {
-    getRentlist();
-  }, [reloadList]);
+  // useEffect(() => {
+  //   getRentlist();
+  // }, [reloadList]);
 
   const openModal = () => {
     setOpenUserModal(true);
@@ -55,24 +97,34 @@ const AdminControlPanel = () => {
   return (
     <>
       <Header />
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          margin: "20px",
-        }}
-      >
-        <Dropdown>
-          <Dropdown.Toggle variant="outline-dark" size="xl" id="dropdown-basic">
-            Sort by
-          </Dropdown.Toggle>
+      <Container>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            margin: "20px",
+          }}
+        >
+          <Dropdown>
+            <Dropdown.Toggle
+              variant="outline-dark"
+              size="xl"
+              id="dropdown-basic"
+            >
+              Sort by
+            </Dropdown.Toggle>
 
-          <Dropdown.Menu>
-            <Dropdown.Item href="#/action-1">Book</Dropdown.Item>
-            <Dropdown.Item href="#/action-2">User</Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>{" "}
-      </div>
+            <Dropdown.Menu>
+              <Dropdown.Item onClick={() => setSortByBooks(true)}>
+                Book
+              </Dropdown.Item>
+              <Dropdown.Item onClick={() => setSortByBooks(false)}>
+                User
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>{" "}
+        </div>
+      </Container>
       <Container maxWidth="lg">
         {spinner ? (
           <div
@@ -85,34 +137,51 @@ const AdminControlPanel = () => {
           >
             <SyncLoader color="#36d7b7" />
           </div>
-        ) : Array.isArray(wishlistedBooks) && wishlistedBooks.length > 0 ? (
-          wishlistedBooks.map((book) => (
-            <WishlistCard
-              disableButton={true}
-              showUser={true}
-              key={book._id}
-              bookId={book._id}
-              title={book.bookName}
-              author={book.author}
-              genre={book.genre}
-              language={book.language}
-              rentPeriod={book.rentPeriod}
-              rentData={book.rentData}
-              availabilityStatus={book.availabilityStatus}
-              ISBNno={book.ArrayISBNnumber}
-              year={book.year}
-              description={book.description}
-              updatedAt={book.updatedAt}
-              createdAt={book.createdAt}
-              image={book.image}
+        ) : sortByBooks ? (
+          Array.isArray(adminRentList) && adminRentList.length > 0 ? (
+            adminRentList.map((book) => (
+              <WishlistCard
+                disableButton={true}
+                showUser={true}
+                key={book._id}
+                bookId={book._id}
+                title={book.bookName}
+                author={book.author}
+                genre={book.genre}
+                language={book.language}
+                rentPeriod={book.rentPeriod}
+                rentData={book.rentData}
+                availabilityStatus={book.availabilityStatus}
+                ISBNno={book.ArrayISBNnumber}
+                year={book.year}
+                description={book.description}
+                updatedAt={book.updatedAt}
+                createdAt={book.createdAt}
+                image={book.image}
+                reload={reload}
+                openModal={openModal}
+                setModalId={setModalId}
+                setBookTitle={setBookTitle}
+              />
+            ))
+          ) : (
+            <p>No book Rented</p>
+          )
+        ) : Array.isArray(users) && users.length > 0 ? (
+          users.map((user, index) => (
+            <UsersList
+              key={user._id}
+              index={index}
+              userId={user._id}
+              email={user.email}
+              firstname={user.firstname}
+              lastname={user.lastname}
               reload={reload}
-              openModal={openModal}
-              setModalId={setModalId}
-              setBookTitle={setBookTitle}
+              disableRemoveButton={true}
             />
           ))
         ) : (
-          <p>No book Rented</p>
+          <p>No users found</p>
         )}
       </Container>
       <RentedUsersModal
