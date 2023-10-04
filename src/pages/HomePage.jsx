@@ -62,10 +62,8 @@ const HomePage = () => {
   return (
     <>
       <Header />
-      <Row>
-        <CarouselComponent />
-        <div></div>
-      </Row>
+      <CarouselComponent />
+      <div></div>
       <div id="backGnd">
         <Container>
           <div className="text-center" style={{ marginTop: "10px" }}>

@@ -123,6 +123,11 @@ const PurchasePage = () => {
   return (
     <>
       <Header />
+      <br />
+      <br />
+      <br />
+      <br />
+
       <Container style={{ maxWidth: "700px" }}>
         <WishlistCard
           disableButton={true}

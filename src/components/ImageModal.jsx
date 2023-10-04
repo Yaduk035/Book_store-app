@@ -8,8 +8,8 @@ const customStyles = {
   },
   content: {
     background: "none",
-    border: "4px dashed grey",
-    borderRadius: "25px",
+    border: "3px dashed grey",
+    borderRadius: "15px",
     top: "50%",
     bottom: "auto",
     left: "50%",
@@ -50,9 +50,10 @@ const ImageModal = ({ isOpen, onClose, imageUrl }) => {
           src={imageUrl}
           alt="Image"
           style={{
-            maxHeight: "100%",
-            maxWidth: "450px",
-            minWidth: "400px",
+            maxHeight: "90vh",
+            maxWidth: "80vh",
+            minWidth: "40vh",
+            minHeight: "50vh",
             height: "auto",
             width: "auto",
             borderRadius: "15px",

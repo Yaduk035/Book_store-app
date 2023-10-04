@@ -97,10 +97,19 @@ const AdminControlPanel = () => {
   return (
     <>
       <Header />
+      <br />
+      <br />
+      <br />
+      <br />
+
       <Container>
-        <div>
-          <span style={{ textAlign: "center", marginTop: "20px" }}>
-            <h2>All books</h2>
+        <div style={{ paddingTop: "20px" }}>
+          <span style={{ textAlign: "center" }}>
+            {sortByBooks ? (
+              <h2 style={{ fontFamily: "monospace" }}>All books</h2>
+            ) : (
+              <h2 style={{ fontFamily: "monospace" }}>All users</h2>
+            )}
           </span>
           <span>
             <Dropdown

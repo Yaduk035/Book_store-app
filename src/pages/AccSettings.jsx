@@ -157,6 +157,8 @@ function AccSettings() {
   return (
     <>
       <Header />
+      <br />
+      <br />
       <main id="">
         <Container>
           <div className="d-flex justify-content-center align-items-center vh-100">

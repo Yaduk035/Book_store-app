@@ -12,6 +12,7 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AutoStoriesIcon from "@mui/icons-material/AutoStories";
+import { Chip } from "@mui/material";
 
 import React, { useEffect, useState } from "react";
 import useLogout from "../hooks/useLogout";
@@ -81,7 +82,16 @@ function ResponsiveAppBar() {
   };
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: "black" }}>
+    <AppBar
+      position="static"
+      sx={{
+        backgroundColor: "rgba(30, 0, 0, 0.8)",
+        boxShadow: "0 10px 25px rgba(0, 0, 0, 0.7)",
+        borderRadius: "0px 0px 10px 10px ",
+        position: "fixed",
+        zIndex: 4,
+      }}
+    >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AutoStoriesIcon
@@ -234,27 +244,30 @@ function ResponsiveAppBar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
+              <Divider>
+                <Chip
+                  label={admin ? <div> Admin</div> : <div>User account</div>}
+                />
+              </Divider>
               <MenuItem onClick={handleCloseUserMenu}>
                 <Typography textAlign="center">
                   <span style={{ color: "grey" }}>Hello</span> {name || "user"}
                 </Typography>
               </MenuItem>
-              <MenuItem
-                onClick={handleCloseUserMenu}
-                style={{ cursor: "default" }}
-              >
-                <Typography textAlign="center" color={"grey"}>
-                  {admin ? <div> Admin account</div> : <div>User account</div>}
-                </Typography>
-              </MenuItem>
               {admin && (
-                <MenuItem onClick={() => navigate("/admincontrols")}>
-                  <Typography textAlign="center">
-                    Admin Control Panel
-                  </Typography>
-                </MenuItem>
+                <span>
+                  <Divider>
+                    <Chip label="Admin only" />
+                  </Divider>
+
+                  <MenuItem onClick={() => navigate("/admincontrols")}>
+                    <Typography textAlign="center">Admin Dashboard</Typography>
+                  </MenuItem>
+                </span>
               )}
-              <Divider variant="middle" />
+              <Divider>
+                <Chip label="Books" />
+              </Divider>
               <MenuItem onClick={() => navigate("/rentedbooks")}>
                 <Typography textAlign="center">Rented Books</Typography>
               </MenuItem>
@@ -262,14 +275,24 @@ function ResponsiveAppBar() {
                 <Typography textAlign="center">Wish list</Typography>
               </MenuItem>
               <Divider sx={{ my: 0.5 }} />
+              <Divider>
+                <Chip label="Account" />
+              </Divider>
+
               <MenuItem onClick={() => navigate("/accountsettings")}>
-                <Typography textAlign="center">Account settings</Typography>
+                <Typography textAlign="center">Settings</Typography>
               </MenuItem>
-              <Divider sx={{ my: 0.5 }} />
+              <Divider
+                variant="middle"
+                style={{ background: "black" }}
+                sx={{ my: 1 }}
+              />
               <MenuItem onClick={logOut}>
                 <Typography textAlign="center" color={"red"}>
-                  <Logout />
-                  Log out
+                  <Logout style={{ marginBottom: "5px" }} />
+                  <span style={{ fontFamily: "monospace", fontSize: "1.1rem" }}>
+                    Log out
+                  </span>
                 </Typography>
               </MenuItem>
               {/* {settings.map((setting) => (

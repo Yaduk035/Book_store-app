@@ -17,6 +17,7 @@ const AdminPanelRentlist = () => {
 
   const allowedRoles = [1993];
   const localUser = localStorage?.getItem("role");
+  const userEmail = JSON.parse(localStorage?.getItem("user"));
   const [admin, setAdmin] = useState(localStorage.getItem("role"));
 
   useEffect(() => {
@@ -66,9 +67,20 @@ const AdminPanelRentlist = () => {
   return (
     <>
       <Header />
+      <br />
+      <br />
+      <br />
+      <br />
       <Container maxWidth="lg">
-        <h3 style={{ textAlign: "center", padding: "20px" }}>
-          Currently rented books by {userId}
+        <h3
+          style={{
+            textAlign: "center",
+            padding: "20px",
+            fontFamily: "monospace",
+          }}
+        >
+          Currently rented books by{" "}
+          <span style={{ color: "grey" }}> {userEmail}</span>
         </h3>
         {spinner ? (
           <div

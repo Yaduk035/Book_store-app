@@ -118,7 +118,8 @@ export default function InputMultiline({
         >
           <div
             style={{
-              border: "3px dashed grey",
+              boxShadow: "0 5px 20px rgba(0, 0, 0, 0.4)",
+
               padding: "20px",
               borderRadius: "10px",
             }}
@@ -237,7 +238,8 @@ const StyledTextareaElement = styled("textarea", {
     !["ownerState", "minRows", "maxRows"].includes(prop.toString()),
 })(
   ({ theme }) => `
-  width: 420px;
+  width: 320px;
+  height: 80px;
   font-family: IBM Plex Sans, sans-serif;
   font-size: 0.875rem;
   font-weight: 400;

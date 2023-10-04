@@ -5,6 +5,7 @@ import {
   Row,
   Dropdown,
   DropdownButton,
+  Container,
 } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -107,96 +108,102 @@ function CardTemplate(props) {
                   transform: "scale(1)",
                   border: "3px  rgba(44, 41, 41, 0.400",
                   borderRadius: "10px",
+                  boxShadow: "0 5px 20px rgba(0, 0, 0, 0.1)",
                 }
           }
           // onClick={navigateToBook}
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
         >
-          <Row>
-            <Col
-              style={{
-                width: "130px",
-                margin: "10px",
-                height: "180px",
-                alignContent: "center",
-                borderRight: "1px dashed grey",
-              }}
-              className="d-flex justify-content-center"
-              xl={3}
-            >
-              <Card.Img variant="top" src={props.image ? props.image : noImg} />
-            </Col>
-            <Col style={{ minWidth: "200px" }} xl={3}>
-              <span
+          <Container fluid>
+            <Row>
+              <Col
+                xs={12}
+                md={4}
                 style={{
-                  position: "absolute",
-                  top: "30px",
-                  right: "0px",
-                  cursor: "pointer",
+                  alignItems: "center",
+                  // borderRight: "1px dashed grey",
                 }}
-                onClick={(e) => {
-                  e.stopPropagation(); // Prevent click event from bubbling up
-                }}
+                className="d-flex justify-content-center"
               >
-                <Dropdown>
-                  <DropdownButton
-                    variant="outline-light"
-                    id="dropdown-button-drop-start"
-                    drop="start"
-                    size="sm"
-                    title={<ThreeDotsVertical color="dark" size={18} />}
-                  >
-                    <Dropdown.Item
-                      onClick={(e) => {
-                        e.stopPropagation(); // Prevent click event from bubbling up
-                        addToWishlist();
-                      }}
+                <Card.Img
+                  style={{ maxHeight: "50vh", maxWidth: "40vh" }}
+                  src={props.image ? props.image : noImg}
+                />
+              </Col>
+              <Col xs={12} md={8}>
+                <span
+                  style={{
+                    position: "absolute",
+                    top: "30px",
+                    right: "0px",
+                    cursor: "pointer",
+                  }}
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevent click event from bubbling up
+                  }}
+                >
+                  <Dropdown>
+                    <DropdownButton
+                      variant="outline-light"
+                      id="dropdown-button-drop-start"
+                      drop="start"
+                      size="sm"
+                      title={<ThreeDotsVertical color="dark" size={18} />}
                     >
-                      Add to wishlist
-                    </Dropdown.Item>
-                    <Dropdown.Item
-                      onClick={(e) => {
-                        e.stopPropagation(); // Prevent click event from bubbling up
-                        deleteFromWishlist();
-                      }}
-                    >
-                      Remove from wish
-                    </Dropdown.Item>
-                  </DropdownButton>
-                </Dropdown>
-              </span>
-              <Card.Body style={{ padding: "8%" }}>
-                <Card.Text className="mb-2 text-muted">{props.genre}</Card.Text>
-                <Card.Title className="mb-2">{props.title}</Card.Title>
-                {/* <CardalignItems.Text muted className="mb-2 text-muted">
+                      <Dropdown.Item
+                        onClick={(e) => {
+                          e.stopPropagation(); // Prevent click event from bubbling up
+                          addToWishlist();
+                        }}
+                      >
+                        Add to wishlist
+                      </Dropdown.Item>
+                      <Dropdown.Item
+                        onClick={(e) => {
+                          e.stopPropagation(); // Prevent click event from bubbling up
+                          deleteFromWishlist();
+                        }}
+                      >
+                        Remove from wish
+                      </Dropdown.Item>
+                    </DropdownButton>
+                  </Dropdown>
+                </span>
+                <Card.Body style={{ padding: "8%" }}>
+                  <Card.Text className="mb-2 text-muted">
+                    {props.genre}
+                  </Card.Text>
+                  <Card.Title className="mb-2">{props.title}</Card.Title>
+                  {/* <CardalignItems.Text muted className="mb-2 text-muted">
                   Rating :{props.avgRating}{" "}
                 </CardalignItems.Text> */}
-                <Rating
-                  name="half-rating-read"
-                  defaultValue={0}
-                  precision={0.1}
-                  readOnly
-                  value={props.avgRating}
-                />
-                <br />
+                  <Rating
+                    name="half-rating-read"
+                    defaultValue={0}
+                    precision={0.1}
+                    readOnly
+                    value={props.avgRating}
+                  />
+                  <br />
 
-                {/* <Card.Text className="mb-2">id :{props.id} </Card.Text> */}
-                <Card.Text className="mb-2 text-muted">
-                  {props.author}{" "}
-                </Card.Text>
-                <Card.Text className="mb-2">
-                  Rent <CurrencyRupee /> :{props.rentAmount}
-                </Card.Text>
-                <Card.Text className="mb-2">
-                  Language :{props.language}{" "}
-                </Card.Text>
-                {/* <Card.Text className="mb-2">
+                  {/* <Card.Text className="mb-2">id :{props.id} </Card.Text> */}
+                  <Card.Text className="mb-2 text-muted">
+                    {props.author}{" "}
+                  </Card.Text>
+                  <Card.Text className="mb-2">
+                    Rent <CurrencyRupee /> :{props.rentAmount}
+                  </Card.Text>
+                  <Card.Text className="mb-2">
+                    Language :{props.language}{" "}
+                  </Card.Text>
+                  {/* <Card.Text className="mb-2">
                   Availability :{props.availabilityStatus}
                 </Card.Text> */}
-              </Card.Body>
-            </Col>
-          </Row>
+                </Card.Body>
+              </Col>
+            </Row>
+          </Container>
         </Card>
       </div>
       <SuccessAlert

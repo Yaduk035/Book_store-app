@@ -19,6 +19,7 @@ import Rentlist from "./pages/Rentlist";
 import PurchasePage from "./pages/PurchasePage";
 import AdminControlPanel from "./pages/AdminControlPanel";
 import AdminPanelRentlist from "./pages/AdminUserRentlist";
+import Footer from "./components/Footer";
 
 const ROLES = {
   Admin: 1993,
@@ -33,6 +34,7 @@ const ROLES = {
 
 function App() {
   return (
+    <>
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route path="test" element={<Test />} />
@@ -59,6 +61,8 @@ function App() {
         </Route>
       </Route>
     </Routes>
+      <Footer/>
+    </>
   );
 }
 

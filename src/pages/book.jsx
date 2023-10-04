@@ -14,6 +14,7 @@ import {
   CheckLg,
   JournalArrowUp,
   CurrencyRupee,
+  JournalX,
 } from "react-bootstrap-icons";
 import ImageModal from "../components/ImageModal";
 import { GridLoader } from "react-spinners";
@@ -24,6 +25,7 @@ import { AddPhotoAlternateOutlined } from "@mui/icons-material";
 import SuccessAlert from "../components/SuccessAlertBar";
 import CommentSection from "../components/CommentSection";
 import EditBooksModal from "../components/editBooksModal";
+import DeleteBookModal from "../components/DeleteBookModal";
 
 const Book = () => {
   const [bookData, setBookData] = useState();
@@ -49,6 +51,7 @@ const Book = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [spinner, setSpinner] = useState(false);
   const [showDelModal, setShowDelModal] = useState(false);
+  const [showBookDelModal, setShowBookDelModal] = useState(false);
   const [wishlistData, setWishlistData] = useState("");
   const [rentlistData, setRentlistData] = useState("");
   const [userWishlisted, setUserWishlisted] = useState(false);
@@ -164,6 +167,7 @@ const Book = () => {
       getBookbyId();
     }
   }, [showModal, imageUpdated]);
+  /////////////////////////////////
 
   const updateImgModal = () => {
     setShowModal(true);
@@ -174,8 +178,14 @@ const Book = () => {
   const openDelImgModal = () => {
     setShowDelModal(true);
   };
+  const openDelBookModal = () => {
+    setShowBookDelModal(true);
+  };
   const closeDelImgModal = () => {
     setShowDelModal(false);
+  };
+  const closeDelBookModal = () => {
+    setShowBookDelModal(false);
   };
   const updatedImage = () => {
     setImageUpdated(true);
@@ -267,8 +277,12 @@ const Book = () => {
       />
       {!alertMsg ? (
         <Container>
+          <br />
+          <br />
+          <br />
+          <br />
           <Row xs={12} md={12} lg={12}>
-            <Col style={{ borderRight: "3px dashed grey" }}>
+            <Col>
               <div style={{ position: "relative" }}>
                 {spinner ? (
                   <div
@@ -286,65 +300,16 @@ const Book = () => {
                     src={image || noImg}
                     alt="Uploaded"
                     style={{
+                      marginLeft: "50px",
                       maxWidth: "65%",
                       width: "400px",
                       cursor: "pointer",
-                      borderRadius: "10px",
+                      borderRadius: "15px",
                       marginTop: "10px",
+                      boxShadow: "0 10px 20px rgba(0, 0, 0, 1)",
                     }}
                     onClick={openImageModal}
                   />
-                )}
-                {admin && (
-                  <span
-                    style={{
-                      position: "absolute",
-                      bottom: "10%",
-                      right: "10px",
-                    }}
-                  >
-                    <br />
-                    <br />
-                    {/* <Button
-                      variant="outline-danger"
-                      onClick={updateImgModal}
-                      // style={{
-                      //   position: "absolute",
-                      //   bottom: "10%",
-                      //   right: "10px",
-                      // }}
-                    >
-                      <PencilSquare size={20} id="iconPadding" />
-                      Change Image
-                    </Button> */}
-                    <Dropdown>
-                      <Dropdown.Toggle
-                        variant="outline-dark"
-                        id="dropdown-basic"
-                        size="sm"
-                      >
-                        <PencilSquare size={20} id="iconPadding" />
-                        Edit
-                      </Dropdown.Toggle>
-
-                      <Dropdown.Menu>
-                        <Dropdown.Item onClick={updateImgModal}>
-                          <AddPhotoAlternateOutlined />
-                          Update image
-                        </Dropdown.Item>
-                        <Dropdown.Divider />
-                        <Dropdown.Item onClick={openDelImgModal}>
-                          <DeleteOutlineOutlined />
-                          Delete image
-                        </Dropdown.Item>
-                        <Dropdown.Divider />
-                        <Dropdown.Item onClick={editBooksClick}>
-                          <JournalArrowUp size={22} id="iconPadding" />
-                          Edit book info
-                        </Dropdown.Item>
-                      </Dropdown.Menu>
-                    </Dropdown>
-                  </span>
                 )}
               </div>
             </Col>
@@ -367,68 +332,132 @@ const Book = () => {
                       />
                     </div>
                   ) : (
-                    <div className="centered-div">
+                    <div>
                       <br />
-                      <h4> {bookName} </h4>
-                      <Typography component="legend" style={{ color: "grey" }}>
-                        Rating :
-                        <span style={{ color: "grey" }}> {avgRating}</span>
-                      </Typography>
-                      <Rating
-                        name="half-rating-read"
-                        defaultValue={0}
-                        precision={0.1}
-                        readOnly
-                        value={avgRating}
-                      />
-                      <br />
-                      <br />
-                      <p>
-                        Rent :<CurrencyRupee />
-                        {rentAmount}
-                      </p>
-                      <p>Author :{author}</p>
-                      <p>Genre :{genre}</p>
-                      <p>Language :{language}</p>
-                      <p>Rental period :{rentPeriod}</p>
-                      <p>Availability: {availability}</p>
-                      <p>ISBN number: {ISBN}</p>
-                      <p>Year released: {year}</p>
-                      <p>Description: {description}</p>
-
-                      {userWishlisted ? (
-                        <Button
-                          variant="outline-dark"
-                          id="buttonPadding"
-                          onClick={deleteFromWishlist}
+                      <div className="centered-div">
+                        <h1 style={{ fontFamily: "monospace" }}>
+                          {" "}
+                          {bookName}{" "}
+                        </h1>
+                        <Typography
+                          component="legend"
+                          style={{ color: "grey" }}
                         >
-                          <CheckLg size={22} id="iconPadding" />
-                          Wishlisted
-                        </Button>
-                      ) : (
-                        <Button
-                          variant="outline-dark"
-                          id="buttonPadding"
-                          onClick={addToWishlist}
-                        >
-                          <CardChecklist size={22} id="iconPadding" />
-                          Add to wish list
-                        </Button>
-                      )}
-                      {/* { (availability === 'Unavailable') &&
+                          Rating :
+                          <span style={{ color: "grey" }}> {avgRating}</span>
+                        </Typography>
+                        <Rating
+                          name="half-rating-read"
+                          defaultValue={0}
+                          precision={0.1}
+                          readOnly
+                          value={avgRating}
+                        />
+                        <br />
+                        <br />
+                        <p>
+                          Rent :<CurrencyRupee />
+                          {rentAmount}
+                        </p>
+                        <p>Author :{author}</p>
+                        <p>Genre :{genre}</p>
+                        <p>Language :{language}</p>
+                        <p>Rental period :{rentPeriod}</p>
+                        <p>Availability: {availability}</p>
+                        <p>ISBN number: {ISBN}</p>
+                        <p>Year released: {year}</p>
+                        <p>Description: {description}</p>
+                        <br />
+                        {userWishlisted ? (
+                          <Button
+                            variant="outline-dark"
+                            id="buttonPadding"
+                            onClick={deleteFromWishlist}
+                          >
+                            <CheckLg size={22} id="iconPadding" />
+                            Wishlisted
+                          </Button>
+                        ) : (
+                          <Button
+                            variant="outline-dark"
+                            id="buttonPadding"
+                            onClick={addToWishlist}
+                          >
+                            <CardChecklist size={22} id="iconPadding" />
+                            Add to wish list
+                          </Button>
+                        )}
+                        {/* { (availability === 'Unavailable') &&
                       
                        } */}
-                      <Button
-                        variant="dark"
-                        onClick={() => navigate(`/books/${bookId}/payment`)}
-                        disabled={
-                          (availability === "Unavailable") | userRentlisted
-                        }
-                      >
-                        <Cart3 size={20} id="iconPadding" />
-                        Rent book
-                      </Button>
+                        <Button
+                          variant="dark"
+                          onClick={() => navigate(`/books/${bookId}/payment`)}
+                          disabled={
+                            (availability === "Unavailable") | userRentlisted
+                          }
+                        >
+                          <Cart3 size={20} id="iconPadding" />
+                          Rent book
+                        </Button>
+                      </div>
                     </div>
+                  )}
+                  {admin && (
+                    <span
+                      style={{
+                        position: "absolute",
+                        top: "5%",
+                        right: "8%",
+                      }}
+                    >
+                      <br />
+                      <br />
+                      {/* <Button
+                        variant="outline-danger"
+                        onClick={updateImgModal}
+                        // style={{
+                        //   position: "absolute",
+                        //   bottom: "10%",
+                        //   right: "10px",
+                        // }}
+                      >
+                        <PencilSquare size={20} id="iconPadding" />
+                        Change Image
+                      </Button> */}
+                      <Dropdown>
+                        <Dropdown.Toggle
+                          variant="outline-dark"
+                          id="dropdown-basic"
+                          size="sm"
+                        >
+                          <PencilSquare size={20} id="iconPadding" />
+                          Edit
+                        </Dropdown.Toggle>
+
+                        <Dropdown.Menu>
+                          <Dropdown.Item onClick={updateImgModal}>
+                            <AddPhotoAlternateOutlined />
+                            Update image
+                          </Dropdown.Item>
+                          <Dropdown.Divider />
+                          <Dropdown.Item onClick={openDelImgModal}>
+                            <DeleteOutlineOutlined />
+                            Delete image
+                          </Dropdown.Item>
+                          <Dropdown.Divider />
+                          <Dropdown.Item onClick={editBooksClick}>
+                            <JournalArrowUp size={22} id="iconPadding" />
+                            Edit book info
+                          </Dropdown.Item>
+                          <Dropdown.Divider />
+                          <Dropdown.Item onClick={openDelBookModal}>
+                            <JournalX size={22} id="iconPadding" />
+                            Delete Book
+                          </Dropdown.Item>
+                        </Dropdown.Menu>
+                      </Dropdown>
+                    </span>
                   )}
                 </Col>
               </Row>
@@ -463,6 +492,11 @@ const Book = () => {
             closeModal={closeDelImgModal}
             id={id}
             updatedImage={updatedImage}
+          />
+          <DeleteBookModal
+            showModal={showBookDelModal}
+            closeModal={closeDelBookModal}
+            id={id}
           />
           <SuccessAlert
             openAlert={openAlert}

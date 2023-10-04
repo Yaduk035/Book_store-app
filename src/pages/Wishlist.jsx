@@ -43,6 +43,11 @@ const Wishlist = () => {
   return (
     <>
       <Header />
+      <br />
+      <br />
+      <br />
+      <br />
+
       <Container maxWidth="lg">
         <h3 style={{ textAlign: "center", padding: "20px" }}>Wish list</h3>
         {spinner ? (
