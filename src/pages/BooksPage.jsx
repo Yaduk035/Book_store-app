@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Header from "../components/MuiHeader";
 import CardTemplate from "../components/BooksCardTemplate";
-import { Container, Row } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import axios from "../api/axios";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { SyncLoader } from "react-spinners";
@@ -122,86 +122,77 @@ const BooksPage = () => {
         <br />
         {/* Genre Dropdown */}
         <div>
-          <SearchBar
-            filteredBooks={contBook}
-            setSearchResults={setSearchResults}
-          />
-          <span>
-            <h2 style={{ fontFamily: "monospace", textAlign: "center" }}>
-              {selectedGenre} books
-            </h2>
-          </span>
-          <Form.Group
-            className="p-2"
-            style={{
-              maxWidth: "250px",
-              position: "absolute",
-              right: "50px",
-              top: "80px",
-            }}
-          >
-            <Form.Label style={{ fontFamily: "monospace" }}>Genre:</Form.Label>
+          <Row sm={12} xs={12}>
+            <Col>
+              <SearchBar
+                filteredBooks={contBook}
+                setSearchResults={setSearchResults}
+              />
+            </Col>
+            <Col>
+              <div>
+                <Form.Group
+                  className="p-2"
+                  style={{
+                    maxWidth: "250px",
+                    position: "absolute",
+                    right: "50px",
+                    top: "80px",
+                  }}
+                >
+                  <Form.Label style={{ fontFamily: "monospace" }}>
+                    Genre:
+                  </Form.Label>
 
-            <Form.Select
-              aria-label="Default select example"
-              value={selectedGenre}
-              onChange={(e) => filterByGenre(e.target.value)}
-              style={{ fontFamily: "revert-layer" }}
-            >
-              <option selected hidden>
-                Select a genre
-              </option>
-              <option>All</option>
-              <option>Music</option>
-              <option>Story & Novel</option>
-              <option>Poetry</option>
-              <option>Fiction & Fantasy</option>
-              <option>Non-fiction</option>
-              <option>Science & Technology</option>
-              <option>Dictionary & Reference</option>
-              <option>Fantasy & Science Fiction</option>
-              <option>Romance</option>
-              <option>Mystery & Thriller</option>
-              <option>Biography & Memoir</option>
-              <option>Self-help</option>
-              <option>History</option>
-              <option>Horror</option>
-              <option>Comedy</option>
-              <option>Travel & Adventure</option>
-              <option>Art & Photography</option>
-              <option>Children's Books</option>
-              <option>Culture & Society</option>
-              <option>Education & Learning</option>
-              <option>Business & Finance</option>
-              <option>Health & Wellness</option>
-              <option>Cooking & Food</option>
-              <option>Nature</option>
-              <option>Sports & Recreation</option>
-              <option>Other</option>{" "}
-            </Form.Select>
-          </Form.Group>
+                  <Form.Select
+                    aria-label="Default select example"
+                    value={selectedGenre}
+                    onChange={(e) => filterByGenre(e.target.value)}
+                    style={{ fontFamily: "revert-layer" }}
+                  >
+                    <option selected hidden>
+                      Select a genre
+                    </option>
+                    <option>All</option>
+                    <option>Music</option>
+                    <option>Story & Novel</option>
+                    <option>Poetry</option>
+                    <option>Fiction & Fantasy</option>
+                    <option>Non-fiction</option>
+                    <option>Science & Technology</option>
+                    <option>Dictionary & Reference</option>
+                    <option>Fantasy & Science Fiction</option>
+                    <option>Romance</option>
+                    <option>Mystery & Thriller</option>
+                    <option>Biography & Memoir</option>
+                    <option>Self-help</option>
+                    <option>History</option>
+                    <option>Horror</option>
+                    <option>Comedy</option>
+                    <option>Travel & Adventure</option>
+                    <option>Art & Photography</option>
+                    <option>Children's Books</option>
+                    <option>Culture & Society</option>
+                    <option>Education & Learning</option>
+                    <option>Business & Finance</option>
+                    <option>Health & Wellness</option>
+                    <option>Cooking & Food</option>
+                    <option>Nature</option>
+                    <option>Sports & Recreation</option>
+                    <option>Other</option>{" "}
+                  </Form.Select>
+                </Form.Group>
+              </div>
+            </Col>
+            <span>
+              <h2 style={{ fontFamily: "monospace", textAlign: "center" }}>
+                {selectedGenre} books
+              </h2>
+            </span>
+          </Row>
           <br />
           <br />
-          {/* Filter by Genre:{" "}
-          <select
-            onChange={(e) => filterByGenre(e.target.value)}
-            value={selectedGenre}
-          >
-            <option value="All">All</option>
-            <option value="Story">Story</option>
-            <option value="Science_Fiction">Science Fiction</option>
-            <option value="Fantasy">Fantasy</option>
-          </select> */}
         </div>
-        {/* Sort By Button Group */}
-        {/* <div>
-          Sort By:{" "}
-          <button onClick={() => sortBooks("dateCreated")}>Date Created</button>
-          <button onClick={() => sortBooks("year")}>Year</button>
-          <button onClick={() => sortBooks("alphabetical")}>
-            Alphabetical
-          </button>
-        </div> */}
         <Row>
           {spinner ? (
             <div

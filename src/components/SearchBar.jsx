@@ -23,7 +23,7 @@ const SearchBar = ({ filteredBooks, setSearchResults }) => {
   return (
     <Container>
       <Row className="justify-content-start mt-3">
-        <Col xs={12} sm={8} md={6} lg={3}>
+        <Col xs={12} sm={12} md={6} lg={6}>
           <Form>
             <Form.Group className="d-flex">
               <InputGroup.Text id="inputGroupPrepend">
