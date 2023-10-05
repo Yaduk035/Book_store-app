@@ -156,10 +156,10 @@ function Signup() {
       <HeaderLogin />
       <main id="backgn">
         <Container>
-          <div className="d-flex justify-content-center align-items-center vh-100">
+          <br />
+          <div className="d-flex justify-content-end align-items-center vh-100">
             <div className="border-css">
               <h1 style={{ textAlign: "center" }}>Sign up</h1>
-              <br />
               {!errorMsg ? (
                 <div></div>
               ) : (
@@ -355,6 +355,12 @@ function Signup() {
             </div>
           </div>
         </Container>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
       </main>
     </>
   );

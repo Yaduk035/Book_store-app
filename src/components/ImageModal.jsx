@@ -17,6 +17,7 @@ const customStyles = {
     maxWidth: "550px",
     maxHeight: "100%", // Adjust the percentage as needed
     overflow: "auto", // Add scrollbars if necessary
+    marginTop: "3vh",
   },
   closeButton: {
     position: "absolute",
@@ -50,7 +51,7 @@ const ImageModal = ({ isOpen, onClose, imageUrl }) => {
           src={imageUrl}
           alt="Image"
           style={{
-            maxHeight: "90vh",
+            maxHeight: "80vh",
             maxWidth: "80vh",
             minWidth: "40vh",
             minHeight: "50vh",

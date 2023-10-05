@@ -98,11 +98,14 @@ const Login = () => {
       <Header />
       <div id="backgn">
         <Container>
-          <div className="d-flex justify-content-center align-items-center vh-100">
+          <div
+            className="d-flex  align-items-center vh-100"
+            style={{ justifyContent: "flex-end" }}
+          >
             <div className="border-css">
               <h1 style={{ textAlign: "center" }}>Log In</h1>
               <br />
-              {!errMsg ? <div></div> : <Alert variant="danger">{errMsg}</Alert>}
+
               <Form onSubmit={handleSubmit}>
                 <Form.Group>
                   <Form.Label htmlFor="username">Email:</Form.Label>
@@ -128,13 +131,24 @@ const Login = () => {
                     value={pwd}
                     required
                   />
+                  {!errMsg ? (
+                    <div></div>
+                  ) : (
+                    <span>
+                      <br />
+                      <Alert variant="danger">{errMsg}</Alert>
+                    </span>
+                  )}
                   <Form.Check // prettier-ignore
                     type="switch"
                     id="persist"
                     onChange={toggleCheck}
                     checked={check}
                     label="Remember me"
-                    style={{ paddingTop: "10px", paddingBottom: "10px" }}
+                    style={{
+                      paddingTop: "10px",
+                      paddingBottom: "10px",
+                    }}
                   />
                 </Form.Group>
 
@@ -185,6 +199,16 @@ const Login = () => {
             </div>
           </div>
         </Container>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
       </div>
     </>
   );

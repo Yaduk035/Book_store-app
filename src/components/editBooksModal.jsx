@@ -98,7 +98,7 @@ function EditBooksModal(props) {
         handleClose();
         setShowAlert(false);
         navigate(`/books/${Id}`);
-      }, [2500]);
+      }, [1000]);
     } catch (error) {
       console.error(error);
     }
@@ -167,27 +167,31 @@ function EditBooksModal(props) {
                       Select a genre
                     </option>
                     <option>Music</option>
-                    <option>Science</option>
-                    <option>Dictionary</option>
-                    <option>Story</option>
+                    <option>Story & Novel</option>
                     <option>Poetry</option>
-                    <option>Vintage</option>
-                    <option>Fantasy</option>
-                    <option>Science fiction</option>
+                    <option>Fiction & Fantasy</option>
+                    <option>Non-fiction</option>
+                    <option>Science & Technology</option>
+                    <option>Dictionary & Reference</option>
+                    <option>Fantasy & Science Fiction</option>
                     <option>Romance</option>
-                    <option>Mystery</option>
-                    <option>Biography</option>
-                    <option>Memoir</option>
+                    <option>Mystery & Thriller</option>
+                    <option>Biography & Memoir</option>
                     <option>Self-help</option>
                     <option>History</option>
                     <option>Horror</option>
                     <option>Comedy</option>
-                    <option>Travel</option>
+                    <option>Travel & Adventure</option>
                     <option>Art & Photography</option>
-                    <option>Children's book</option>
-                    <option>Culture</option>
-                    <option>Education</option>
-                    <option>Others</option>
+                    <option>Children's Books</option>
+                    <option>Culture & Society</option>
+                    <option>Education & Learning</option>
+                    <option>Business & Finance</option>
+                    <option>Health & Wellness</option>
+                    <option>Cooking & Food</option>
+                    <option>Nature</option>
+                    <option>Sports & Recreation</option>
+                    <option>Other</option>{" "}
                   </Form.Select>
                 </Form.Group>
               </Col>

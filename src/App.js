@@ -6,7 +6,7 @@ import HomePage from "./pages/HomePage";
 import Test from "./pages/test";
 import Login from "./pages/LoginForm";
 import RequireAuth from "./components/requireAuth";
-import Unauthroized from "./pages/unauthroized";
+import Unauthroized from "./pages/Notfound";
 import Users from "./components/UsersTest";
 import PersistLogin from "./components/PersistLogin";
 import BooksPage from "./pages/BooksPage";
@@ -20,6 +20,8 @@ import PurchasePage from "./pages/PurchasePage";
 import AdminControlPanel from "./pages/AdminControlPanel";
 import AdminPanelRentlist from "./pages/AdminUserRentlist";
 import Footer from "./components/Footer";
+import Notfound from "./pages/Notfound";
+import Unauthorized from "./pages/Unauthorized";
 
 const ROLES = {
   Admin: 1993,
@@ -59,6 +61,9 @@ function App() {
         {/* <Route path="file" element={<MyDropzone />} /> */}
           </Route>
         </Route>
+        <Route path='/unauthorized' element={ <Unauthorized/> } />
+        <Route path='/notfound' element={ <Notfound/> } />
+        <Route path='*' element={ <Notfound/> } />
       </Route>
     </Routes>
       <Footer/>

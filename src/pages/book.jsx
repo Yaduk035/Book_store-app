@@ -26,6 +26,7 @@ import SuccessAlert from "../components/SuccessAlertBar";
 import CommentSection from "../components/CommentSection";
 import EditBooksModal from "../components/editBooksModal";
 import DeleteBookModal from "../components/DeleteBookModal";
+import { useData } from "../context/DataContext";
 
 const Book = () => {
   const [bookData, setBookData] = useState();
@@ -61,6 +62,7 @@ const Book = () => {
   const [avgRating, setAvgRating] = useState();
 
   const [showEditbookModal, setShowEditbookModal] = useState(false);
+  const { reloadBooksPage } = useData();
 
   const navigate = useNavigate();
   const allowedRoles = [1993];
@@ -143,6 +145,8 @@ const Book = () => {
     } catch (err) {
       if (err?.response?.status === 500) {
         setErrMsg(`No book found with id ${bookId}`);
+        navigate("/notfound");
+
         setAlertMsg(true);
         setSpinner(false);
       }
@@ -165,6 +169,7 @@ const Book = () => {
   useEffect(() => {
     if (!showModal && imageUpdated) {
       getBookbyId();
+      reloadBooksPage(true);
     }
   }, [showModal, imageUpdated]);
   /////////////////////////////////
@@ -189,6 +194,7 @@ const Book = () => {
   };
   const updatedImage = () => {
     setImageUpdated(true);
+    reloadBooksPage(true);
   };
 
   const openImageModal = (imageUrl) => {
@@ -216,6 +222,7 @@ const Book = () => {
   const closeEditbookModal = () => {
     setShowEditbookModal(false);
     setImageUpdated(true);
+    reloadBooksPage(true);
   };
 
   //////////////////
@@ -339,6 +346,14 @@ const Book = () => {
                           {" "}
                           {bookName}{" "}
                         </h1>
+                        <div>
+                          by:
+                          <span style={{ color: "grey" }}>
+                            {" "}
+                            {(" ", author)}
+                          </span>
+                        </div>
+
                         <Typography
                           component="legend"
                           style={{ color: "grey" }}
@@ -359,7 +374,7 @@ const Book = () => {
                           Rent :<CurrencyRupee />
                           {rentAmount}
                         </p>
-                        <p>Author :{author}</p>
+                        {/* <p>Author :{author}</p> */}
                         <p>Genre :{genre}</p>
                         <p>Language :{language}</p>
                         <p>Rental period :{rentPeriod}</p>
