@@ -2,16 +2,28 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/MuiHeader";
 import { Button, Stack } from "@mui/material";
-import img404 from "../images/unauthorized.jpg";
+import img404 from "../images/unauthorized_resize.jpg";
 
 const Unauthorized = () => {
   const navigate = useNavigate();
 
-  const goBack = () => navigate("/login");
-
   return (
     <section>
       <Header />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <h2
+        style={{
+          textAlign: "center",
+          fontFamily: "monospace",
+          color: "orangered",
+        }}
+      >
+        Unauthorized
+      </h2>
       <div
         className="flexGrow"
         style={{
@@ -21,11 +33,7 @@ const Unauthorized = () => {
           alignItems: "center",
         }}
       >
-        <br />
-        <br />
-
-        <br />
-        {/* <img style={{ maxWidth: "50%" }} src={img404} alt="Unauthorized" /> */}
+        <img style={{ maxWidth: "60%" }} src={img404} alt="Unauthorized" />
       </div>
       <br />
       <div style={{ display: "flex", justifyContent: "center" }}>

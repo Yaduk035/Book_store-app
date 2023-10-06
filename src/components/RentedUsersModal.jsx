@@ -103,7 +103,14 @@ function RentedUsersModal(props) {
               />
             ))
           ) : (
-            <span>{!spinner && <p>no users</p>}</span>
+            <span>
+              {!spinner && (
+                <p>
+                  No user rented{" "}
+                  <span style={{ color: "red" }}> {bookTitle} </span>
+                </p>
+              )}
+            </span>
           )}
         </Modal.Body>
       </Modal>

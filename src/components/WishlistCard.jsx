@@ -125,7 +125,8 @@ export default function WishlistCard(props) {
               )}
               {props.showUser && (
                 <Button
-                  variant="contained"
+                  variant="outlined"
+                  size="small"
                   color="error"
                   onClick={() => {
                     props.setModalId(bookId);
@@ -134,7 +135,7 @@ export default function WishlistCard(props) {
                   }}
                   startIcon={<PermContactCalendar />}
                 >
-                  Show users
+                  Show rented users
                 </Button>
               )}
               <Button

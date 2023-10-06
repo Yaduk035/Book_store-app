@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import { Form, Row, Col, Container, Alert } from "react-bootstrap";
+import { Form, Row, Col, Alert } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { PlusLg } from "react-bootstrap-icons";
-import axios from "../api/axios";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { useNavigate } from "react-router-dom";
 import { Trash3Fill } from "react-bootstrap-icons";
@@ -24,6 +23,7 @@ function AddBooksModal(props) {
   const [showAlert, setShowAlert] = useState(false);
   const [year, setYear] = useState();
   const [description, setDescription] = useState("");
+  const [ErrorMsg, setErrorMsg] = useState("");
 
   const axiosPrivate = useAxiosPrivate();
 
@@ -54,6 +54,7 @@ function AddBooksModal(props) {
 
   const handleBookSubmit = async (e) => {
     e.preventDefault();
+    setErrorMsg("");
     try {
       const bookData = {
         bookName: bookName,
@@ -79,6 +80,13 @@ function AddBooksModal(props) {
       }, [1000]);
     } catch (error) {
       console.error(error);
+      if (!error?.response) {
+        setErrorMsg("No server response");
+      } else if (error.response?.status === 400) {
+        setErrorMsg("Error : Some input fields are left unfilled");
+      } else {
+        setErrorMsg("Something went wrong");
+      }
     }
   };
 
@@ -274,20 +282,26 @@ function AddBooksModal(props) {
                 onChange={(e) => setDescription(e.target.value)}
               ></Form.Control>
             </Form.Group>
-            {showAlert && <Alert>Book added!</Alert>}
-            {/* <Row>
-              <Form.Group className="position-relative mb-3">
-                <Form.Label>Image :</Form.Label>
-                <Form.Control
-                  type="file"
-                  required
-                  name="file"
-                  accept="image/*"
-                />
-              </Form.Group>
-            </Row> */}
           </Form>
         </Modal.Body>
+        {showAlert && (
+          <Alert>
+            {" "}
+            <span style={{ justifyContent: "center", display: "flex" }}>
+              {" "}
+              Book added!
+            </span>
+          </Alert>
+        )}
+        {ErrorMsg && (
+          <Alert variant="danger">
+            {" "}
+            <span style={{ justifyContent: "center", display: "flex" }}>
+              {" "}
+              {ErrorMsg}
+            </span>
+          </Alert>
+        )}
         <Modal.Footer>
           <Button
             size="sm"
@@ -303,6 +317,7 @@ function AddBooksModal(props) {
               setLanguage("");
               setRentAmount(null);
               setYear(null);
+              setErrorMsg("");
             }}
           >
             <Trash3Fill />

@@ -15,9 +15,7 @@ import {
 } from "react-bootstrap";
 import "./css/accSettings.css";
 import { CheckCircleFill, XCircleFill } from "react-bootstrap-icons";
-import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import Header from "../components/MuiHeader";
 
 function AccSettings() {
@@ -38,7 +36,6 @@ function AccSettings() {
 
   const userId = localStorage.getItem("userId");
 
-  const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
 
   useEffect(() => {
@@ -275,26 +272,24 @@ function AccSettings() {
                   <br />
                 )}
                 {!spinner ? (
-                  <Container fluid>
-                    <Row>
+                  <Container>
+                    <span
+                      style={{ display: "flex", justifyContent: "flex-end" }}
+                    >
                       <Button
-                        variant="dark"
+                        variant="outline-dark"
                         type="submit"
-                        disabled={
-                          !emailUnique ||
-                          !samePass ||
-                          !firstname ||
-                          !lastname ||
-                          !pwd8
-                        }
+                        disabled={!emailUnique || !firstname || !lastname}
                       >
                         Update info
                       </Button>
-                    </Row>
+                    </span>
                   </Container>
                 ) : (
-                  <Container fluid>
-                    <Row>
+                  <Container>
+                    <span
+                      style={{ display: "flex", justifyContent: "flex-end" }}
+                    >
                       <Button variant="dark" disabled>
                         <Spinner
                           as="span"
@@ -307,7 +302,7 @@ function AccSettings() {
                           Updating user info...
                         </span>
                       </Button>
-                    </Row>
+                    </span>
                   </Container>
                 )}
               </Form>

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Header from "../components/MuiHeader";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "../api/axios";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { Container, Row, Col, Button, Alert, Dropdown } from "react-bootstrap";
 import noImg from "../images/icons/image_not_found-2.jpg";

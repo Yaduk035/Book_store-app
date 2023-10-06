@@ -1,61 +1,115 @@
-import React, { useState, useEffect } from "react";
-import { Container, Button } from "react-bootstrap";
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
-import "./css/header.css";
+import React, { useEffect, useState } from "react";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import Button from "@mui/material/Button";
+import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 import { useNavigate, useLocation } from "react-router-dom";
-import { JournalBookmark } from "react-bootstrap-icons";
 
-const Header = () => {
+function ResponsiveAppBar() {
   const navigate = useNavigate();
   const location = useLocation();
+
   const [path, setPath] = useState("");
 
   useEffect(() => {
-    // Get the current path and log it to the console
     const currentPath = location.pathname;
     setPath(currentPath);
   }, [location.pathname]);
 
   return (
-    <>
-      <Navbar
-        expand="xxl"
-        fixed="sticky"
-        bg="dark"
-        data-bs-theme="dark"
-        style={{ minHeight: "70px" }}
-      >
-        <Container>
-          <span onClick={() => navigate("/")}>
-            <JournalBookmark
-              color="white"
-              size={30}
-              style={{ paddingRight: "5px", paddingBottom: "5px" }}
-            />
-            <Navbar.Brand id="textColour" onClick={() => navigate("/")}>
-              Book Store
-            </Navbar.Brand>
-          </span>
-          <Nav className="ml-auto">
-            {path === "/login" ? (
-              // <Nav.Link onClick={() => navigate("/signup")} id="textColour">
-              //   Sign Up
-              // </Nav.Link>
+    <AppBar
+      position="static"
+      sx={{
+        backgroundColor: "rgba(30, 0, 0, 0.8)",
+        boxShadow: "0 10px 25px rgba(0, 0, 0, 0.7)",
+        borderRadius: "0px 0px 10px 10px ",
+        position: "fixed",
+        zIndex: 4,
+      }}
+    >
+      <Container maxWidth="xl">
+        <Toolbar disableGutters>
+          <AutoStoriesIcon
+            sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
+          />
+          <Typography
+            variant="h6"
+            noWrap
+            component="a"
+            onClick={() => navigate("/")}
+            sx={{
+              mr: 2,
+              display: { xs: "none", md: "flex" },
+              fontFamily: "monospace",
+              fontWeight: 700,
+              letterSpacing: ".3rem",
+              color: "inherit",
+              textDecoration: "none",
+            }}
+            style={{ cursor: "pointer" }}
+          >
+            BOOKSTORE
+          </Typography>
 
-              <Button variant="info" onClick={() => navigate("/signup")}>
+          <AutoStoriesIcon
+            sx={{ display: { xs: "flex", md: "none" }, mr: 1 }}
+          />
+          <Typography
+            variant="h5"
+            noWrap
+            component="a"
+            href="/"
+            sx={{
+              mr: 2,
+              display: { xs: "flex", md: "none" },
+              flexGrow: 1,
+              fontFamily: "monospace",
+              fontWeight: 700,
+              letterSpacing: ".3rem",
+              color: "inherit",
+              textDecoration: "none",
+            }}
+          >
+            BOOKSTORE
+          </Typography>
+          {/* <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+            {pages.map((page) => (
+              <Button
+                key={page}
+                onClick={handleCloseNavMenu}
+                sx={{ my: 2, color: "white", display: "block" }}
+              >
+                {page}
+              </Button>
+            ))}
+          </Box> */}
+          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}></Box>
+
+          <Box sx={{ flexGrow: 0 }}>
+            {path === "/login" ? (
+              <Button
+                variant="contained"
+                color="error"
+                onClick={() => navigate("/signup")}
+              >
                 Sign up
               </Button>
             ) : (
-              <Button variant="info" onClick={() => navigate("/login")}>
-                Log In
+              <Button
+                variant="contained"
+                color="error"
+                onClick={() => navigate("/login")}
+              >
+                Log in
               </Button>
             )}
-          </Nav>
-        </Container>
-      </Navbar>
-    </>
+          </Box>
+        </Toolbar>
+      </Container>
+    </AppBar>
   );
-};
-
-export default Header;
+}
+export default ResponsiveAppBar;

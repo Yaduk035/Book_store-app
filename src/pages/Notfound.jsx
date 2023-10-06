@@ -1,13 +1,11 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import errorImage from "../images/2451354.jpg";
+import errorImage from "../images/404Img_resized.jpg";
 import Header from "../components/MuiHeader";
 import { Button, Stack } from "@mui/material";
 
 const Notfound = () => {
   const navigate = useNavigate();
-
-  const goBack = () => navigate("/login");
 
   return (
     <section>

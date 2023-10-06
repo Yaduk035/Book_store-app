@@ -6,7 +6,7 @@
   position: relative;
   overflow: hidden;
   box-shadow: 0 0 15px 5px rgba(0, 0, 0, 0.3); /* Adjust the shadow properties as desired */
-  background-size: cover;
+  border-radius: 10px;
 }
 
 .login-page {

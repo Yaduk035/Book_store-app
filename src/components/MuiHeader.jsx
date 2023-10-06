@@ -17,7 +17,7 @@ import { Chip } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import useLogout from "../hooks/useLogout";
 import { useNavigate } from "react-router-dom";
-import { Dribbble, JournalBookmarkFill, PlusLg } from "react-bootstrap-icons";
+import { PlusLg } from "react-bootstrap-icons";
 import AddBooksModal from "../components/addBooksModal";
 import { JournalText } from "react-bootstrap-icons";
 import { Divider, capitalize } from "@mui/material";
@@ -31,10 +31,8 @@ function ResponsiveAppBar() {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [admin, setAdmin] = useState(localStorage.getItem("role"));
-  const [showHeader, setShowHeader] = useState(true);
   const allowedRoles = [1993];
   const localUser = localStorage?.getItem("role");
-  const [showDropdown, setShowDropdown] = useState(false);
   const name = localStorage.getItem("name");
 
   const handleOpenNavMenu = (event) => {
