@@ -40,20 +40,37 @@ const CarouselComponent = () => {
         style={{ cursor: "pointer" }}
       >
         <div id="randomImgDiv">
-          <img
-            src={randomBook.image}
-            alt="First slide"
+          <div
             style={{
               height: "550px",
-              width: "60vh",
-              borderRadius: "20px",
-              boxShadow: "0 20px 50px rgba(240, 200, 200, 0.7)",
             }}
-          />
+          >
+            <img
+              src={randomBook.image}
+              alt="First slide"
+              style={{
+                maxHeight: "400px",
+                height: "60vh",
+                width: "30vh",
+                borderRadius: "20px",
+                marginBottom: "10%",
+                marginLeft: "10%",
+                boxShadow: "0 20px 50px rgba(240, 200, 200, 1)",
+                position: "absolute",
+                bottom: "10%",
+                top: "25%",
+                left: "8%",
+              }}
+            />
+          </div>
         </div>
-        <Carousel.Caption>
-          <h3 style={{ color: "black" }}>{randomBook.bookName}</h3>
-          <p style={{ color: "black" }}>{randomBook.description}</p>
+        <Carousel.Caption
+          style={{ display: "flex", justifyContent: "flex-end" }}
+        >
+          <div style={{ padding: "10%" }}>
+            <h3 style={{ color: "white" }}>{randomBook.bookName}</h3>
+            <p style={{ color: "white" }}>{randomBook.description}</p>
+          </div>
         </Carousel.Caption>
       </Carousel.Item>
       {/* Add more Carousel.Items for other slides */}

@@ -7,15 +7,17 @@ const SearchBar = ({ filteredBooks, setSearchResults }) => {
   const handleSearchChange = (e) => {
     if (!e.target.value) return setSearchResults(filteredBooks);
 
+    const lowercaseSearch = e.target.value.toLowerCase();
+
     const results = filteredBooks.filter(
       (post) =>
         (post.bookName &&
-          post.bookName.toLowerCase().includes(e.target.value)) ||
-        (post.author && post.author.toLowerCase().includes(e.target.value)) ||
+          post.bookName.toLowerCase().includes(lowercaseSearch)) ||
+        (post.author && post.author.toLowerCase().includes(lowercaseSearch)) ||
         (post.language &&
-          post.language.toLowerCase().includes(e.target.value)) ||
+          post.language.toLowerCase().includes(lowercaseSearch)) ||
         (post.description &&
-          post.description.toLowerCase().includes(e.target.value))
+          post.description.toLowerCase().includes(lowercaseSearch))
     );
     setSearchResults(results);
   };

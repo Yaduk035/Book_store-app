@@ -148,10 +148,9 @@ export default function InputMultiline({
                   onClick={() => {
                     setText("");
                     setTitle("");
-                    setOpenAlert(true);
                   }}
                 >
-                  Delete
+                  Clear
                 </Button>
                 <Button
                   variant="contained"

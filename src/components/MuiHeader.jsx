@@ -143,13 +143,6 @@ function ResponsiveAppBar() {
                 display: { xs: "block", md: "none" },
               }}
             >
-              {/* {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
-              ))}
-            </Menu> */}
-
               <MenuItem onClick={() => navigate("/books")}>
                 <Typography textAlign="center">Books</Typography>
               </MenuItem>
@@ -181,18 +174,14 @@ function ResponsiveAppBar() {
           >
             BOOKSTORE
           </Typography>
-          {/* <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                {page}
-              </Button>
-            ))}
-          </Box> */}
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: { xs: "none", md: "flex" },
+              justifyContent: "flex-end",
+              paddingRight: "20px",
+            }}
+          >
             <Button
               onClick={() => navigate("/books")}
               sx={{ my: 2, color: "white", display: "block" }}
@@ -201,7 +190,7 @@ function ResponsiveAppBar() {
                 size={20}
                 style={{ marginRight: "5px", marginBottom: "3px" }}
               />
-              Books
+              All Books
             </Button>
             {admin && (
               <Button
@@ -293,11 +282,6 @@ function ResponsiveAppBar() {
                   </span>
                 </Typography>
               </MenuItem>
-              {/* {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))} */}
               <AddBooksModal showModal={showModal} closeModal={closeModal} />
             </Menu>
           </Box>
