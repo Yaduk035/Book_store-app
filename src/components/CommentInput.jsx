@@ -35,6 +35,7 @@ export default function InputMultiline({
   const [title, setTitle] = useState("");
   const [reviewAdded, setReviewAdded] = useState(false);
   const [openAlert, setOpenAlert] = React.useState(false);
+  const [alertMsg, setAlertMsg] = useState("");
 
   const axiosPrivate = useAxiosPrivate();
   const [isuserCommented, setIsUserCommented] = React.useState();
@@ -54,10 +55,6 @@ export default function InputMultiline({
     }
   }, [userCommented, reload]);
 
-  // React.useEffect(() => {
-  //   console.log("rating :", rating);
-  // }, [rating]);
-
   React.useEffect(() => {
     if (rating && title && text) {
       setReviewAdded(true);
@@ -69,7 +66,6 @@ export default function InputMultiline({
   const handleInputChange = (e) => {
     setText(e.target.value);
     onTextChange(e.target.value);
-    // console.log("Comment : ", text);
   };
 
   const showAlert = () => {
@@ -93,10 +89,14 @@ export default function InputMultiline({
         commentTitle: title,
       };
       const response = await axiosPrivate.post(`books/reviews/${bookId}`, data);
-      console.log("add comment respose : ", response.data);
+      setAlertMsg("Comment added");
       showAlert();
+      setRating(null);
+      setTitle("");
+      setText("");
     } catch (error) {
-      console.error(error);
+      setAlertMsg("Something went wrong.");
+      showAlert();
     }
   };
 
@@ -166,7 +166,7 @@ export default function InputMultiline({
               <AlertBar
                 openAlert={openAlert}
                 closeAlert={closeAlert}
-                alertMessage="Comment added"
+                alertMessage={alertMsg}
               />
               {/* <br /> <br /> */}
             </div>

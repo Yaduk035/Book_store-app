@@ -79,7 +79,6 @@ function AddBooksModal(props) {
         navigate(`/books/${bookId}`);
       }, [1000]);
     } catch (error) {
-      console.error(error);
       if (!error?.response) {
         setErrorMsg("No server response");
       } else if (error.response?.status === 400) {
@@ -159,7 +158,6 @@ function AddBooksModal(props) {
                     <option>Non-fiction</option>
                     <option>Science & Technology</option>
                     <option>Dictionary & Reference</option>
-                    <option>Fantasy & Science Fiction</option>
                     <option>Romance</option>
                     <option>Mystery & Thriller</option>
                     <option>Biography & Memoir</option>

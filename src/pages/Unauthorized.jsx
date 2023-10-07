@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/MuiHeader";
 import { Button, Stack } from "@mui/material";
@@ -6,6 +6,10 @@ import img404 from "../images/unauthorized_resize.jpg";
 
 const Unauthorized = () => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    document.title = "Unauthorized";
+  }, []);
 
   return (
     <section>

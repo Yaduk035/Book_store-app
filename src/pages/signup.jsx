@@ -41,21 +41,25 @@ function Signup() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const checkEmailExists = async () => {
-      try {
-        const checkEmail_url = `http://localhost:4000/check/email/${email}`;
-        const response = await axios.get(checkEmail_url);
-        const { exists } = response.data;
-        setEmailUnique(!exists);
-      } catch (error) {
-        console.error(error);
-      }
-    };
+    document.title = "Bookstore - Sign up";
+  }, []);
 
-    if (email) {
-      checkEmailExists();
-    }
-  }, [email]);
+  // useEffect(() => {
+  //   const checkEmailExists = async () => {
+  //     try {
+  //       const checkEmail_url = `http://localhost:4000/check/email/${email}`;
+  //       const response = await axios.get(checkEmail_url);
+  //       const { exists } = response.data;
+  //       setEmailUnique(!exists);
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   };
+
+  //   if (email) {
+  //     checkEmailExists();
+  //   }
+  // }, [email]);
 
   useEffect(() => {
     setErrormsg("");
@@ -91,6 +95,7 @@ function Signup() {
       setEmailNull(true);
     } else {
       setEmailNull(false);
+      setEmailUnique(true);
     }
   };
   useEffect(() => {
@@ -135,13 +140,13 @@ function Signup() {
       });
       setFormSubmit(true);
       setSpinner(false);
-      console.log("Response :", response?.data);
       // handleSuccessModal();
       navigate("/login");
     } catch (err) {
-      console.error("Response error :", err?.response?.data);
       if (!err?.response) {
         setErrormsg("Network error.");
+      } else if (err.response?.status === 409) {
+        setEmailUnique(false);
       } else if (err.response?.status === 500) {
         setErrormsg("Server error.");
       } else {
@@ -275,13 +280,7 @@ function Signup() {
                       <Button
                         variant="dark"
                         type="submit"
-                        disabled={
-                          !emailUnique ||
-                          !samePass ||
-                          !firstname ||
-                          !lastname ||
-                          !pwd8
-                        }
+                        disabled={!samePass || !firstname || !lastname || !pwd8}
                       >
                         Sign Up!
                       </Button>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import errorImage from "../images/404Img_resized.jpg";
 import Header from "../components/MuiHeader";
@@ -6,6 +6,10 @@ import { Button, Stack } from "@mui/material";
 
 const Notfound = () => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    document.title = "Page not found";
+  }, []);
 
   return (
     <section>

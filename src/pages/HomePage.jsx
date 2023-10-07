@@ -7,6 +7,7 @@ import "./css/home.css";
 import CarouselComponent from "../components/CarouselComponent";
 import CardTemplate from "../components/BooksCardTemplate";
 import { SyncLoader } from "react-spinners";
+import { useData } from "../context/DataContext";
 
 const HomePage = () => {
   // const [userTier, setUserTier] = useState(false);
@@ -19,6 +20,7 @@ const HomePage = () => {
 
   // // Use .some() to check if any of the allowedRoles exists in userRoles
   // const roleExists = userRoles.some((role) => allowedRoles.includes(role));
+  const { latestBooks, addLatestBooks } = useData();
 
   const [books, setBooks] = useState("");
   const [spinner, setSpinner] = useState(false);
@@ -26,38 +28,41 @@ const HomePage = () => {
   const axiosPrivate = useAxiosPrivate();
 
   useEffect(() => {
-    const bookData = async () => {
-      setSpinner(true);
-      try {
-        const response = await axiosPrivate.get("/books/recentbooks");
-        console.log("Data :", response.data);
-        const formattedData = response.data.map((book) => {
-          const createdAt =
-            new Date(book.createdAt).toLocaleString("en-US", {
-              timeZone: "Asia/Kolkata",
-            }) + " IST";
-          const updatedAt =
-            new Date(book.updateAt).toLocaleString("en-US", {
-              timeZone: "Asia/Kolkata",
-            }) + " IST";
-          return {
-            ...book,
-            createdAt,
-            updatedAt,
-          };
-        });
-        setBooks(formattedData);
-        setSpinner(false);
-      } catch (error) {
-        console.error(error);
-        setSpinner(false);
-      }
-    };
-    bookData();
+    document.title = "Bookstore - Home";
   }, []);
+
+  const bookData = async () => {
+    setSpinner(true);
+    try {
+      const response = await axiosPrivate.get("/books/recentbooks");
+      const formattedData = response.data.map((book) => {
+        const createdAt =
+          new Date(book.createdAt).toLocaleString("en-US", {
+            timeZone: "Asia/Kolkata",
+          }) + " IST";
+        const updatedAt =
+          new Date(book.updateAt).toLocaleString("en-US", {
+            timeZone: "Asia/Kolkata",
+          }) + " IST";
+        return {
+          ...book,
+          createdAt,
+          updatedAt,
+        };
+      });
+      setBooks(formattedData);
+      addLatestBooks(formattedData);
+      setSpinner(false);
+    } catch (error) {
+      setSpinner(false);
+    }
+  };
+
   useEffect(() => {
-    console.log(books);
-  }, [books]);
+    if (!latestBooks) {
+      bookData();
+    }
+  }, []);
 
   return (
     <>
@@ -81,8 +86,8 @@ const HomePage = () => {
               >
                 <SyncLoader color="#36d7b7" size={20} />
               </div>
-            ) : Array.isArray(books) && books.length > 0 ? (
-              books.map((book) => (
+            ) : Array.isArray(latestBooks) && latestBooks.length > 0 ? (
+              latestBooks.map((book) => (
                 <CardTemplate
                   key={book._id}
                   id={book._id}

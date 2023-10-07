@@ -34,10 +34,6 @@ function RentedUsersModal(props) {
     setBookTitle(props.bookTitle);
   }, [props.modalId, props.bookTitle]);
 
-  useEffect(() => {
-    console.log("resDtat :", rentedUsers);
-  }, [rentedUsers]);
-
   const getRentlist = async () => {
     try {
       setSpinner(true);
@@ -47,7 +43,6 @@ function RentedUsersModal(props) {
       setRentedUsers(response.data);
       setSpinner(false);
     } catch (error) {
-      console.error(error);
       setSpinner(false);
     }
   };

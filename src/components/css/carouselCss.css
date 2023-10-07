@@ -1,0 +1,7 @@
+#randomImgDiv {
+  display: flex;
+  justify-content: center;
+  max-height: 550px;
+  background-image: url("../../images/carousel_imgs//vintagebooks_cropped.jpg");
+  background-size: cover;
+}

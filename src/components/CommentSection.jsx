@@ -14,19 +14,12 @@ const CommentSection = (props) => {
   const [commentUser, setCommentUser] = React.useState();
   const axiosPrivate = useAxiosPrivate();
 
-  // React.useEffect(() => {
-  //   console.log("User commented : ", commentUser);
-  // }, [commentUser]);
-
   const getReviews = async () => {
     try {
       const id = props.bookId;
       const response = await axiosPrivate.get(`books/reviews/${id}`);
       setResponseData(response.data.reviews);
-      //   console.log("response data:", response.data.reviews);
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   };
   useEffect(() => {
     getReviews();
@@ -55,7 +48,6 @@ const CommentSection = (props) => {
   }
   useEffect(() => {
     const averageRating = calculateAverageRating(responseData);
-    console.log("Average Rating:", avgRating);
 
     const updateRating = async () => {
       try {
@@ -64,22 +56,14 @@ const CommentSection = (props) => {
           `books/${props.bookId}`,
           newRating
         );
-        console.log(response.data);
         props.setAvgRating(avgRating);
-      } catch (error) {
-        console.error(error);
-      }
+      } catch (error) {}
     };
 
     if (avgRating !== props.avgRating) {
       updateRating();
     }
   }, [responseData]);
-
-  // useEffect(() => {
-  //   // const clgData = (responseData);
-  //   console.log(responseData);
-  // }, [responseData]);
 
   useEffect(() => {
     setReload(false);

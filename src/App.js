@@ -50,7 +50,7 @@ function App() {
           </Route>
           <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />} >
             <Route path="/admincontrols" element={ <AdminControlPanel/> } />
-            <Route path="/admincontrols/:userId/rentlist" element={ <AdminPanelRentlist/> } />
+            <Route path="/admincontrols/:userId/rentlist/:emailId" element={ <AdminPanelRentlist/> } />
           </Route>
         </Route>
       </Route>

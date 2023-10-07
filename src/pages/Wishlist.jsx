@@ -14,16 +14,18 @@ const Wishlist = () => {
   const [wishlistedBooks, setWishlistedBooks] = useState("");
   const [reloadList, setReloadList] = useState(false);
 
+  useEffect(() => {
+    document.title = "Wishlist";
+  }, []);
+
   const getWishlist = async () => {
     try {
       setSpinner(true);
       const response = await axiosPrivate.get(`books/userwishlist/${userId}`);
 
       setWishlistedBooks(response.data);
-      console.log(wishlistedBooks);
       setSpinner(false);
     } catch (error) {
-      console.error(error);
       setSpinner(false);
     }
   };

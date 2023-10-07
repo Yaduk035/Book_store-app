@@ -8,14 +8,19 @@ import Modal from "react-bootstrap/Modal";
 import SuccessAlert from "./SuccessAlertBar";
 import Stack from "@mui/material/Stack";
 import { useNavigate } from "react-router-dom";
+import EditUser_admin from "./EditUser_admin";
 
 const UsersList = (props) => {
   const [show, setShow] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [openAlert, setOpenAlert] = React.useState(false);
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    props.reload();
+    setShow(false);
+  };
   const handleShow = () => setShow(true);
   const delFromRentlist = async () => {
     try {
@@ -30,10 +35,7 @@ const UsersList = (props) => {
           withCredentials: true,
         }
       );
-      console.log(response.data);
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   };
 
   const closeAlert = () => {
@@ -45,6 +47,11 @@ const UsersList = (props) => {
       setOpenAlert(false);
       props.reload();
     }, [3000]);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    props.getUsersRentlist();
   };
 
   return (
@@ -64,21 +71,35 @@ const UsersList = (props) => {
             <br />
             Id : {props.userId}
           </div>
-          {!props.disableRemoveButton ? (
-            <Button variant="outlined" color="error" onClick={handleShow}>
-              Remove from list
-            </Button>
-          ) : (
-            <Button
-              variant="outlined"
-              color="secondary"
-              onClick={() =>
-                navigate(`/admincontrols/${props.userId}/rentlist`)
-              }
-            >
-              Show user rentlist
-            </Button>
-          )}
+          <Stack direction="column" spacing={2}>
+            {!props.disableRemoveButton ? (
+              <Button variant="outlined" color="error" onClick={handleShow}>
+                Remove from list
+              </Button>
+            ) : (
+              <Button
+                variant="outlined"
+                color="secondary"
+                onClick={() =>
+                  navigate(
+                    `/admincontrols/${props.userId}/rentlist/${props.email}`
+                  )
+                }
+              >
+                Show user rentlist
+              </Button>
+            )}
+            {props.EnableEditUserButton && (
+              <Button
+                variant="contained"
+                size="small"
+                color="error"
+                onClick={() => setShowModal(true)}
+              >
+                Edit / Delete user
+              </Button>
+            )}
+          </Stack>
         </ListGroup.Item>
       </ListGroup>
 
@@ -120,6 +141,15 @@ const UsersList = (props) => {
         openAlert={openAlert}
         closeAlert={closeAlert}
         alertMessage="User deleted from list."
+      />
+      <EditUser_admin
+        showModal={showModal}
+        closeModal={closeModal}
+        userId={props.userId}
+        firstname={props.firstname}
+        lastname={props.lastname}
+        email={props.email}
+        reload={props.reload}
       />
     </>
   );

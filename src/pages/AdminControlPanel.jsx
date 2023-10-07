@@ -20,6 +20,10 @@ const AdminControlPanel = () => {
   const [users, setUsers] = useState("");
   const axiosPrivate = useAxiosPrivate();
 
+  useEffect(() => {
+    document.title = "Admin Dashboard";
+  }, []);
+
   const {
     adminRentList,
     addToAdminRentlist,
@@ -32,10 +36,6 @@ const AdminControlPanel = () => {
 
   const controller = new AbortController();
 
-  // useEffect(() => {
-  //   console.log("Modal Id :", modalId);
-  // }, [modalId]);
-
   const getRentlist = async () => {
     try {
       setSpinner(true);
@@ -45,7 +45,6 @@ const AdminControlPanel = () => {
       addToAdminRentlist(response.data);
       setSpinner(false);
     } catch (error) {
-      console.error(error);
       setSpinner(false);
     }
   };
@@ -55,11 +54,8 @@ const AdminControlPanel = () => {
       const response = await axiosPrivate.get(`users`, {
         signal: controller.signal,
       });
-      console.log(response.data);
       setUsers(response.data);
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -80,6 +76,11 @@ const AdminControlPanel = () => {
   const reload = () => {
     setReloadList(!reloadList);
     getRentlist();
+  };
+
+  const reloadUsers = () => {
+    setReloadList(!reloadList);
+    getUsersRentlist();
   };
 
   // useEffect(() => {
@@ -194,6 +195,8 @@ const AdminControlPanel = () => {
               lastname={user.lastname}
               reload={reload}
               disableRemoveButton={true}
+              EnableEditUserButton={true}
+              getUsersRentlist={getUsersRentlist}
             />
           ))
         ) : (

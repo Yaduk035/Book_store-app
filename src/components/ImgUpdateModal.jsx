@@ -73,7 +73,6 @@ function ImgUpdateModal(props) {
           withCredentials: true,
         },
       });
-      // console.log(response.data);
       setLoading(false);
       setShowAlert(true);
       setTimeout(() => {
@@ -85,9 +84,8 @@ function ImgUpdateModal(props) {
         setUpdateImg("");
         setCroppedAreaPixels("");
         setZoom(1);
-      }, [2000]);
+      }, [1000]);
     } catch (error) {
-      console.error(error);
       setLoading(false);
     }
   };
@@ -95,7 +93,6 @@ function ImgUpdateModal(props) {
     var reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => {
-      // console.log(reader.result);
       setUpdateImg(reader.result);
     };
     reader.onerror = (error) => {
@@ -121,14 +118,11 @@ function ImgUpdateModal(props) {
   const showCroppedImage = async () => {
     try {
       const croppedImage = await getCroppedImg(updateImg, croppedAreaPixels);
-      // console.log("donee", { croppedImage });
       setSwitchCroppedImg(true);
       setCroppedImage(croppedImage);
       setUpdateImg(croppedImage);
       setCropping(false);
-    } catch (e) {
-      console.error(e);
-    }
+    } catch (e) {}
   };
   const clearImage = () => {
     setSwitchCroppedImg(false);

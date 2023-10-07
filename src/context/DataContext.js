@@ -7,6 +7,7 @@ export const DataProvider = ({ children }) => {
   const [adminRentList, setAdminRentList] = useState("");
   const [adminSortBy, setAdminSortBy] = useState(true);
   const [bookUpdated, setBookUpdated] = useState(false);
+  const [latestBooks, setLatestBooks] = useState("");
 
   const addBook = (newBook) => {
     setBooks(newBook);
@@ -22,6 +23,10 @@ export const DataProvider = ({ children }) => {
     setBookUpdated(newState);
   };
 
+  const addLatestBooks = (books) => {
+    setLatestBooks(books);
+  };
+
   return (
     <DataContext.Provider
       value={{
@@ -33,6 +38,8 @@ export const DataProvider = ({ children }) => {
         adminSortBy,
         bookUpdated,
         reloadBooksPage,
+        latestBooks,
+        addLatestBooks,
       }}
     >
       {children}

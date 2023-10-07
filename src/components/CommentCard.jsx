@@ -28,6 +28,7 @@ export default function CommentCard(props) {
   const [currentUser, setCurrentUser] = React.useState(false);
   const [enableDelete, setEnableDelete] = React.useState(false);
   const [openAlert, setOpenAlert] = React.useState(false);
+  const [alertMsg, setAlertMsg] = React.useState("");
   const axiosPrivate = useAxiosPrivate();
 
   const showAlert = () => {
@@ -77,10 +78,11 @@ export default function CommentCard(props) {
         data: reqData,
         withCredentials: true,
       });
-      console.log("Delete cmnt response", response.data);
+      setAlertMsg("Comment deleted");
       showAlert();
     } catch (error) {
-      console.error(error);
+      setAlertMsg("Something went wrong");
+      showAlert();
     }
   };
   const card = (
@@ -126,7 +128,7 @@ export default function CommentCard(props) {
       <AlertBar
         openAlert={openAlert}
         closeAlert={closeAlert}
-        alertMessage="Comment Deleted"
+        alertMessage={alertMsg}
       />
 
       {/* <CardActions>

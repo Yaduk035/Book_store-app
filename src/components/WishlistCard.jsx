@@ -33,7 +33,6 @@ export default function WishlistCard(props) {
 
   const bookId = props.bookId;
   const user = props.userId || localStorage?.getItem("userId");
-  console.log("Adminpanel UserId:", user);
 
   const closeAlert = () => {
     setOpenAlert(false);
@@ -67,12 +66,10 @@ export default function WishlistCard(props) {
           withCredentials: true,
         }
       );
-      console.log(response.data);
       setSpinner(false);
       showAlert();
       handleCloseModal();
     } catch (error) {
-      console.error(error);
       setSpinner(false);
     }
   };
@@ -133,16 +130,17 @@ export default function WishlistCard(props) {
                     props.setBookTitle(props.title);
                     props.openModal();
                   }}
-                  startIcon={<PermContactCalendar />}
+                  // startIcon={<PermContactCalendar />}
                 >
                   Show rented users
                 </Button>
               )}
               <Button
                 variant="outlined"
+                size="small"
                 onClick={() => navigate(`/books/${bookId}`)}
               >
-                See book
+                More details
               </Button>
             </Stack>
           </CardActions>

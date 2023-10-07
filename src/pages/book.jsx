@@ -2,7 +2,16 @@ import React, { useEffect, useState } from "react";
 import Header from "../components/MuiHeader";
 import { useParams, useNavigate } from "react-router-dom";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
-import { Container, Row, Col, Button, Alert, Dropdown } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Button,
+  Alert,
+  Dropdown,
+  Collapse,
+  Spinner,
+} from "react-bootstrap";
 import noImg from "../images/icons/image_not_found-2.jpg";
 import ImgUpdateModal from "../components/ImgUpdateModal";
 import "./css/books.css";
@@ -14,6 +23,7 @@ import {
   JournalArrowUp,
   CurrencyRupee,
   JournalX,
+  ChevronDown,
 } from "react-bootstrap-icons";
 import ImageModal from "../components/ImageModal";
 import { GridLoader } from "react-spinners";
@@ -26,6 +36,8 @@ import CommentSection from "../components/CommentSection";
 import EditBooksModal from "../components/editBooksModal";
 import DeleteBookModal from "../components/DeleteBookModal";
 import { useData } from "../context/DataContext";
+import { styled } from "@mui/material/styles";
+import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 
 const Book = () => {
   const [bookData, setBookData] = useState();
@@ -58,7 +70,9 @@ const Book = () => {
   const [userRentlisted, setUserRentlisted] = useState(false);
   const [openAlert, setOpenAlert] = React.useState(false);
   const [successAlertMessage, setSuccessAlertMessage] = useState("");
-  const [avgRating, setAvgRating] = useState();
+  const [avgRating, setAvgRating] = useState(1);
+  const [openCollapse, setOpenCollapse] = useState(false);
+  const [wishlistspinner, setWishlistSpinner] = useState(false);
 
   const [showEditbookModal, setShowEditbookModal] = useState(false);
   const { reloadBooksPage } = useData();
@@ -71,6 +85,10 @@ const Book = () => {
   const localUserId = localStorage?.getItem("userId");
   const [admin, setAdmin] = useState(localStorage.getItem("role"));
   const axiosPrivate = useAxiosPrivate();
+
+  useEffect(() => {
+    document.title = bookName || "Books";
+  }, [bookName]);
 
   useEffect(() => {
     if (localUser) {
@@ -93,9 +111,7 @@ const Book = () => {
 
   const checkUserWishlisted = async () => {
     const wishlistArray = wishlistData;
-    // console.log("wish : ", wishlistArray);
     const userIdStr = JSON.stringify(localUserId);
-    // console.log(userIdStr);
     if (wishlistArray.includes(userIdStr)) {
       setUserWishlisted(true);
     } else {
@@ -104,9 +120,7 @@ const Book = () => {
   };
   const checkUserRentlisted = async () => {
     const rentlistArray = rentlistData;
-    // console.log("wish : ", wishlistArray);
     const userIdStr = JSON.stringify(localUserId);
-    // console.log(userIdStr);
     if (rentlistArray.includes(userIdStr)) {
       setUserRentlisted(true);
     } else {
@@ -137,8 +151,6 @@ const Book = () => {
       const rentlistedUsers = JSON.stringify(response?.data.users.rentlist);
       setWishlistData(wishlistedUsers);
       setRentlistData(rentlistedUsers);
-      // console.log("WishlistData : ", wishlistData);
-      // console.log("userEffectresdata", response.data);
       // checkUserWishlisted();
       setSpinner(false);
     } catch (err) {
@@ -149,7 +161,6 @@ const Book = () => {
         setAlertMsg(true);
         setSpinner(false);
       }
-      console.error(err);
     }
   };
   useEffect(() => {
@@ -162,8 +173,8 @@ const Book = () => {
   }, [wishlistData, rentlistData]);
 
   // useEffect(() => {
-  //   console.log("is User wishlisted : ", userWishlisted);
-  // }, [userWishlisted]);
+  //   setAvgRating(3);
+  // }, [bookData]);
 
   useEffect(() => {
     if (!showModal && imageUpdated) {
@@ -227,6 +238,7 @@ const Book = () => {
   //////////////////
   const addToWishlist = async () => {
     try {
+      setWishlistSpinner(true);
       const bookId = id;
       const userId = localUserId;
       const wishlistData = { userId };
@@ -243,15 +255,19 @@ const Book = () => {
       );
       showAlert();
       setSuccessAlertMessage("Book added to wishlist");
-      // console.log("WishlistResponse : ", response.data);
       setUserWishlisted(true);
+      setWishlistSpinner(false);
     } catch (error) {
-      console.log(error);
+      setSuccessAlertMessage("Something went wrong");
+      showAlert();
+      setWishlistSpinner(false);
     }
   };
 
   const deleteFromWishlist = async () => {
     try {
+      setWishlistSpinner(true);
+
       const bookId = id;
       const reqData = { userId: localUserId };
       const response = await axiosPrivate.delete(`books/wishlist/${bookId}`, {
@@ -261,18 +277,28 @@ const Book = () => {
         data: reqData,
         withCredentials: true,
       });
-      // console.log("WishlistResponse : ", response.data);
       setSuccessAlertMessage("Book removed from wishlist");
       showAlert();
-
       setUserWishlisted(false);
+      setWishlistSpinner(false);
     } catch (error) {
-      console.error(error);
+      setSuccessAlertMessage("Something went wrong");
+      showAlert();
+      setWishlistSpinner(false);
     }
   };
-  // useEffect(() => {
-  //   console.log("cmt : ", comment);
-  // }, [comment]);
+  ////////////////////////////////////////////////
+  const LightTooltip = styled(({ className, ...props }) => (
+    <Tooltip {...props} arrow classes={{ popper: className }} />
+  ))(({ theme }) => ({
+    [`& .${tooltipClasses.arrow}`]: {
+      color: theme.palette.common.black,
+    },
+    [`& .${tooltipClasses.tooltip}`]: {
+      backgroundColor: theme.palette.common.black,
+      fontSize: 14,
+    },
+  }));
   return (
     <>
       <Header />
@@ -317,6 +343,51 @@ const Book = () => {
                     onClick={openImageModal}
                   />
                 )}
+                {admin && (
+                  <span
+                    style={{
+                      position: "absolute",
+                      bottom: "1%",
+                      right: "0%",
+                    }}
+                  >
+                    <br />
+                    <br />
+                    <Dropdown>
+                      <Dropdown.Toggle
+                        variant="outline-dark"
+                        id="dropdown-basic"
+                      >
+                        <PencilSquare size={20} id="iconPadding" />
+                        Edit
+                        <br />
+                        (Admin only)
+                      </Dropdown.Toggle>
+
+                      <Dropdown.Menu>
+                        <Dropdown.Item onClick={updateImgModal}>
+                          <AddPhotoAlternateOutlined />
+                          Update image
+                        </Dropdown.Item>
+                        <Dropdown.Divider />
+                        <Dropdown.Item onClick={openDelImgModal}>
+                          <DeleteOutlineOutlined />
+                          Delete image
+                        </Dropdown.Item>
+                        <Dropdown.Divider />
+                        <Dropdown.Item onClick={editBooksClick}>
+                          <JournalArrowUp size={22} id="iconPadding" />
+                          Edit book info
+                        </Dropdown.Item>
+                        <Dropdown.Divider />
+                        <Dropdown.Item onClick={openDelBookModal}>
+                          <JournalX size={22} id="iconPadding" />
+                          Delete Book
+                        </Dropdown.Item>
+                      </Dropdown.Menu>
+                    </Dropdown>
+                  </span>
+                )}
               </div>
             </Col>
             <Col className="custom-font-col" xxl={6} xl={6}>
@@ -341,6 +412,15 @@ const Book = () => {
                     <div>
                       <br />
                       <div className="centered-div">
+                        <p
+                          style={{
+                            fontFamily: "monospace",
+                            fontStyle: "italic",
+                            color: "grey",
+                          }}
+                        >
+                          {genre}
+                        </p>
                         <h1 style={{ fontFamily: "monospace" }}>
                           {" "}
                           {bookName}{" "}
@@ -362,33 +442,73 @@ const Book = () => {
                         </Typography>
                         <Rating
                           name="half-rating-read"
-                          defaultValue={0}
+                          defaultValue={avgRating}
                           precision={0.1}
                           readOnly
                           value={avgRating}
                         />
-                        <br />
-                        <br />
                         <p>
-                          Rent :<CurrencyRupee />
-                          {rentAmount}
+                          <span
+                            style={{
+                              fontSize: "1.1rem",
+                              color: "gray",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            Rent :
+                            <CurrencyRupee />
+                            {rentAmount}.00
+                          </span>
                         </p>
-                        {/* <p>Author :{author}</p> */}
-                        <p>Genre :{genre}</p>
-                        <p>Language :{language}</p>
-                        <p>Rental period :{rentPeriod}</p>
-                        <p>Availability: {availability}</p>
-                        <p>ISBN number: {ISBN}</p>
-                        <p>Year released: {year}</p>
-                        <p>Description: {description}</p>
+                        <span style={{ fontFamily: "monospace" }}>
+                          <p style={{ fontFamily: "monospace" }}>
+                            Genre :{genre}
+                          </p>
+                          <p style={{ fontFamily: "monospace" }}>
+                            Language :{language}
+                          </p>
+                          <p style={{ fontFamily: "monospace" }}>
+                            Rental period :{rentPeriod}
+                          </p>
+                          <p style={{ fontFamily: "monospace" }}>
+                            Availability: {availability}
+                          </p>
+                          <p style={{ fontFamily: "monospace" }}>
+                            ISBN number: {ISBN}
+                          </p>
+                          <p style={{ fontFamily: "monospace" }}>
+                            Year released: {year}
+                          </p>
+                          <p
+                            onClick={() => setOpenCollapse(!openCollapse)}
+                            aria-controls="example-collapse-text"
+                            aria-expanded={openCollapse}
+                            style={{
+                              cursor: "pointer",
+                              fontFamily: "monospace",
+                              color: "GrayText",
+                            }}
+                          >
+                            Description:
+                            <ChevronDown size={20} />
+                          </p>
+                          <Collapse in={openCollapse}>
+                            <div id="example-collapse-text">{description}</div>
+                          </Collapse>
+                        </span>
                         <br />
                         {userWishlisted ? (
                           <Button
                             variant="outline-dark"
                             id="buttonPadding"
                             onClick={deleteFromWishlist}
+                            disabled={wishlistspinner}
                           >
-                            <CheckLg size={22} id="iconPadding" />
+                            {!wishlistspinner ? (
+                              <CheckLg size={22} id="iconPadding" />
+                            ) : (
+                              <Spinner animation="grow" size="sm" />
+                            )}
                             Wishlisted
                           </Button>
                         ) : (
@@ -396,82 +516,50 @@ const Book = () => {
                             variant="outline-dark"
                             id="buttonPadding"
                             onClick={addToWishlist}
+                            disabled={wishlistspinner}
                           >
-                            <CardChecklist size={22} id="iconPadding" />
+                            {!wishlistspinner ? (
+                              <CardChecklist size={22} id="iconPadding" />
+                            ) : (
+                              <Spinner animation="grow" size="sm" />
+                            )}
                             Add to wish list
                           </Button>
                         )}
                         {/* { (availability === 'Unavailable') &&
                       
                        } */}
-                        <Button
-                          variant="dark"
-                          onClick={() => navigate(`/books/${bookId}/payment`)}
-                          disabled={
-                            (availability === "Unavailable") | userRentlisted
-                          }
-                        >
-                          <Cart3 size={20} id="iconPadding" />
-                          Rent book
-                        </Button>
+                        {(availability === "Unavailable") | userRentlisted ? (
+                          <LightTooltip
+                            title={
+                              userRentlisted
+                                ? "Already rented"
+                                : "Currently unavailable"
+                            }
+                            arrow
+                          >
+                            <span style={{ cursor: "pointer" }}>
+                              <Button variant="dark" disabled>
+                                <Cart3 size={20} id="iconPadding" />
+                                Rent book
+                              </Button>
+                            </span>
+                          </LightTooltip>
+                        ) : (
+                          <span>
+                            <Button
+                              variant="dark"
+                              onClick={() =>
+                                navigate(`/books/${bookId}/payment`)
+                              }
+                            >
+                              <Cart3 size={20} id="iconPadding" />
+                              Rent book
+                            </Button>
+                          </span>
+                        )}
                       </div>
                     </div>
-                  )}
-                  {admin && (
-                    <span
-                      style={{
-                        position: "absolute",
-                        top: "5%",
-                        right: "8%",
-                      }}
-                    >
-                      <br />
-                      <br />
-                      {/* <Button
-                        variant="outline-danger"
-                        onClick={updateImgModal}
-                        // style={{
-                        //   position: "absolute",
-                        //   bottom: "10%",
-                        //   right: "10px",
-                        // }}
-                      >
-                        <PencilSquare size={20} id="iconPadding" />
-                        Change Image
-                      </Button> */}
-                      <Dropdown>
-                        <Dropdown.Toggle
-                          variant="outline-dark"
-                          id="dropdown-basic"
-                          size="sm"
-                        >
-                          <PencilSquare size={20} id="iconPadding" />
-                          Edit
-                        </Dropdown.Toggle>
-
-                        <Dropdown.Menu>
-                          <Dropdown.Item onClick={updateImgModal}>
-                            <AddPhotoAlternateOutlined />
-                            Update image
-                          </Dropdown.Item>
-                          <Dropdown.Divider />
-                          <Dropdown.Item onClick={openDelImgModal}>
-                            <DeleteOutlineOutlined />
-                            Delete image
-                          </Dropdown.Item>
-                          <Dropdown.Divider />
-                          <Dropdown.Item onClick={editBooksClick}>
-                            <JournalArrowUp size={22} id="iconPadding" />
-                            Edit book info
-                          </Dropdown.Item>
-                          <Dropdown.Divider />
-                          <Dropdown.Item onClick={openDelBookModal}>
-                            <JournalX size={22} id="iconPadding" />
-                            Delete Book
-                          </Dropdown.Item>
-                        </Dropdown.Menu>
-                      </Dropdown>
-                    </span>
                   )}
                 </Col>
               </Row>

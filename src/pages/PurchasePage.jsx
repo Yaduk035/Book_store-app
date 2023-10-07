@@ -57,6 +57,10 @@ const PurchasePage = () => {
   };
 
   useEffect(() => {
+    document.title = "Checkout";
+  }, []);
+
+  useEffect(() => {
     if (alignment === "left" && cardNo && cardName && Cvv) {
       setRentButton(true);
     } else if (alignment === "right" && upi) {
@@ -78,9 +82,7 @@ const PurchasePage = () => {
       setLanguage(response.data.language);
       setRentPeriod(response.data.rentPeriod);
       setAmount(response.data.rentAmount);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
   useEffect(() => {
     bookById();
@@ -103,10 +105,7 @@ const PurchasePage = () => {
         }
       );
       showAlert();
-      console.log("RentlistResponse : ", response.data);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   const closeAlert = () => {

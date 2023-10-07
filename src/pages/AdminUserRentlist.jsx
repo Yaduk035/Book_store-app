@@ -9,7 +9,7 @@ import { useParams } from "react-router-dom";
 
 const AdminPanelRentlist = () => {
   const [spinner, setSpinner] = useState(false);
-  const { userId } = useParams();
+  const { userId, emailId } = useParams();
   const axiosPrivate = useAxiosPrivate();
 
   const [wishlistedBooks, setWishlistedBooks] = useState("");
@@ -17,8 +17,11 @@ const AdminPanelRentlist = () => {
 
   const allowedRoles = [1993];
   const localUser = localStorage?.getItem("role");
-  const userEmail = JSON.parse(localStorage?.getItem("user"));
   const [admin, setAdmin] = useState(localStorage.getItem("role"));
+
+  useEffect(() => {
+    document.title = "Admin Dashboard";
+  }, []);
 
   useEffect(() => {
     if (localUser) {
@@ -47,7 +50,6 @@ const AdminPanelRentlist = () => {
       setWishlistedBooks(response.data);
       setSpinner(false);
     } catch (error) {
-      console.error(error);
       setSpinner(false);
     }
   };
@@ -80,7 +82,7 @@ const AdminPanelRentlist = () => {
           }}
         >
           Currently rented books by{" "}
-          <span style={{ color: "grey" }}> {userEmail}</span>
+          <span style={{ color: "grey" }}> {emailId}</span>
         </h3>
         {spinner ? (
           <div

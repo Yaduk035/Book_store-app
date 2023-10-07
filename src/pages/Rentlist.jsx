@@ -19,6 +19,10 @@ const Rentlist = () => {
   const [admin, setAdmin] = useState(localStorage.getItem("role"));
 
   useEffect(() => {
+    document.title = "Rented books";
+  }, []);
+
+  useEffect(() => {
     if (localUser) {
       // Split the localUser string into an array of roles
       const userRoles = localUser
@@ -45,7 +49,6 @@ const Rentlist = () => {
       setWishlistedBooks(response.data);
       setSpinner(false);
     } catch (error) {
-      console.error(error);
       setSpinner(false);
     }
   };

@@ -20,11 +20,14 @@ const BooksPage = () => {
 
   const { addBook, contBook, bookUpdated, reloadBooksPage } = useData();
 
+  useEffect(() => {
+    document.title = "Books";
+  }, []);
+
   const bookData = async () => {
     setSpinner(true);
     try {
       const response = await axiosPrivate.get("/books");
-      console.log("Data :", response.data);
       const formattedData = response.data.map((book) => {
         const createdAt =
           new Date(book.createdAt).toLocaleString("en-US", {
@@ -43,9 +46,7 @@ const BooksPage = () => {
       setBooks(formattedData);
       addBook(formattedData);
       setSpinner(false);
-      console.log(books);
     } catch (error) {
-      console.error(error);
       setSpinner(false);
     }
   };
@@ -62,13 +63,6 @@ const BooksPage = () => {
     }
   }, []);
 
-  useEffect(() => {
-    console.log("dataFromContext : ", contBook);
-  }, [books, contBook]);
-
-  // useEffect(() => {
-  //   console.log(books);
-  // }, [books]);
   const filterByGenre = (genre) => {
     setSelectedGenre(genre);
   };
@@ -161,7 +155,6 @@ const BooksPage = () => {
                     <option>Non-fiction</option>
                     <option>Science & Technology</option>
                     <option>Dictionary & Reference</option>
-                    <option>Fantasy & Science Fiction</option>
                     <option>Romance</option>
                     <option>Mystery & Thriller</option>
                     <option>Biography & Memoir</option>

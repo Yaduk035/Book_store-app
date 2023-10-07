@@ -28,9 +28,7 @@ function DeleteImgModal(props) {
       });
       props.updatedImage();
       handleClose();
-      // console.log(response.data);
     } catch (error) {
-      console.error(error);
       handleClose();
     }
   };

@@ -99,9 +99,7 @@ function EditBooksModal(props) {
         setShowAlert(false);
         navigate(`/books/${Id}`);
       }, [1000]);
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   };
 
   return (
@@ -173,7 +171,6 @@ function EditBooksModal(props) {
                     <option>Non-fiction</option>
                     <option>Science & Technology</option>
                     <option>Dictionary & Reference</option>
-                    <option>Fantasy & Science Fiction</option>
                     <option>Romance</option>
                     <option>Mystery & Thriller</option>
                     <option>Biography & Memoir</option>

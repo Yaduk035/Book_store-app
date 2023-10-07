@@ -49,7 +49,6 @@ function CardTemplate(props) {
   const addToWishlist = async () => {
     try {
       const userId = localUserId;
-      setSuccessAlertMessage("Book added to wishlist");
       const wishlistData = { userId };
 
       const response = await axiosPrivate.post(
@@ -62,17 +61,17 @@ function CardTemplate(props) {
           },
         }
       );
+      setSuccessAlertMessage("Book added to wishlist");
       showAlert();
-      console.log("WishlistResponse : ", response.data);
       setUserWishlisted(true);
     } catch (error) {
-      console.log(error);
+      setSuccessAlertMessage("Something went wrong");
+      showAlert();
     }
   };
   const deleteFromWishlist = async () => {
     try {
       const reqData = { userId: localUserId };
-      setSuccessAlertMessage("Book removed from wishlist");
       const response = await axiosPrivate.delete(`books/wishlist/${bookId}`, {
         headers: {
           "Content-Type": "application/json",
@@ -80,12 +79,13 @@ function CardTemplate(props) {
         data: reqData,
         withCredentials: true,
       });
-      console.log("WishlistResponse : ", response.data);
+      setSuccessAlertMessage("Book removed from wishlist");
       showAlert();
 
       setUserWishlisted(false);
     } catch (error) {
-      console.error(error);
+      setSuccessAlertMessage("Something went wrong");
+      showAlert();
     }
   };
 

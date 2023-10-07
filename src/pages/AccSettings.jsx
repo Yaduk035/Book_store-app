@@ -34,6 +34,10 @@ function AccSettings() {
   const [emailNull, setEmailNull] = useState(true);
   const [errorMsg, setErrormsg] = useState("");
 
+  useEffect(() => {
+    document.title = "Account settings";
+  }, []);
+
   const userId = localStorage.getItem("userId");
 
   const axiosPrivate = useAxiosPrivate();
@@ -41,27 +45,26 @@ function AccSettings() {
   useEffect(() => {
     setFirstname(userData.firstname);
     setLastname(userData.lastname);
-    setEmail(userData.email);
   }, [userData]);
 
-  useEffect(() => {
-    if (email !== userData.email) {
-      const checkEmailExists = async () => {
-        try {
-          const checkEmail_url = `http://localhost:4000/check/email/${email}`;
-          const response = await axios.get(checkEmail_url);
-          const { exists } = response.data;
-          setEmailUnique(!exists);
-        } catch (error) {
-          console.error(error);
-        }
-      };
+  // useEffect(() => {
+  //   if (email !== userData.email) {
+  //     const checkEmailExists = async () => {
+  //       try {
+  //         const checkEmail_url = `http://localhost:4000/check/email/${email}`;
+  //         const response = await axios.get(checkEmail_url);
+  //         const { exists } = response.data;
+  //         setEmailUnique(!exists);
+  //       } catch (error) {
+  //         console.error(error);
+  //       }
+  //     };
 
-      if (email) {
-        checkEmailExists();
-      }
-    }
-  }, [email]);
+  //     if (email) {
+  //       checkEmailExists();
+  //     }
+  //   }
+  // }, [email]);
 
   useEffect(() => {
     setErrormsg("");
@@ -97,6 +100,7 @@ function AccSettings() {
       setEmailNull(true);
     } else {
       setEmailNull(false);
+      setEmailUnique(true);
     }
   };
   useEffect(() => {
@@ -108,10 +112,11 @@ function AccSettings() {
       try {
         const response = await axiosPrivate.get(`/edituser/${userId}`);
         setUserdata(response.data);
-        console.log(response.data);
-        console.log(userData);
       } catch (error) {
-        console.error(error);
+        setErrormsg("Error fetching data");
+        setTimeout(() => {
+          setErrormsg("");
+        }, [2000]);
       }
     };
     fetchUserdata();
@@ -122,12 +127,14 @@ function AccSettings() {
     setSpinner(true);
 
     try {
-      const userData = {
-        firstname: firstname,
-        lastname: lastname,
-        email: email,
-        pwd: password,
-      };
+      const userData = email
+        ? {
+            firstname: firstname,
+            lastname: lastname,
+            email: email,
+            password: password,
+          }
+        : { firstname: firstname, lastname: lastname, password: password };
       const jsonData = JSON.stringify(userData);
       const response = await axiosPrivate.put(`edituser/${userId}`, jsonData, {
         headers: {
@@ -137,17 +144,18 @@ function AccSettings() {
       });
       setFormSubmit(true);
       setSpinner(false);
-      console.log("Response :", response?.data);
     } catch (err) {
-      console.error("Response error :", err?.response?.data);
       if (!err?.response) {
         setErrormsg("Network error.");
+      } else if (err.response?.status === 409) {
+        setEmailUnique(false);
       } else if (err.response?.status === 500) {
         setErrormsg("Server error.");
       } else {
         setErrormsg("Something went wrong.");
       }
       setSpinner(false);
+      setFormSubmit(false);
     }
   };
 
@@ -201,7 +209,7 @@ function AccSettings() {
                     {/* <InputGroup.Text id="basic-addon1">@</InputGroup.Text> */}
                     <Form.Control
                       type="email"
-                      placeholder="Enter E-mail"
+                      placeholder={`Current Email: ${userData.email}`}
                       name="unique-email-field"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}

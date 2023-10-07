@@ -30,6 +30,10 @@ const Login = () => {
   localStorage.setItem("loggedOut", false);
 
   useEffect(() => {
+    document.title = "Bookstore - Login";
+  }, []);
+
+  useEffect(() => {
     if (loggedInStatus) {
       setFrom("/");
     } else {
@@ -65,7 +69,6 @@ const Login = () => {
         }
       );
       setSpinner(false);
-      console.log(response.data);
       const accessToken = response?.data?.accessToken;
       const roles = response?.data?.roles;
       const firstname = response?.data?.firstname;

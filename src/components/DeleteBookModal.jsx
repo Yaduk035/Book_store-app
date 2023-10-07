@@ -22,12 +22,9 @@ function DeleteBookModal(props) {
   const deleteBook = async () => {
     try {
       const response = await axiosPrivate.delete(`/books/${props.id}`);
-      console.log("Delete book :", response.data);
       navigate(-1);
       handleClose();
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   };
 
   return (
