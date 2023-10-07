@@ -81,7 +81,7 @@ const AdminPanelRentlist = () => {
             fontFamily: "monospace",
           }}
         >
-          Currently rented books by{" "}
+          Books currently rented by{" "}
           <span style={{ color: "grey" }}> {emailId}</span>
         </h3>
         {spinner ? (

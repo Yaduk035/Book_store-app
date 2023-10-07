@@ -72,7 +72,15 @@ const HomePage = () => {
       <div id="backGnd">
         <Container>
           <div className="text-center" style={{ marginTop: "10px" }}>
-            <h3>Recent Books</h3>
+            <h2
+              style={{
+                fontFamily: "monospace",
+                margin: "20px",
+                fontWeight: "bold",
+              }}
+            >
+              New Arrivals
+            </h2>
           </div>
           <Row>
             {spinner ? (

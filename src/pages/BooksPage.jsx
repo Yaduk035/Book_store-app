@@ -178,7 +178,13 @@ const BooksPage = () => {
               </div>
             </Col>
             <span>
-              <h2 style={{ fontFamily: "monospace", textAlign: "center" }}>
+              <h2
+                style={{
+                  fontFamily: "monospace",
+                  textAlign: "center",
+                  fontWeight: "bold",
+                }}
+              >
                 {selectedGenre} books
               </h2>
             </span>
