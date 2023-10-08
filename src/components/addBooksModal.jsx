@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Form, Row, Col, Alert } from "react-bootstrap";
+import { Form, Row, Col, Alert, Spinner } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { PlusLg } from "react-bootstrap-icons";
@@ -24,6 +24,7 @@ function AddBooksModal(props) {
   const [year, setYear] = useState();
   const [description, setDescription] = useState("");
   const [ErrorMsg, setErrorMsg] = useState("");
+  const [spinner, setSpinner] = useState(false);
 
   const axiosPrivate = useAxiosPrivate();
 
@@ -35,6 +36,7 @@ function AddBooksModal(props) {
 
   const handleClose = () => {
     setShow(false);
+    setErrorMsg("");
     props.closeModal();
   };
 
@@ -56,6 +58,7 @@ function AddBooksModal(props) {
     e.preventDefault();
     setErrorMsg("");
     try {
+      setSpinner(true);
       const bookData = {
         bookName: bookName,
         rentAmount: rentAmount,
@@ -73,6 +76,7 @@ function AddBooksModal(props) {
       const response = await axiosPrivate.post("/books", jsonData);
       const bookId = response?.data._id;
       setShowAlert(true);
+      setSpinner(false);
       setTimeout(() => {
         handleClose();
         setShowAlert(false);
@@ -82,11 +86,12 @@ function AddBooksModal(props) {
       if (!error?.response) {
         setErrorMsg("No server response");
       } else if (error.response?.status === 400) {
-        setErrorMsg("Error : Some input fields are left unfilled");
+        setErrorMsg("Some input fields are left unfilled");
       } else {
         setErrorMsg("Something went wrong");
       }
     }
+    setSpinner(false);
   };
 
   return (
@@ -101,7 +106,7 @@ function AddBooksModal(props) {
         bg="dark"
       >
         <Modal.Header closeButton>
-          <Modal.Title>Add Books</Modal.Title>
+          <Modal.Title>Add Book</Modal.Title>
         </Modal.Header>
         <Modal.Body className="p-4">
           <Form>
@@ -342,14 +347,21 @@ function AddBooksModal(props) {
             variant="outline-dark"
             id="buttonPadding"
             onClick={handleBookSubmit}
+            disabled={spinner}
           >
-            {
+            {spinner ? (
+              <Spinner
+                animation="grow"
+                size="sm"
+                style={{ marginRight: "5px" }}
+              />
+            ) : (
               <PlusLg
                 size={20}
                 style={{ marginRight: "5px", marginBottom: "3px" }}
               />
-            }
-            {"Add book"}
+            )}
+            Add book
           </Button>
         </Modal.Footer>
       </Modal>

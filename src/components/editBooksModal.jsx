@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import { Form, Row, Col, Container, Alert } from "react-bootstrap";
+import { Form, Row, Col, Container, Alert, Spinner } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { ArrowClockwise } from "react-bootstrap-icons";
-import axios from "../api/axios";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { useNavigate } from "react-router-dom";
 import { Trash3Fill } from "react-bootstrap-icons";
@@ -25,7 +24,7 @@ function EditBooksModal(props) {
   const [showAlert, setShowAlert] = useState(false);
   const [year, setYear] = useState();
   const [description, setDescription] = useState("");
-
+  const [spinner, setSpinner] = useState(false);
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
 
@@ -72,6 +71,7 @@ function EditBooksModal(props) {
   const handleBookSubmit = async (e) => {
     e.preventDefault();
     try {
+      setSpinner(true);
       const bookData = {
         bookName: bookName,
         rentAmount: rentAmount,
@@ -94,12 +94,14 @@ function EditBooksModal(props) {
       });
       const Id = response?.data._id;
       setShowAlert(true);
+      setSpinner(false);
       setTimeout(() => {
         handleClose();
         setShowAlert(false);
         navigate(`/books/${Id}`);
       }, [1000]);
     } catch (error) {}
+    setSpinner(false);
   };
 
   return (
@@ -114,7 +116,7 @@ function EditBooksModal(props) {
         bg="dark"
       >
         <Modal.Header closeButton>
-          <Modal.Title>Add Books</Modal.Title>
+          <Modal.Title>Edit Book</Modal.Title>
         </Modal.Header>
         <Modal.Body className="p-4">
           <Form>
@@ -334,14 +336,21 @@ function EditBooksModal(props) {
             variant="outline-dark"
             id="buttonPadding"
             onClick={handleBookSubmit}
+            disabled={spinner}
           >
-            {
+            {spinner ? (
+              <Spinner
+                animation="grow"
+                size="sm"
+                style={{ marginRight: "5px" }}
+              />
+            ) : (
               <ArrowClockwise
                 size={20}
                 style={{ marginRight: "5px", marginBottom: "3px" }}
               />
-            }
-            {"Update info"}
+            )}
+            Update info
           </Button>
         </Modal.Footer>
       </Modal>
