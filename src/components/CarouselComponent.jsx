@@ -68,8 +68,19 @@ const CarouselComponent = () => {
           style={{ display: "flex", justifyContent: "flex-end" }}
         >
           <div style={{ padding: "10%" }}>
-            <h3 style={{ color: "white" }}>{randomBook.bookName}</h3>
-            <p style={{ color: "white" }}>{randomBook.description}</p>
+            <div
+              style={{
+                backgroundColor: "rgba(0,0,0,0.5)",
+                borderRadius: "15px",
+                padding: "10px",
+              }}
+              className="description-container"
+            >
+              <h3 style={{ color: "white" }}>{randomBook.bookName}</h3>
+              <p style={{ color: "white", margin: "0" }}>
+                {randomBook.description}
+              </p>
+            </div>
           </div>
         </Carousel.Caption>
       </Carousel.Item>

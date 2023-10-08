@@ -29,6 +29,7 @@ export default function CommentCard(props) {
   const [enableDelete, setEnableDelete] = React.useState(false);
   const [openAlert, setOpenAlert] = React.useState(false);
   const [alertMsg, setAlertMsg] = React.useState("");
+  const [timeConvert, setTImeConvert] = React.useState("");
   const axiosPrivate = useAxiosPrivate();
 
   const showAlert = () => {
@@ -65,6 +66,18 @@ export default function CommentCard(props) {
       setEnableDelete(false);
     }
   }, [isAdmin, currentUser]);
+
+  React.useEffect(() => {
+    const formattedDate =
+      new Date(props.createdAt).toLocaleString(
+        "en-US",
+        {
+          timeZone: "Asia/Kolkata",
+        },
+        [props.createdAt]
+      ) + " IST";
+    setTImeConvert(formattedDate);
+  }, [props.createdAt]);
 
   const deleteComment = async () => {
     try {
@@ -107,7 +120,7 @@ export default function CommentCard(props) {
         <Typography variant="body3">{props.comment}</Typography>
         <br />
         <Typography sx={{ mb: 1.5 }} color="text.secondary" variant="body2">
-          {props.createdAt}
+          {timeConvert}
         </Typography>
         {enableDelete && (
           <Dropdown>

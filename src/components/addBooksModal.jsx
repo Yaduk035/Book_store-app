@@ -281,6 +281,19 @@ function AddBooksModal(props) {
               ></Form.Control>
             </Form.Group>
           </Form>
+          <p
+            style={{
+              fontFamily: "monospace",
+              color: "gray",
+              fontSize: "0.9rem",
+              borderTop: "2px dashed grey",
+              borderBottom: "2px dashed grey",
+              marginBottom: "0px",
+            }}
+          >
+            Images can be added after creating the book. Go to the newly created
+            bookpage, Click on the Edit button and click on update image.
+          </p>
         </Modal.Body>
         {showAlert && (
           <Alert>
@@ -295,8 +308,9 @@ function AddBooksModal(props) {
           <Alert variant="danger">
             {" "}
             <span style={{ justifyContent: "center", display: "flex" }}>
-              {" "}
-              {ErrorMsg}
+              <span style={{ fontFamily: "monospace", fontSize: "0.9rem" }}>
+                {ErrorMsg}
+              </span>
             </span>
           </Alert>
         )}
