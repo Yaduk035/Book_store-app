@@ -15,7 +15,6 @@ const CarouselComponent = () => {
     try {
       const response = await axiosPrivate.get("books/randombook");
       setRandomBook(response.data);
-      console.log(response.data);
     } catch (error) {}
   };
   useEffect(() => {
