@@ -1,6 +1,4 @@
 import Carousel from "react-bootstrap/Carousel";
-import firstImg from "../images/carousel_imgs/books_cropped_texted.jpg";
-import backGndImg from "../images/carousel_imgs/vintagebooks_cropped.jpg";
 import { useNavigate } from "react-router-dom";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { useState, useEffect } from "react";
@@ -24,7 +22,11 @@ const CarouselComponent = () => {
     getRandomBook();
   }, []);
   return (
-    <Carousel>
+    <Carousel
+      style={{
+        boxShadow: "0 20px 40px rgba(0, 0, 0, 0.95)",
+      }}
+    >
       <Carousel.Item interval={3000}>
         <MuiButton />
         <Carousel.Caption>
@@ -52,7 +54,7 @@ const CarouselComponent = () => {
                 maxHeight: "400px",
                 height: "60vh",
                 width: "30vh",
-                borderRadius: "20px",
+                borderRadius: "10px",
                 marginBottom: "10%",
                 marginLeft: "10%",
                 boxShadow: "0 20px 50px rgba(240, 200, 200, 1)",
@@ -67,10 +69,10 @@ const CarouselComponent = () => {
         <Carousel.Caption
           style={{ display: "flex", justifyContent: "flex-end" }}
         >
-          <div style={{ padding: "10%" }}>
+          <div>
             <div
               style={{
-                backgroundColor: "rgba(0,0,0,0.5)",
+                backgroundColor: "rgba(128,128,128,0.5)",
                 borderRadius: "15px",
                 padding: "10px",
               }}

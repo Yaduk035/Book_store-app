@@ -3,7 +3,7 @@ import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import ButtonBase from "@mui/material/ButtonBase";
 import Typography from "@mui/material/Typography";
-import BookImg from "../images/carousel_imgs/books_cropped_texted.jpg";
+import BookImg from "../images/carousel_imgs/books_cropped.jpg";
 import { useNavigate } from "react-router-dom";
 
 const images = [
@@ -23,7 +23,7 @@ const ImageButton = styled(ButtonBase)(({ theme }) => ({
   "&:hover, &.Mui-focusVisible": {
     zIndex: 1,
     "& .MuiImageBackdrop-root": {
-      opacity: 0.45,
+      opacity: 0.6,
     },
     "& .MuiImageMarked-root": {
       opacity: 0,
@@ -63,7 +63,7 @@ const ImageBackdrop = styled("span")(({ theme }) => ({
   top: 0,
   bottom: 0,
   backgroundColor: theme.palette.common.black,
-  opacity: 0.1,
+  opacity: 0.3,
   transition: theme.transitions.create("opacity"),
 }));
 
@@ -101,7 +101,16 @@ export default function ButtonBaseDemo() {
                 pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
               }}
             >
-              {image.title}
+              <span
+                style={{
+                  fontFamily: "monospace",
+                  fontWeight: "800",
+                  fontSize: "1.1rem",
+                  color: "white",
+                }}
+              >
+                View Collection
+              </span>
               <ImageMarked className="MuiImageMarked-root" />
             </Typography>
           </Image>

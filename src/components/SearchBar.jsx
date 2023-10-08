@@ -1,15 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import { InputGroup } from "react-bootstrap";
 import { Search } from "react-bootstrap-icons";
 
 const SearchBar = ({ filteredBooks, setSearchResults }) => {
-  const handleSearchChange = (e) => {
-    if (!e.target.value) return setSearchResults(filteredBooks);
+  const [searchQuery, setSearchQuery] = useState("");
 
-    const lowercaseSearch = e.target.value.toLowerCase();
+  const lowercaseSearch = searchQuery.toLowerCase();
 
-    const results = filteredBooks.filter(
+  const memoizedResults = useMemo(() => {
+    if (!searchQuery) return filteredBooks;
+
+    return filteredBooks.filter(
       (post) =>
         (post.bookName &&
           post.bookName.toLowerCase().includes(lowercaseSearch)) ||
@@ -19,30 +21,32 @@ const SearchBar = ({ filteredBooks, setSearchResults }) => {
         (post.description &&
           post.description.toLowerCase().includes(lowercaseSearch))
     );
-    setSearchResults(results);
+  }, [filteredBooks, searchQuery]);
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
   };
 
+  useEffect(() => {
+    setSearchResults(memoizedResults);
+  }, [memoizedResults, setSearchResults]);
+
   return (
-    <Container>
-      <Row className="justify-content-start mt-3">
-        <Col xs={12} sm={12} md={6} lg={6}>
-          <Form>
-            <Form.Group className="d-flex">
-              <InputGroup.Text id="inputGroupPrepend">
-                {" "}
-                <Search />{" "}
-              </InputGroup.Text>
-              <Form.Control
-                type="text"
-                placeholder="Author name, language..."
-                className="mr-2"
-                onChange={handleSearchChange}
-              />
-            </Form.Group>
-          </Form>
-        </Col>
-      </Row>
-    </Container>
+    <div>
+      <Form>
+        <Form.Group className="d-flex">
+          <InputGroup.Text id="inputGroupPrepend">
+            <Search />
+          </InputGroup.Text>
+          <Form.Control
+            type="text"
+            placeholder="Author name, language..."
+            className="mr-2"
+            onChange={handleSearchChange}
+          />
+        </Form.Group>
+      </Form>
+    </div>
   );
 };
 

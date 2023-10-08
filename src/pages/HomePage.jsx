@@ -71,7 +71,7 @@ const HomePage = () => {
       <div></div>
       <div id="backGnd">
         <Container>
-          <div className="text-center" style={{ marginTop: "10px" }}>
+          <div className="text-center" style={{ marginTop: "30px" }}>
             <h2
               style={{
                 fontFamily: "monospace",

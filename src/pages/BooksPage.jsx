@@ -115,28 +115,31 @@ const BooksPage = () => {
         <br />
         <br />
         {/* Genre Dropdown */}
-        <div>
-          <Row sm={12} xs={12}>
-            <Col>
-              <SearchBar
-                filteredBooks={contBook}
-                setSearchResults={setSearchResults}
-              />
-            </Col>
-            <Col>
-              <div>
-                <Form.Group
-                  className="p-2"
-                  style={{
-                    maxWidth: "250px",
-                    position: "absolute",
-                    right: "50px",
-                    top: "80px",
-                  }}
-                >
-                  <Form.Label style={{ fontFamily: "monospace" }}>
+        <Col>
+          <h2
+            style={{
+              fontFamily: "monospace",
+              textAlign: "center",
+              fontWeight: "bold",
+            }}
+          >
+            {selectedGenre} books
+          </h2>
+        </Col>
+        <Col>
+          <div style={{ display: "flex", justifyContent: "right" }}>
+            <div>
+              <div style={{ maxWidth: "220px", paddingBottom: "10px" }}>
+                <SearchBar
+                  filteredBooks={contBook}
+                  setSearchResults={setSearchResults}
+                />
+              </div>
+              <div style={{ maxWidth: "220px" }}>
+                <Form.Group>
+                  {/* <Form.Label style={{ fontFamily: "monospace" }}>
                     Genre:
-                  </Form.Label>
+                  </Form.Label> */}
 
                   <Form.Select
                     aria-label="Default select example"
@@ -144,7 +147,7 @@ const BooksPage = () => {
                     onChange={(e) => filterByGenre(e.target.value)}
                     style={{ fontFamily: "revert-layer" }}
                   >
-                    <option selected hidden>
+                    <option selected disabled>
                       Select a genre
                     </option>
                     <option>All</option>
@@ -176,22 +179,10 @@ const BooksPage = () => {
                   </Form.Select>
                 </Form.Group>
               </div>
-            </Col>
-            <span>
-              <h2
-                style={{
-                  fontFamily: "monospace",
-                  textAlign: "center",
-                  fontWeight: "bold",
-                }}
-              >
-                {selectedGenre} books
-              </h2>
-            </span>
-          </Row>
+            </div>
+          </div>
           <br />
-          <br />
-        </div>
+        </Col>
         <Row>
           {spinner ? (
             <div
