@@ -19,7 +19,8 @@ const SearchBar = ({ filteredBooks, setSearchResults }) => {
         (post.language &&
           post.language.toLowerCase().includes(lowercaseSearch)) ||
         (post.description &&
-          post.description.toLowerCase().includes(lowercaseSearch))
+          post.description.toLowerCase().includes(lowercaseSearch)) ||
+        (post.genre && post.genre.toLowerCase().includes(lowercaseSearch))
     );
   }, [filteredBooks, searchQuery]);
 

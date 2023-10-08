@@ -299,6 +299,12 @@ const Book = () => {
       fontSize: 14,
     },
   }));
+
+  useEffect(() => {
+    if (bookData) {
+      setAvgRating(bookData.avgRating);
+    }
+  }, [bookData]);
   return (
     <>
       <Header />

@@ -253,7 +253,7 @@ function Signup() {
                 </Form.Group>
                 {(!samePass || !pwd8) && (
                   <Alert variant="warning">
-                    {!samePass && "Passwords does not match."}
+                    {!samePass && "Passwords do not match."}
                     {!samePass && !pwd8 && <br></br>}
                     {!pwd8 && "Password should atleast contain 8 letters."}
                   </Alert>

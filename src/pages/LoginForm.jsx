@@ -193,8 +193,8 @@ const Login = () => {
                   <div style={{ fontSize: "14px" }}>
                     <br />
                     <p>
-                      No account? Click <Link to={"/signup"}>here</Link> to
-                      create one.
+                      Don't have an account? Click{" "}
+                      <Link to={"/signup"}>here</Link> to create one.
                     </p>
                   </div>
                 </Form.Group>

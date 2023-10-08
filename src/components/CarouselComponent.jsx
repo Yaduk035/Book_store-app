@@ -53,11 +53,11 @@ const CarouselComponent = () => {
               style={{
                 maxHeight: "400px",
                 height: "60vh",
-                width: "30vh",
+                width: "35vh",
                 borderRadius: "10px",
                 marginBottom: "10%",
                 marginLeft: "10%",
-                boxShadow: "0 20px 50px rgba(240, 200, 200, 1)",
+                boxShadow: "0 10px 50px rgba(0, 0, 0, 1)",
                 position: "absolute",
                 bottom: "10%",
                 top: "25%",
@@ -73,7 +73,7 @@ const CarouselComponent = () => {
             <div
               style={{
                 backgroundColor: "rgba(128,128,128,0.5)",
-                borderRadius: "15px",
+                borderRadius: "10px",
                 padding: "10px",
               }}
               className="description-container"

@@ -1,6 +1,6 @@
 #randomImgDiv {
   height: "550px";
   display: flex;
-  background-image: url("../../images/carousel_imgs//vintagebooks_cropped.jpg");
+  background-image: url("../../images/carousel_imgs/library-books-2.jpg");
   background-size: cover;
 }
