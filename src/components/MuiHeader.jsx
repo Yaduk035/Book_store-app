@@ -144,7 +144,7 @@ function ResponsiveAppBar() {
               }}
             >
               <MenuItem onClick={() => navigate("/books")}>
-                <Typography textAlign="center">Books</Typography>
+                <Typography textAlign="center">All Books</Typography>
               </MenuItem>
               {admin && (
                 <MenuItem onClick={addBooksClick}>
