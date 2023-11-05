@@ -3,7 +3,7 @@ import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import { InputGroup } from "react-bootstrap";
 import { Search } from "react-bootstrap-icons";
 
-const SearchBar = ({ filteredBooks, setSearchResults }) => {
+const SearchBar = ({ filteredBooks, setSearchResults, loading }) => {
   const [searchQuery, setSearchQuery] = useState("");
 
   const lowercaseSearch = searchQuery.toLowerCase();
@@ -41,8 +41,9 @@ const SearchBar = ({ filteredBooks, setSearchResults }) => {
           </InputGroup.Text>
           <Form.Control
             type="text"
-            placeholder="Author name, language..."
+            placeholder={loading ? "Please wait..." :"Author, genre, language..."}
             className="mr-2"
+            disabled={loading}
             onChange={handleSearchChange}
           />
         </Form.Group>

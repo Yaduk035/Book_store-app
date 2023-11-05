@@ -133,6 +133,7 @@ const BooksPage = () => {
                 <SearchBar
                   filteredBooks={contBook}
                   setSearchResults={setSearchResults}
+                  loading={spinner}
                 />
               </div>
               <div style={{ maxWidth: "220px" }}>
@@ -146,11 +147,12 @@ const BooksPage = () => {
                     value={selectedGenre}
                     onChange={(e) => filterByGenre(e.target.value)}
                     style={{ fontFamily: "revert-layer" }}
+                    disabled={spinner}
                   >
                     <option selected disabled>
                       Select a genre
                     </option>
-                    <option>All</option>
+                    <option value='All'> {spinner ? 'Loading...' : 'All' }</option>
                     <option>Music</option>
                     <option>Story & Novel</option>
                     <option>Poetry</option>
