@@ -8,7 +8,7 @@ import {
   Container,
 } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./css/BookCardCss.css";
 import axios from "../api/axios";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
@@ -23,6 +23,7 @@ import SuccessAlert from "../components/SuccessAlertBar";
 
 function CardTemplate(props) {
   const [hovered, setHovered] = useState(false);
+  const [userLoggedIn, setUserLoggedIn] = useState(false);
   const navigate = useNavigate();
   const bookId = props.id;
   const localUserId = localStorage?.getItem("userId");
@@ -31,6 +32,15 @@ function CardTemplate(props) {
   const [userWishlisted, setUserWishlisted] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
   const [successAlertMessage, setSuccessAlertMessage] = useState("");
+
+  useEffect(() => {
+    const name = localStorage.getItem("name");
+    if (name) {
+      setUserLoggedIn(true);
+    } else {
+      setUserLoggedIn(false);
+    }
+  }, []);
 
   const navigateToBook = () => {
     navigate(`/books/${bookId}`);
@@ -132,44 +142,46 @@ function CardTemplate(props) {
                 />
               </Col>
               <Col xs={12} md={8}>
-                <span
-                  style={{
-                    position: "absolute",
-                    top: "30px",
-                    right: "0px",
-                    cursor: "pointer",
-                  }}
-                  onClick={(e) => {
-                    e.stopPropagation(); // Prevent click event from bubbling up
-                  }}
-                >
-                  <Dropdown>
-                    <DropdownButton
-                      variant="outline-light"
-                      id="dropdown-button-drop-start"
-                      drop="start"
-                      size="sm"
-                      title={<ThreeDotsVertical color="dark" size={18} />}
-                    >
-                      <Dropdown.Item
-                        onClick={(e) => {
-                          e.stopPropagation(); // Prevent click event from bubbling up
-                          addToWishlist();
-                        }}
+                {userLoggedIn && (
+                  <span
+                    style={{
+                      position: "absolute",
+                      top: "30px",
+                      right: "0px",
+                      cursor: "pointer",
+                    }}
+                    onClick={(e) => {
+                      e.stopPropagation(); // Prevent click event from bubbling up
+                    }}
+                  >
+                    <Dropdown>
+                      <DropdownButton
+                        variant="outline-light"
+                        id="dropdown-button-drop-start"
+                        drop="start"
+                        size="sm"
+                        title={<ThreeDotsVertical color="dark" size={18} />}
                       >
-                        Add to wishlist
-                      </Dropdown.Item>
-                      <Dropdown.Item
-                        onClick={(e) => {
-                          e.stopPropagation(); // Prevent click event from bubbling up
-                          deleteFromWishlist();
-                        }}
-                      >
-                        Remove from wish
-                      </Dropdown.Item>
-                    </DropdownButton>
-                  </Dropdown>
-                </span>
+                        <Dropdown.Item
+                          onClick={(e) => {
+                            e.stopPropagation(); // Prevent click event from bubbling up
+                            addToWishlist();
+                          }}
+                        >
+                          Add to wishlist
+                        </Dropdown.Item>
+                        <Dropdown.Item
+                          onClick={(e) => {
+                            e.stopPropagation(); // Prevent click event from bubbling up
+                            deleteFromWishlist();
+                          }}
+                        >
+                          Remove from wish
+                        </Dropdown.Item>
+                      </DropdownButton>
+                    </Dropdown>
+                  </span>
+                )}
                 <Card.Body style={{ padding: "8%" }}>
                   <Card.Text className="mb-2 text-muted">
                     {props.genre}

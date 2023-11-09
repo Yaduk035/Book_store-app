@@ -27,7 +27,7 @@ const BooksPage = () => {
   const bookData = async () => {
     setSpinner(true);
     try {
-      const response = await axiosPrivate.get("/books");
+      const response = await axios.get("/books");
       const formattedData = response.data.map((book) => {
         const createdAt =
           new Date(book.createdAt).toLocaleString("en-US", {
@@ -152,7 +152,10 @@ const BooksPage = () => {
                     <option selected disabled>
                       Select a genre
                     </option>
-                    <option value='All'> {spinner ? 'Loading...' : 'All' }</option>
+                    <option value="All">
+                      {" "}
+                      {spinner ? "Loading..." : "All"}
+                    </option>
                     <option>Music</option>
                     <option>Story & Novel</option>
                     <option>Poetry</option>

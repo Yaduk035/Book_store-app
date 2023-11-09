@@ -34,7 +34,7 @@ const HomePage = () => {
   const bookData = async () => {
     setSpinner(true);
     try {
-      const response = await axiosPrivate.get("/books/recentbooks");
+      const response = await axios.get("/books/recentbooks");
       const formattedData = response.data.map((book) => {
         const createdAt =
           new Date(book.createdAt).toLocaleString("en-US", {
@@ -67,7 +67,9 @@ const HomePage = () => {
   return (
     <>
       <Header />
-      <CarouselComponent />
+      <Container style={{ maxWidth: "1500px", padding: "0px" }}>
+        <CarouselComponent />
+      </Container>
       <div></div>
       <div id="backGnd">
         <Container>

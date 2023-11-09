@@ -33,7 +33,7 @@ const PersistLogin = () => {
   useEffect(()=>{
     setTimeout(()=>{
       setLoadingMsg(true)
-    },[6000])
+    },[10000])
     setLoadingMsg(false)
   },[])
 

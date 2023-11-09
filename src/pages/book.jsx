@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Header from "../components/MuiHeader";
 import { useParams, useNavigate } from "react-router-dom";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
+import axios from "../api/axios";
 import {
   Container,
   Row,
@@ -40,6 +41,7 @@ import { styled } from "@mui/material/styles";
 import Tooltip, { tooltipClasses } from "@mui/material/Tooltip";
 
 const Book = () => {
+  const [loggedIn, setLoggedIn] = useState(false);
   const [bookData, setBookData] = useState();
   const [id, setId] = useState("");
   const [bookName, setBookName] = useState("");
@@ -91,6 +93,15 @@ const Book = () => {
   }, [bookName]);
 
   useEffect(() => {
+    const name = localStorage.getItem("name");
+    if (name) {
+      setLoggedIn(true);
+    } else {
+      setLoggedIn(false);
+    }
+  });
+
+  useEffect(() => {
     if (localUser) {
       // Split the localUser string into an array of roles
       const userRoles = localUser
@@ -131,7 +142,7 @@ const Book = () => {
   const getBookbyId = async () => {
     try {
       setSpinner(true);
-      const response = await axiosPrivate.get(`/books/${bookId}`);
+      const response = await axios.get(`/books/${bookId}`);
       setBookData(response?.data);
       setId(response?.data?._id);
       setImage(response?.data?.image);
@@ -505,6 +516,7 @@ const Book = () => {
                         <br />
                         {userWishlisted ? (
                           <Button
+                            style={{ marginRight: "5px" }}
                             variant="outline-dark"
                             id="buttonPadding"
                             onClick={deleteFromWishlist}
@@ -521,7 +533,13 @@ const Book = () => {
                           <Button
                             variant="outline-dark"
                             id="buttonPadding"
-                            onClick={addToWishlist}
+                            onClick={() => {
+                              if (!loggedIn) {
+                                navigate("/login/nouser");
+                              } else {
+                                addToWishlist();
+                              }
+                            }}
                             disabled={wishlistspinner}
                           >
                             {!wishlistspinner ? (
@@ -555,9 +573,15 @@ const Book = () => {
                           <span>
                             <Button
                               variant="dark"
-                              onClick={() =>
-                                navigate(`/books/${bookId}/payment`)
-                              }
+                              onClick={() => {
+                                navigate(`/books/${bookId}/payment`);
+
+                                if (!loggedIn) {
+                                  navigate("/login/nouser");
+                                } else {
+                                  addToWishlist();
+                                }
+                              }}
                             >
                               <Cart3 size={20} id="iconPadding" />
                               Rent book

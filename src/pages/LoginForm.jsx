@@ -19,7 +19,7 @@ import Header from "../components/HeaderLogin";
 import axios from "../api/axios";
 const LOGIN_URL = "/auth";
 
-const Login = () => {
+const Login = (props) => {
   const { setAuth } = useAuth();
 
   const [from, setFrom] = useState("");
@@ -95,6 +95,13 @@ const Login = () => {
       }
     }
   };
+  useEffect(() => {
+    if (props.msg) {
+      setErrMsg("Login to proceed.");
+    } else {
+      setErrMsg("");
+    }
+  }, []);
 
   return (
     <>
@@ -139,7 +146,14 @@ const Login = () => {
                   ) : (
                     <span>
                       <br />
-                      <Alert variant="danger">{errMsg}</Alert>
+                      <Alert variant="danger">
+                        <span
+                          style={{ display: "flex", justifyContent: "center" }}
+                        >
+                          {" "}
+                          {errMsg}
+                        </span>
+                      </Alert>
                     </span>
                   )}
                   <Form.Check // prettier-ignore

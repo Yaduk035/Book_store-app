@@ -17,7 +17,7 @@ const CommentSection = (props) => {
   const getReviews = async () => {
     try {
       const id = props.bookId;
-      const response = await axiosPrivate.get(`books/reviews/${id}`);
+      const response = await axios.get(`books/reviews/${id}`);
       setResponseData(response.data.reviews);
     } catch (error) {}
   };

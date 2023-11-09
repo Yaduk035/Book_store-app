@@ -30,6 +30,7 @@ function App() {
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route path="login" element={<Login />} />
+        <Route path="login/nouser" element={<Login msg={true} />} />
         <Route path="signup" element={<Signup />} />
 
         {/*Protected Routes */}
@@ -37,15 +38,15 @@ function App() {
         <Route path='/unauthorized' element={ <Unauthorized/> } />
         <Route path='/notfound' element={ <Notfound/> } />
         <Route path='*' element={ <Notfound/> } />
+        <Route path="/books/:bookId" element={<Book/>} />
+        <Route path="/books" element={<BooksPage/>} />
+        <Route path="/" element={<HomePage />} />
           <Route element={<RequireAuth allowedRoles={[ROLES.Admin, ROLES.User]} />}>
-            <Route path="/" element={<HomePage />} />
             <Route path="/usertest" element={<Users />} />
-            <Route path="/books" element={<BooksPage/>} />
             <Route path="/accountsettings" element={<AccSettings/>} />
             <Route path="/rentedbooks" element={<Rentlist/>} />
             <Route path="/wishlist" element={<Wishlist/>} />
             <Route path="/books/:bookId/payment" element={ <PurchasePage/> } />
-            <Route path="/books/:bookId" element={<Book/>} />
         {/* <Route path="file" element={<MyDropzone />} /> */}
           </Route>
           <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />} >

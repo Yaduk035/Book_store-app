@@ -26,6 +26,7 @@ import { Logout } from "@mui/icons-material";
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
+  const [loggedIn, setLoggedIn] = useState(false);
 
   const signOut = useLogout();
   const navigate = useNavigate();
@@ -33,7 +34,16 @@ function ResponsiveAppBar() {
   const [admin, setAdmin] = useState(localStorage.getItem("role"));
   const allowedRoles = [1993];
   const localUser = localStorage?.getItem("role");
-  const name = localStorage.getItem("name");
+  const name = localStorage.getItem("name") || "user";
+
+  useEffect(() => {
+    const name = localStorage.getItem("name");
+    if (name) {
+      setLoggedIn(true);
+    } else {
+      setLoggedIn(false);
+    }
+  });
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -206,85 +216,114 @@ function ResponsiveAppBar() {
             )}
           </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar
-                  alt={capitalize(name)}
-                  src="/static/images/avatar/2.jpg"
-                />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              <Divider>
-                <Chip
-                  label={admin ? <div> Admin</div> : <div>User account</div>}
-                />
-              </Divider>
-              <MenuItem onClick={handleCloseUserMenu}>
-                <Typography textAlign="center">
-                  <span style={{ color: "grey" }}>Hello</span> {name || "user"}
-                </Typography>
-              </MenuItem>
-              {admin && (
-                <span>
-                  <Divider>
-                    <Chip label="Admin only" />
-                  </Divider>
+          {!loggedIn ? (
+            <Box sx={{ flexGrow: 0 }}>
+              <Button
+                variant="outlined"
+                color="secondary"
+                onClick={() => navigate("/signup")}
+                size="large"
+                style={{ marginRight: "10px", color: "white" }}
+              >
+                Sign up
+              </Button>
 
-                  <MenuItem onClick={() => navigate("/admincontrols")}>
-                    <Typography textAlign="center">Admin Dashboard</Typography>
-                  </MenuItem>
-                </span>
-              )}
-              <Divider>
-                <Chip label="Books" />
-              </Divider>
-              <MenuItem onClick={() => navigate("/rentedbooks")}>
-                <Typography textAlign="center">Rented Books</Typography>
-              </MenuItem>
-              <MenuItem onClick={() => navigate("/wishlist")}>
-                <Typography textAlign="center">Wish list</Typography>
-              </MenuItem>
-              <Divider sx={{ my: 0.5 }} />
-              <Divider>
-                <Chip label="Account" />
-              </Divider>
+              <Button
+                variant="outlined"
+                color="secondary"
+                onClick={() => navigate("/login")}
+                size="large"
+                style={{ marginRight: "10px", color: "white" }}
+              >
+                Log in
+              </Button>
+            </Box>
+          ) : (
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar
+                    alt={capitalize(name)}
+                    src="/static/images/avatar/2.jpg"
+                  />
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: "45px" }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                <Divider>
+                  <Chip
+                    label={admin ? <div> Admin</div> : <div>User account</div>}
+                  />
+                </Divider>
+                <MenuItem onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center">
+                    <span style={{ color: "grey" }}>Hello</span>{" "}
+                    {name || "user"}
+                  </Typography>
+                </MenuItem>
+                {admin && (
+                  <span>
+                    <Divider>
+                      <Chip label="Admin only" />
+                    </Divider>
 
-              <MenuItem onClick={() => navigate("/accountsettings")}>
-                <Typography textAlign="center">Settings</Typography>
-              </MenuItem>
-              <Divider
-                variant="middle"
-                style={{ background: "black" }}
-                sx={{ my: 1 }}
-              />
-              <MenuItem onClick={logOut}>
-                <Typography textAlign="center" color={"red"}>
-                  <Logout style={{ marginBottom: "5px" }} />
-                  <span style={{ fontFamily: "monospace", fontSize: "1.1rem" }}>
-                    Log out
+                    <MenuItem onClick={() => navigate("/admincontrols")}>
+                      <Typography textAlign="center">
+                        Admin Dashboard
+                      </Typography>
+                    </MenuItem>
                   </span>
-                </Typography>
-              </MenuItem>
-              <AddBooksModal showModal={showModal} closeModal={closeModal} />
-            </Menu>
-          </Box>
+                )}
+                <Divider>
+                  <Chip label="Books" />
+                </Divider>
+                <MenuItem onClick={() => navigate("/rentedbooks")}>
+                  <Typography textAlign="center">Rented Books</Typography>
+                </MenuItem>
+                <MenuItem onClick={() => navigate("/wishlist")}>
+                  <Typography textAlign="center">Wish list</Typography>
+                </MenuItem>
+                <Divider sx={{ my: 0.5 }} />
+                <Divider>
+                  <Chip label="Account" />
+                </Divider>
+
+                <MenuItem onClick={() => navigate("/accountsettings")}>
+                  <Typography textAlign="center">Settings</Typography>
+                </MenuItem>
+                <Divider
+                  variant="middle"
+                  style={{ background: "black" }}
+                  sx={{ my: 1 }}
+                />
+                <MenuItem onClick={logOut}>
+                  <Typography textAlign="center" color={"red"}>
+                    <Logout style={{ marginBottom: "5px" }} />
+                    <span
+                      style={{ fontFamily: "monospace", fontSize: "1.1rem" }}
+                    >
+                      Log out
+                    </span>
+                  </Typography>
+                </MenuItem>
+                <AddBooksModal showModal={showModal} closeModal={closeModal} />
+              </Menu>
+            </Box>
+          )}
         </Toolbar>
       </Container>
     </AppBar>

@@ -4,3 +4,38 @@
   background-image: url("../../images/carousel_imgs/library-books-2.jpg");
   background-size: cover;
 }
+.cardImg {
+  max-height: 400px;
+  height: 100%;
+  width: 23%;
+  border-radius: 10px;
+  margin-bottom: 10%;
+  margin-left: 10%;
+  box-shadow: 0 10px 50px rgba(0, 0, 0, 1);
+  position: absolute;
+  bottom: 10%;
+  top: 25%;
+  left: 8%;
+  z-index: 0;
+  transition: all 0.8s;
+  transform: scale(0.9);
+  filter: grayscale(65%);
+}
+.cardImgHovered {
+  max-height: 400px;
+  height: 100%;
+  width: 23%;
+  border-radius: 10px;
+  margin-bottom: 10%;
+  margin-left: 10%;
+  box-shadow: 0 10px 50px rgba(0, 0, 0, 1);
+  position: absolute;
+  bottom: 10%;
+  top: 25%;
+  left: 8%;
+  z-index: 10;
+  transition: all 0.8s;
+  transform: scale(1.04);
+  overflow: hidden;
+  filter: saturate(105%);
+}

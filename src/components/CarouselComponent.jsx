@@ -4,12 +4,14 @@ import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { useState, useEffect } from "react";
 import "./css/carouselCss.css";
 import MuiButton from "../components/MuiButton";
+import zIndex from "@mui/material/styles/zIndex";
 
 const CarouselComponent = () => {
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
 
   const [randomBook, setRandomBook] = useState("");
+  const [imgHovered, setImgHovered] = useState(false);
 
   const getRandomBook = async () => {
     try {
@@ -49,19 +51,9 @@ const CarouselComponent = () => {
             <img
               src={randomBook.image}
               alt="First slide"
-              style={{
-                maxHeight: "400px",
-                height: "60vh",
-                width: "35vh",
-                borderRadius: "10px",
-                marginBottom: "10%",
-                marginLeft: "10%",
-                boxShadow: "0 10px 50px rgba(0, 0, 0, 1)",
-                position: "absolute",
-                bottom: "10%",
-                top: "25%",
-                left: "8%",
-              }}
+              className={!imgHovered ? "cardImg" : "cardImgHovered"}
+              onMouseEnter={() => setImgHovered(true)}
+              onMouseLeave={() => setImgHovered(false)}
             />
           </div>
         </div>
@@ -71,9 +63,11 @@ const CarouselComponent = () => {
           <div>
             <div
               style={{
-                backgroundColor: "rgba(128,128,128,0.5)",
+                backgroundColor: "rgba(17,17,17,0.65)",
                 borderRadius: "10px",
                 padding: "10px",
+                filter: imgHovered ? "blur(2px)" : "blur(0px)",
+                transition: "all 1s",
               }}
               className="description-container"
             >
