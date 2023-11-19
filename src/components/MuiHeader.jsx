@@ -13,6 +13,7 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 import { Chip } from "@mui/material";
+import { axiosPrivate } from "../api/axios";
 
 import React, { useEffect, useState } from "react";
 import useLogout from "../hooks/useLogout";
@@ -87,6 +88,32 @@ function ResponsiveAppBar() {
 
   const closeModal = () => {
     setShowModal(false);
+  };
+
+  const getLogs = async (value) => {
+    try {
+      const response = await axiosPrivate.get(`/users/logfiles/${value}`);
+
+      const reqlogs = response.data;
+      const blob = new Blob([reqlogs], { type: "text/plain" });
+
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+
+      link.href = url;
+
+      link.download = `${value}.txt`;
+
+      link.click();
+
+      URL.revokeObjectURL(link);
+
+      if (link.parentNode) {
+        document.body.removeChild(link);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -284,6 +311,19 @@ function ResponsiveAppBar() {
                     <MenuItem onClick={() => navigate("/admincontrols")}>
                       <Typography textAlign="center">
                         Admin Dashboard
+                      </Typography>
+                    </MenuItem>
+                    <MenuItem onClick={() => getLogs("reqlogs")}>
+                      <Typography textAlign="center">
+                        {" "}
+                        <span style={{ color: "gray" }}>Download Req logs</span>
+                      </Typography>
+                    </MenuItem>
+                    <MenuItem onClick={() => getLogs("errorlogs")}>
+                      <Typography textAlign="center">
+                        <span style={{ color: "gray" }}>
+                          Download Error logs
+                        </span>
                       </Typography>
                     </MenuItem>
                   </span>
