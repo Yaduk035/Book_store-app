@@ -18,6 +18,7 @@ import AdminPanelRentlist from "./pages/AdminUserRentlist";
 import Footer from "./components/Footer";
 import Notfound from "./pages/Notfound";
 import Unauthorized from './pages/Unauthorized'
+import LogsPage from "./pages/LogsPage";
 
 const ROLES = {
   Admin: 1993,
@@ -51,6 +52,7 @@ function App() {
           </Route>
           <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />} >
             <Route path="/admincontrols" element={ <AdminControlPanel/> } />
+            <Route path="/admincontrols/logs" element={ <LogsPage/> } />
             <Route path="/admincontrols/:userId/rentlist/:emailId" element={ <AdminPanelRentlist/> } />
           </Route>
         </Route>

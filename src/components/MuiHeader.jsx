@@ -90,32 +90,6 @@ function ResponsiveAppBar() {
     setShowModal(false);
   };
 
-  const getLogs = async (value) => {
-    try {
-      const response = await axiosPrivate.get(`/users/logfiles/${value}`);
-
-      const reqlogs = response.data;
-      const blob = new Blob([reqlogs], { type: "text/plain" });
-
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-
-      link.href = url;
-
-      link.download = `${value}.txt`;
-
-      link.click();
-
-      URL.revokeObjectURL(link);
-
-      if (link.parentNode) {
-        document.body.removeChild(link);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   return (
     <AppBar
       position="static"
@@ -313,17 +287,9 @@ function ResponsiveAppBar() {
                         Admin Dashboard
                       </Typography>
                     </MenuItem>
-                    <MenuItem onClick={() => getLogs("reqlogs")}>
+                    <MenuItem onClick={() => navigate("/admincontrols/logs")}>
                       <Typography textAlign="center">
-                        {" "}
-                        <span style={{ color: "gray" }}>Download Req logs</span>
-                      </Typography>
-                    </MenuItem>
-                    <MenuItem onClick={() => getLogs("errorlogs")}>
-                      <Typography textAlign="center">
-                        <span style={{ color: "gray" }}>
-                          Download Error logs
-                        </span>
+                        <span style={{ color: "gray" }}>Error & req logs</span>
                       </Typography>
                     </MenuItem>
                   </span>

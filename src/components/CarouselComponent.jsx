@@ -63,11 +63,12 @@ const CarouselComponent = () => {
           <div>
             <div
               style={{
-                backgroundColor: "rgba(17,17,17,0.65)",
+                backgroundColor: "rgba(17,17,17,0.35)",
                 borderRadius: "10px",
                 padding: "10px",
                 filter: imgHovered ? "blur(2px)" : "blur(0px)",
                 transition: "all 1s",
+                backdropFilter: "blur(3px)",
               }}
               className="description-container"
             >
