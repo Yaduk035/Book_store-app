@@ -99,6 +99,7 @@ function ResponsiveAppBar() {
         borderRadius: "0px 0px 10px 10px ",
         position: "fixed",
         zIndex: 4,
+        backdropFilter: "blur(3px)",
       }}
     >
       <Container maxWidth="xl">
